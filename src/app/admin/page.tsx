@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ShieldCheck, UserCheck, Award, PieChart, CheckCircle, AlertCircle, UserX, UserCheck2, Calculator, FileWarning } from "lucide-react";
-import { pendingApprovalsP1, pendingApprovalsP2, phase3Data as initialPhase3Data } from "@/lib/admin-data";
+import { pendingApprovalsP1 as initialP1Approvals, pendingApprovalsP2 as initialP2Approvals, phase3Data as initialPhase3Data } from "@/lib/admin-data";
 import { Progress } from "@/components/ui/progress";
 import Link from "next/link";
 import {
@@ -32,9 +32,18 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 
 export default function AdminPage() {
   const [phase3Data, setPhase3Data] = useState(initialPhase3Data);
+  const [p1Approvals, setP1Approvals] = useState(initialP1Approvals);
+  const [p2Approvals, setP2Approvals] = useState(initialP2Approvals);
   const [logs, setLogs] = useState<MockEvent[]>(mockEventLog);
   const [newInvestment, setNewInvestment] = useState(0);
   const [newGrants, setNewGrants] = useState(0);
+  
+  // State for the Create Grant dialog
+  const [isGrantDialogOpen, setIsGrantDialogOpen] = useState(false);
+  const [newOpName, setNewOpName] = useState('Sofia Rodriguez');
+  const [newOpExpertise, setNewOpExpertise] = useState('Regulatory Tech');
+  const [newOpGrant, setNewOpGrant] = useState('25000');
+
 
   const { toast } = useToast();
 
@@ -45,15 +54,6 @@ export default function AdminPage() {
     addEventListener(handleNewEvent);
     return () => removeEventListener(handleNewEvent);
   }, []);
-
-  const capTableData = [
-    { class: 'Founders', allocation: 40.00, shares: 4000000 },
-    { class: 'Series A', allocation: 25.00, shares: 2500000 + newInvestment },
-    { class: 'Seed', allocation: 15.00, shares: 1500000 },
-    { class: 'Employee Pool (ESOP)', allocation: 10.00, shares: 1000000 },
-    { class: 'Phase 3 Operator Pool', allocation: 7.50, shares: 750000 + newGrants * 25000 },
-    { class: 'Warrants', allocation: 2.50, shares: 250000 },
-  ];
 
   const totalShares = capTableData.reduce((acc, item) => acc + item.shares, 0);
 
@@ -69,9 +69,82 @@ export default function AdminPage() {
   };
 
   const handleApproveP1 = (investorId: string) => {
-    toast({ title: `Approved investor ${investorId}` });
-    addMockEvent({ user: 'Admin', action: `Approved Phase 1 investor ${investorId}`, phase: 'Admin' });
-    // Here you would update the actual status in a real backend
+    const investor = p1Approvals.find(inv => inv.id === investorId);
+    if (!investor) return;
+
+    toast({ title: `Approved investor ${investor.name}` });
+    addMockEvent({ user: 'Admin', action: `Approved Phase 1 investor ${investor.name}`, phase: 'Admin' });
+    setP1Approvals(prev => prev.filter(inv => inv.id !== investorId));
+  };
+  
+  const handleP2Action = (investorId: string, action: "docs" | "capital-call") => {
+    const investor = p2Approvals.find(inv => inv.id === investorId);
+    if (!investor) return;
+    
+    if (action === 'capital-call') {
+        toast({ title: `Capital Call Initiated`, description: `Capital call initiated for ${investor.name} on ${investor.entity}` });
+        addMockEvent({ user: 'Admin', action: `Initiated Capital Call for ${investor.name} (${investor.entity})`, phase: 'Admin' });
+        setP2Approvals(prev => prev.filter(inv => inv.id !== investorId));
+    } else {
+        toast({ title: `Managing documents for ${investor.name}`});
+    }
+  };
+
+  const capTableData = [
+    { class: 'Founders', allocation: 40.00, shares: 4000000 },
+    { class: 'Series A', allocation: 25.00, shares: 2500000 + newInvestment },
+    { class: 'Seed', allocation: 15.00, shares: 1500000 },
+    { class: 'Employee Pool (ESOP)', allocation: 10.00, shares: 1000000 },
+    { class: 'Phase 3 Operator Pool', allocation: 7.50, shares: phase3Data.pool.totalShares + newGrants * 25000 },
+    { class: 'Warrants', allocation: 2.50, shares: 250000 },
+  ];
+
+  const handleCreateGrant = () => {
+    if (!newOpName || !newOpExpertise || !newOpGrant) {
+        toast({ variant: 'destructive', title: 'Missing Information', description: 'Please fill out all fields.'});
+        return;
+    }
+
+    const grantAmount = parseInt(newOpGrant, 10);
+    if (isNaN(grantAmount) || grantAmount <= 0) {
+        toast({ variant: 'destructive', title: 'Invalid Grant', description: 'Please enter a valid number of shares.'});
+        return;
+    }
+
+    const newOperator = {
+        id: `OP${(Math.random() * 1000).toFixed(0).padStart(3, '0')}`,
+        name: newOpName,
+        expertise: newOpExpertise,
+        grant: grantAmount,
+        status: "Pending Docs",
+        vestingProgress: 0,
+    };
+
+    setPhase3Data(prevData => {
+        const newOperators = [...prevData.operators, newOperator];
+        const newIssuedGrants = prevData.pool.issuedGrants + 1;
+        const newIssuedShares = prevData.pool.issuedShares + grantAmount;
+
+        return {
+            ...prevData,
+            operators: newOperators,
+            pool: {
+                ...prevData.pool,
+                issuedGrants: newIssuedGrants,
+                issuedShares: newIssuedShares,
+                availableGrants: 30 - newIssuedGrants,
+                availableShares: prevData.pool.totalShares - newIssuedShares,
+            }
+        }
+    });
+
+    toast({ title: "Grant Issued", description: `An equity grant has been issued to ${newOpName}.`});
+    addMockEvent({ user: 'Admin', action: `Issued Phase 3 grant to ${newOpName}`, phase: 'Admin' });
+    setIsGrantDialogOpen(false);
+    // Reset form
+    setNewOpName('');
+    setNewOpExpertise('');
+    setNewOpGrant('25000');
   };
 
 
@@ -108,7 +181,7 @@ export default function AdminPage() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {pendingApprovalsP1.map((investor) => (
+                    {p1Approvals.map((investor) => (
                       <TableRow key={investor.id}>
                         <TableCell>{investor.id}</TableCell>
                         <TableCell>{investor.name}</TableCell>
@@ -122,6 +195,13 @@ export default function AdminPage() {
                         </TableCell>
                       </TableRow>
                     ))}
+                     {p1Approvals.length === 0 && (
+                      <TableRow>
+                        <TableCell colSpan={5} className="h-24 text-center">
+                          No pending approvals.
+                        </TableCell>
+                      </TableRow>
+                    )}
                   </TableBody>
                 </Table>
               </CardContent>
@@ -146,7 +226,7 @@ export default function AdminPage() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {pendingApprovalsP2.map((investor) => (
+                    {p2Approvals.map((investor) => (
                       <TableRow key={investor.id}>
                         <TableCell>{investor.id}</TableCell>
                         <TableCell>{investor.name}</TableCell>
@@ -155,11 +235,18 @@ export default function AdminPage() {
                           <Badge variant={investor.status.includes("Pending") ? "secondary" : "default"}>{investor.status}</Badge>
                         </TableCell>
                         <TableCell className="text-right">
-                          <Button variant="outline" size="sm" className="mr-2">Manage Docs</Button>
-                          <Button size="sm">Initiate Capital Call</Button>
+                          <Button variant="outline" size="sm" className="mr-2" onClick={() => handleP2Action(investor.id, 'docs')}>Manage Docs</Button>
+                          <Button size="sm" onClick={() => handleP2Action(investor.id, 'capital-call')}>Initiate Capital Call</Button>
                         </TableCell>
                       </TableRow>
                     ))}
+                    {p2Approvals.length === 0 && (
+                        <TableRow>
+                            <TableCell colSpan={5} className="h-24 text-center">
+                            No pending SPV actions.
+                            </TableCell>
+                        </TableRow>
+                    )}
                   </TableBody>
                 </Table>
               </CardContent>
@@ -176,18 +263,18 @@ export default function AdminPage() {
                 <CardContent className="grid md:grid-cols-3 gap-6">
                   <div className="flex flex-col gap-1 rounded-lg border p-4">
                     <span className="text-sm text-muted-foreground">Total Pool Allocation</span>
-                    <span className="text-2xl font-bold">{initialPhase3Data.pool.totalAllocation}</span>
-                    <span className="text-xs text-muted-foreground">({(initialPhase3Data.pool.totalShares).toLocaleString()} shares)</span>
+                    <span className="text-2xl font-bold">{phase3Data.pool.totalAllocation}</span>
+                    <span className="text-xs text-muted-foreground">({(phase3Data.pool.totalShares).toLocaleString()} shares)</span>
                   </div>
                    <div className="flex flex-col gap-1 rounded-lg border p-4">
                     <span className="text-sm text-muted-foreground">Grants Issued</span>
-                    <span className="text-2xl font-bold">{initialPhase3Data.pool.issuedGrants} / 30</span>
-                     <span className="text-xs text-muted-foreground">({(initialPhase3Data.pool.issuedShares).toLocaleString()} shares)</span>
+                    <span className="text-2xl font-bold">{phase3Data.pool.issuedGrants} / 30</span>
+                     <span className="text-xs text-muted-foreground">({(phase3Data.pool.issuedShares).toLocaleString()} shares)</span>
                   </div>
                   <div className="flex flex-col gap-1 rounded-lg border p-4">
                     <span className="text-sm text-muted-foreground">Available to Grant</span>
-                    <span className="text-2xl font-bold">{initialPhase3Data.pool.availableGrants}</span>
-                     <span className="text-xs text-muted-foreground">({initialPhase3Data.pool.availableShares.toLocaleString()} shares)</span>
+                    <span className="text-2xl font-bold">{phase3Data.pool.availableGrants}</span>
+                     <span className="text-xs text-muted-foreground">({phase3Data.pool.availableShares.toLocaleString()} shares)</span>
                   </div>
                 </CardContent>
               </Card>
@@ -200,7 +287,7 @@ export default function AdminPage() {
                             <CardTitle>Operator Grants</CardTitle>
                             <CardDescription>Review and manage individual operator grants and onboarding.</CardDescription>
                           </div>
-                          <Dialog>
+                          <Dialog open={isGrantDialogOpen} onOpenChange={setIsGrantDialogOpen}>
                             <DialogTrigger asChild>
                               <Button>Create New Grant</Button>
                             </DialogTrigger>
@@ -216,23 +303,23 @@ export default function AdminPage() {
                                   <Label htmlFor="name" className="text-right">
                                     Name
                                   </Label>
-                                  <Input id="name" defaultValue="Elena Petrov" className="col-span-3" />
+                                  <Input id="name" value={newOpName} onChange={(e) => setNewOpName(e.target.value)} className="col-span-3" />
                                 </div>
                                 <div className="grid grid-cols-4 items-center gap-4">
                                   <Label htmlFor="role" className="text-right">
                                     Expertise
                                   </Label>
-                                  <Input id="role" defaultValue="AI in Logistics" className="col-span-3" />
+                                  <Input id="role" value={newOpExpertise} onChange={(e) => setNewOpExpertise(e.target.value)} className="col-span-3" />
                                 </div>
                                  <div className="grid grid-cols-4 items-center gap-4">
                                   <Label htmlFor="grant" className="text-right">
                                     Grant (Shares)
                                   </Label>
-                                  <Input id="grant" type="number" defaultValue="25000" className="col-span-3" />
+                                  <Input id="grant" type="number" value={newOpGrant} onChange={(e) => setNewOpGrant(e.target.value)} className="col-span-3" />
                                 </div>
                               </div>
                               <DialogFooter>
-                                <Button type="submit">Issue Grant</Button>
+                                <Button type="submit" onClick={handleCreateGrant}>Issue Grant</Button>
                               </DialogFooter>
                             </DialogContent>
                           </Dialog>
