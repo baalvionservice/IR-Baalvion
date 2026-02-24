@@ -9,8 +9,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { ShieldCheck, UserCheck, Award, TrendingUp, PieChart, CheckCircle, FileSignature } from "lucide-react";
-import { pendingApprovalsP1, pendingApprovalsP2, auditLogs, phase3Data } from "@/lib/admin-data";
+import { ShieldCheck, UserCheck, Award, TrendingUp, PieChart, CheckCircle, FileSignature, AlertCircle, UserX, UserCheck2 } from "lucide-react";
+import { pendingApprovalsP1, pendingApprovalsP2, phase3Data as initialPhase3Data } from "@/lib/admin-data";
 import { Progress } from "@/components/ui/progress";
 import Link from "next/link";
 import {
@@ -22,17 +22,52 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { useState, useEffect } from "react";
+import { mockEventLog, addMockEvent, addEventListener, removeEventListener, type MockEvent } from "@/lib/events";
+import { Slider } from "@/components/ui/slider";
+import { useToast } from "@/hooks/use-toast";
+import { Separator } from "@/components/ui/separator";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 
 export default function AdminPage() {
+  const [phase3Data, setPhase3Data] = useState(initialPhase3Data);
+  const [logs, setLogs] = useState<MockEvent[]>(mockEventLog);
+  const [newInvestment, setNewInvestment] = useState(0);
+  const [newGrants, setNewGrants] = useState(0);
+
+  const { toast } = useToast();
+
+  useEffect(() => {
+    const handleNewEvent = (newEvent: MockEvent) => {
+      setLogs(prev => [newEvent, ...prev]);
+    };
+    addEventListener(handleNewEvent);
+    return () => removeEventListener(handleNewEvent);
+  }, []);
+
   const capTableData = [
-    { class: 'Founders', allocation: '40.00%', shares: '4,000,000' },
-    { class: 'Series A', allocation: '25.00%', shares: '2,500,000' },
-    { class: 'Seed', allocation: '15.00%', shares: '1,500,000' },
-    { class: 'Employee Pool (ESOP)', allocation: '10.00%', shares: '1,000,000' },
-    { class: 'Phase 3 Operator Pool', allocation: '7.50%', shares: '750,000' },
-    { class: 'Warrants', allocation: '2.50%', shares: '250,000' },
+    { class: 'Founders', allocation: 40.00, shares: 4000000 },
+    { class: 'Series A', allocation: 25.00, shares: 2500000 + newInvestment },
+    { class: 'Seed', allocation: 15.00, shares: 1500000 },
+    { class: 'Employee Pool (ESOP)', allocation: 10.00, shares: 1000000 },
+    { class: 'Phase 3 Operator Pool', allocation: 7.50, shares: 750000 + newGrants * 25000 },
+    { class: 'Warrants', allocation: 2.50, shares: 250000 },
   ];
+
+  const totalShares = capTableData.reduce((acc, item) => acc + item.shares, 0);
+
+  const handleLeaverStatusChange = (operatorId: string, status: "Good Leaver" | "Bad Leaver") => {
+    setPhase3Data(prevData => ({
+      ...prevData,
+      operators: prevData.operators.map(op => 
+        op.id === operatorId ? { ...op, status: status } : op
+      )
+    }));
+    toast({ title: `Operator status updated to ${status}` });
+    addMockEvent({ user: 'Admin', action: `Marked operator ${operatorId} as ${status}`, phase: 'Admin' });
+  };
+
 
   return (
     <main className="flex-grow bg-muted/20 py-12">
@@ -134,18 +169,18 @@ export default function AdminPage() {
                 <CardContent className="grid md:grid-cols-3 gap-6">
                   <div className="flex flex-col gap-1 rounded-lg border p-4">
                     <span className="text-sm text-muted-foreground">Total Pool Allocation</span>
-                    <span className="text-2xl font-bold">{phase3Data.pool.totalAllocation}</span>
-                    <span className="text-xs text-muted-foreground">({phase3Data.pool.totalShares.toLocaleString()} shares)</span>
+                    <span className="text-2xl font-bold">{initialPhase3Data.pool.totalAllocation}</span>
+                    <span className="text-xs text-muted-foreground">({initialPhase3Data.pool.totalShares.toLocaleString()} shares)</span>
                   </div>
                    <div className="flex flex-col gap-1 rounded-lg border p-4">
                     <span className="text-sm text-muted-foreground">Grants Issued</span>
-                    <span className="text-2xl font-bold">{phase3Data.pool.issuedGrants} / 30</span>
-                     <span className="text-xs text-muted-foreground">({phase3Data.pool.issuedShares.toLocaleString()} shares)</span>
+                    <span className="text-2xl font-bold">{initialPhase3Data.pool.issuedGrants} / 30</span>
+                     <span className="text-xs text-muted-foreground">({initialPhase3Data.pool.issuedShares.toLocaleString()} shares)</span>
                   </div>
                   <div className="flex flex-col gap-1 rounded-lg border p-4">
                     <span className="text-sm text-muted-foreground">Available to Grant</span>
-                    <span className="text-2xl font-bold">{phase3Data.pool.availableGrants}</span>
-                     <span className="text-xs text-muted-foreground">({phase3Data.pool.availableShares.toLocaleString()} shares)</span>
+                    <span className="text-2xl font-bold">{initialPhase3Data.pool.availableGrants}</span>
+                     <span className="text-xs text-muted-foreground">({initialPhase3Data.pool.availableShares.toLocaleString()} shares)</span>
                   </div>
                 </CardContent>
               </Card>
@@ -221,13 +256,22 @@ export default function AdminPage() {
                                             </div>
                                         </TableCell>
                                         <TableCell>
-                                            <Badge variant={op.status === "Active" ? "default" : "secondary"}>
-                                                <CheckCircle className="mr-1 h-3 w-3" />
+                                            <Badge variant={op.status === "Active" ? "default" : op.status === "Pending Docs" ? "secondary" : "destructive"}>
+                                                {op.status === "Active" && <CheckCircle className="mr-1 h-3 w-3" />}
+                                                {op.status.includes("Leaver") && <UserX className="mr-1 h-3 w-3" />}
                                                 {op.status}
                                             </Badge>
                                         </TableCell>
                                         <TableCell className="text-right">
-                                            <Button variant="outline" size="sm">Manage</Button>
+                                          <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                              <Button variant="ghost" size="sm">Manage</Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent>
+                                              <DropdownMenuItem onClick={() => handleLeaverStatusChange(op.id, 'Good Leaver')}><UserCheck2 className="mr-2 h-4 w-4"/>Mark as Good Leaver</DropdownMenuItem>
+                                              <DropdownMenuItem onClick={() => handleLeaverStatusChange(op.id, 'Bad Leaver')} className="text-destructive"><UserX className="mr-2 h-4 w-4"/>Mark as Bad Leaver</DropdownMenuItem>
+                                            </DropdownMenuContent>
+                                          </DropdownMenu>
                                         </TableCell>
                                     </TableRow>
                                     ))}
@@ -240,20 +284,40 @@ export default function AdminPage() {
                  <div className="space-y-8">
                      <Card>
                         <CardHeader>
-                            <CardTitle className="flex items-center gap-2"><PieChart/> Simplified Cap Table</CardTitle>
-                             <CardDescription>High-level overview of equity distribution.</CardDescription>
+                            <CardTitle className="flex items-center gap-2"><PieChart/> Dilution & Cap Table Simulator</CardTitle>
+                             <CardDescription>Model the impact of new investments and grants.</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <div className="space-y-4">
-                                {capTableData.map(item => (
-                                    <div key={item.class} className="flex justify-between items-center text-sm">
-                                        <div>
-                                            <p className="font-medium">{item.class}</p>
-                                            <p className="text-xs text-muted-foreground">{item.shares} shares</p>
-                                        </div>
-                                        <div className="font-bold">{item.allocation}</div>
-                                    </div>
-                                ))}
+                            <div className="space-y-6">
+                              <div className="space-y-2">
+                                <Label>New Series A Investment (Shares)</Label>
+                                <Slider defaultValue={[0]} max={500000} step={25000} onValueChange={(value) => setNewInvestment(value[0])} />
+                                <p className="text-sm font-bold text-right">{newInvestment.toLocaleString()} Shares</p>
+                              </div>
+                              <div className="space-y-2">
+                                <Label>New Operator Grants (25k shares each)</Label>
+                                <Slider defaultValue={[0]} max={10} step={1} onValueChange={(value) => setNewGrants(value[0])} />
+                                 <p className="text-sm font-bold text-right">{newGrants} Grants</p>
+                              </div>
+                              <Separator/>
+                              <div className="space-y-4">
+                                  {capTableData.map(item => (
+                                      <div key={item.class} className="flex justify-between items-center text-sm">
+                                          <div>
+                                              <p className="font-medium">{item.class}</p>
+                                              <p className="text-xs text-muted-foreground">{item.shares.toLocaleString()} shares</p>
+                                          </div>
+                                          <div className="font-bold">{((item.shares / totalShares) * 100).toFixed(2)}%</div>
+                                      </div>
+                                  ))}
+                              </div>
+                              <Alert>
+                                <AlertCircle className="h-4 w-4" />
+                                <AlertTitle>Simulation Mode</AlertTitle>
+                                <AlertDescription>
+                                  These changes are for modeling purposes only and do not affect live data.
+                                </AlertDescription>
+                              </Alert>
                             </div>
                         </CardContent>
                      </Card>
@@ -275,7 +339,7 @@ export default function AdminPage() {
           <TabsContent value="audit">
             <Card>
               <CardHeader>
-                <CardTitle>Audit & Compliance Tracker</CardTitle>
+                <CardTitle>Real-Time Audit & Compliance Tracker</CardTitle>
                 <CardDescription>Monitor all investor and admin activities across all phases.</CardDescription>
               </CardHeader>
               <CardContent>
@@ -283,18 +347,24 @@ export default function AdminPage() {
                   <TableHeader>
                     <TableRow>
                       <TableHead>Log ID</TableHead>
+                      <TableHead>Phase</TableHead>
                       <TableHead>User</TableHead>
                       <TableHead>Action</TableHead>
                       <TableHead>Timestamp</TableHead>
+                      <TableHead className="text-right">Alerts</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {auditLogs.map((log) => (
-                      <TableRow key={log.id}>
+                    {logs.map((log) => (
+                      <TableRow key={log.id} className={log.action.includes('Failed') ? 'bg-destructive/10' : ''}>
                         <TableCell>{log.id}</TableCell>
+                        <TableCell><Badge variant="outline">{log.phase}</Badge></TableCell>
                         <TableCell>{log.user}</TableCell>
                         <TableCell>{log.action}</TableCell>
                         <TableCell>{log.timestamp}</TableCell>
+                        <TableCell className="text-right">
+                          {log.action.includes('Failed') && <AlertCircle className="h-5 w-5 text-destructive inline-block" />}
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>

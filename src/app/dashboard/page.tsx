@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Card,
   CardContent,
@@ -18,6 +20,7 @@ import {
   FileCertificate,
   Gavel,
   MessagesSquare,
+  Activity,
 } from 'lucide-react';
 import Link from 'next/link';
 import { investorData } from '@/lib/data';
@@ -31,6 +34,11 @@ import {
 } from '@/components/ui/table';
 import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
+import { useState, useEffect } from 'react';
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import MeetingSchedulerModal from '@/components/dashboard/MeetingSchedulerModal';
+import { type MockEvent, mockEventLog, addEventListener, removeEventListener } from '@/lib/events';
+import PaymentGateway from '@/components/dashboard/PaymentGateway';
 
 export default function DashboardPage() {
   const {
@@ -42,6 +50,17 @@ export default function DashboardPage() {
     governanceUpdates,
     communications,
   } = investorData;
+
+  const [isMeetingModalOpen, setIsMeetingModalOpen] = useState(false);
+  const [activityFeed, setActivityFeed] = useState<MockEvent[]>(mockEventLog.slice(0, 4));
+
+  useEffect(() => {
+    const handleNewEvent = (newEvent: MockEvent) => {
+      setActivityFeed(prev => [newEvent, ...prev].slice(0, 4));
+    };
+    addEventListener(handleNewEvent);
+    return () => removeEventListener(handleNewEvent);
+  }, []);
 
   return (
     <main className="flex-grow bg-muted/20 py-12">
@@ -86,6 +105,16 @@ export default function DashboardPage() {
                     {executiveOverview.securityType}
                   </span>
                 </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2"><DollarSign/> Investment Execution</CardTitle>
+                <CardDescription>Finalize your investment and manage fund transfers.</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <PaymentGateway/>
               </CardContent>
             </Card>
 
@@ -238,10 +267,15 @@ export default function DashboardPage() {
                     View Data Room
                   </Link>
                 </Button>
-                <Button variant="outline">
-                  <Calendar />
-                  Schedule Meeting
-                </Button>
+                <Dialog open={isMeetingModalOpen} onOpenChange={setIsMeetingModalOpen}>
+                    <DialogTrigger asChild>
+                        <Button variant="outline">
+                            <Calendar />
+                            Schedule Meeting
+                        </Button>
+                    </DialogTrigger>
+                    <MeetingSchedulerModal closeModal={() => setIsMeetingModalOpen(false)} />
+                </Dialog>
                 <div className="pt-4 space-y-4">
                   {communications.announcements.map((note) => (
                     <div key={note.id} className="flex items-start gap-4 text-sm">
@@ -255,6 +289,27 @@ export default function DashboardPage() {
                     </div>
                   ))}
                 </div>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2"><Activity/> Recent Platform Activity</CardTitle>
+              </CardHeader>
+              <CardContent>
+                  <div className="space-y-4">
+                      {activityFeed.map((item) => (
+                      <div key={item.id} className="flex items-start gap-4 text-sm">
+                          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted flex-shrink-0">
+                          <Bell className="h-4 w-4 text-muted-foreground" />
+                          </div>
+                          <div>
+                          <p className="font-medium">{item.action}</p>
+                          <p className="text-xs text-muted-foreground">{item.user} at {item.timestamp}</p>
+                          </div>
+                      </div>
+                      ))}
+                  </div>
               </CardContent>
             </Card>
 

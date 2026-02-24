@@ -1,3 +1,5 @@
+"use client";
+
 import {
     Card,
     CardContent,
@@ -16,6 +18,7 @@ import {
     DollarSign,
     CheckCircle2,
     Users,
+    Calendar,
   } from 'lucide-react';
   import Link from 'next/link';
   import { phase2InvestorData } from '@/lib/phase2-data';
@@ -29,9 +32,13 @@ import {
   } from '@/components/ui/table';
   import { Progress } from '@/components/ui/progress';
   import { Separator } from '@/components/ui/separator';
+  import { useState } from 'react';
+  import { Dialog, DialogTrigger } from '@/components/ui/dialog';
+  import MeetingSchedulerModal from '@/components/dashboard/MeetingSchedulerModal';
   
   export default function Phase2DashboardPage() {
     const { name, spv, capitalAccount, activity } = phase2InvestorData;
+    const [isMeetingModalOpen, setIsMeetingModalOpen] = useState(false);
   
     return (
       <main className="flex-grow bg-muted/20 py-12">
@@ -149,6 +156,15 @@ import {
                         <BarChart />
                         View Performance Metrics
                     </Button>
+                    <Dialog open={isMeetingModalOpen} onOpenChange={setIsMeetingModalOpen}>
+                        <DialogTrigger asChild>
+                            <Button variant="outline">
+                                <Calendar />
+                                Schedule Meeting
+                            </Button>
+                        </DialogTrigger>
+                        <MeetingSchedulerModal closeModal={() => setIsMeetingModalOpen(false)} />
+                    </Dialog>
                 </CardContent>
               </Card>
 
