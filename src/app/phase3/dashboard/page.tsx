@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Card,
   CardContent,
@@ -21,6 +23,7 @@ import {
   Target,
   CheckCircle,
   Clock,
+  Eye,
 } from 'lucide-react';
 import Link from 'next/link';
 import { operatorData } from '@/lib/phase3-data';
@@ -34,6 +37,23 @@ import {
 } from '@/components/ui/table';
 import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
+import { useState } from 'react';
+import { useToast } from '@/hooks/use-toast';
+import { addMockEvent } from '@/lib/events';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+
+type Document = {
+    id: number;
+    name: string;
+    link: string;
+};
 
 export default function Phase3DashboardPage() {
   const {
@@ -45,6 +65,24 @@ export default function Phase3DashboardPage() {
     notifications,
     documents
   } = operatorData;
+
+  const { toast } = useToast();
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [selectedDoc, setSelectedDoc] = useState<Document | null>(null);
+
+  const handleDownload = (docName: string) => {
+    toast({
+      title: "Download Initiated",
+      description: `Your download for ${docName} will begin shortly.`,
+    });
+    addMockEvent({ user: name, action: `Downloaded document: ${docName}`, phase: 'P3' });
+  };
+  
+  const handlePreview = (doc: Document) => {
+    setSelectedDoc(doc);
+    setIsPreviewOpen(true);
+  };
+
 
   return (
     <main className="flex-grow bg-muted/20 py-12">
@@ -212,15 +250,47 @@ export default function Phase3DashboardPage() {
                             <FileText className='h-4 w-4 text-muted-foreground'/>
                             <p>{doc.name}</p>
                         </div>
-                        <Button asChild variant="ghost" size="sm">
-                            <Link href={doc.link}>Download</Link>
-                        </Button>
+                         <div>
+                            <Button variant="ghost" size="icon" onClick={() => handlePreview(doc)}>
+                                <Eye className="h-4 w-4" />
+                                <span className="sr-only">View</span>
+                            </Button>
+                            <Button asChild variant="ghost" size="icon">
+                                <Link href={doc.link} onClick={() => handleDownload(doc.name)}>
+                                    <Download className="h-4 w-4" />
+                                    <span className="sr-only">Download</span>
+                                </Link>
+                            </Button>
+                        </div>
                     </div>
                 ))}
               </CardContent>
             </Card>
           </div>
         </div>
+
+        <Dialog open={isPreviewOpen} onOpenChange={setIsPreviewOpen}>
+            <DialogContent className="sm:max-w-3xl">
+                <DialogHeader>
+                    <DialogTitle>{selectedDoc?.name}</DialogTitle>
+                    <DialogDescription>
+                        This is a mock preview of your legal document.
+                    </DialogDescription>
+                </DialogHeader>
+                <div className="prose prose-sm max-w-none rounded-lg border bg-muted/30 p-4 max-h-[60vh] overflow-y-auto">
+                    <h3 className="text-foreground">Mock Document Content: {selectedDoc?.name}</h3>
+                    <p className="text-muted-foreground">This is a placeholder for the document content. In a real implementation, this would be an embedded PDF viewer or a secure HTML rendering of the document.</p>
+                    <h4 className="text-foreground">Section 1: Grant of Award</h4>
+                    <p className="text-muted-foreground">Subject to the terms and conditions of the Plan and this Agreement, the Company hereby grants to the Participant an award of Restricted Stock Units (RSUs).</p>
+                    <h4 className="text-foreground">Section 2: Vesting</h4>
+                    <p className="text-muted-foreground">The RSUs shall vest according to the schedule outlined in the Participant's dashboard, contingent upon continuous service and achievement of any specified performance milestones.</p>
+                </div>
+                <DialogFooter>
+                    <Button variant="outline" onClick={() => setIsPreviewOpen(false)}>Close</Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
+
       </div>
     </main>
   );

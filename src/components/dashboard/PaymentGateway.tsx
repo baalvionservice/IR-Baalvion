@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowRight, Banknote, Copy, ExternalLink, Loader2, FileSignature, CheckCircle } from 'lucide-react';
+import { ArrowRight, Banknote, Copy, ExternalLink, Loader2, FileSignature, CheckCircle, AlertTriangle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { addMockEvent } from '@/lib/events';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -53,10 +53,20 @@ export default function PaymentGateway() {
     toast({ title: 'Generating Secure E-Signature Session...' });
     addMockEvent({ user: 'Investor', action: 'Initiated Term Sheet E-Signature', phase: 'P1' });
     setTimeout(() => {
-      toast({ title: 'Term Sheet Signed Successfully' });
-      addMockEvent({ user: 'Investor', action: 'Completed Term Sheet E-Signature', phase: 'P1' });
-      setIsSigning(false);
-      setStep(2);
+       if (Math.random() > 0.15) { // 85% success rate
+        toast({ title: 'Term Sheet Signed Successfully' });
+        addMockEvent({ user: 'Investor', action: 'Completed Term Sheet E-Signature', phase: 'P1' });
+        setIsSigning(false);
+        setStep(2);
+      } else {
+        toast({
+          variant: "destructive",
+          title: "E-Signature Failed",
+          description: "A transient error occurred. Please try again.",
+        });
+        addMockEvent({ user: 'System', action: 'Failed E-Signature: validation error.', phase: 'Admin' });
+        setIsSigning(false);
+      }
     }, 2500);
   };
   

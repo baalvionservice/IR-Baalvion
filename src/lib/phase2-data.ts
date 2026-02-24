@@ -22,7 +22,7 @@ export const phase2InvestorData = {
     ]
 }
 
-type Document = {
+export type Document = {
   id: string;
   name: string;
   category: string;

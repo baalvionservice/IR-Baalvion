@@ -20,6 +20,10 @@ import {
   MessagesSquare,
   Activity,
   BarChart,
+  Briefcase,
+  Banknote,
+  ShieldCheck,
+  Scale,
 } from 'lucide-react';
 import Link from 'next/link';
 import { investorData } from '@/lib/data';
@@ -379,6 +383,34 @@ export default function DashboardPage() {
                   ))}
                 </div>
               </CardContent>
+            </Card>
+            <Card>
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2"><Briefcase/> Key Partners</CardTitle>
+                    <CardDescription>The world-class partners supporting our operations.</CardDescription>
+                </CardHeader>
+                <CardContent className="grid grid-cols-2 gap-y-6">
+                    <div className="flex flex-col items-center gap-1 text-center">
+                        <Banknote className="h-7 w-7 text-primary"/>
+                        <p className="text-sm font-semibold mt-2">Goldman Sachs</p>
+                        <p className="text-xs text-muted-foreground">Banking Partner</p>
+                    </div>
+                    <div className="flex flex-col items-center gap-1 text-center">
+                        <ShieldCheck className="h-7 w-7 text-primary"/>
+                        <p className="text-sm font-semibold mt-2">Deloitte</p>
+                        <p className="text-xs text-muted-foreground">Auditor</p>
+                    </div>
+                    <div className="flex flex-col items-center gap-1 text-center">
+                        <Scale className="h-7 w-7 text-primary"/>
+                        <p className="text-sm font-semibold mt-2">Skadden, Arps</p>
+                        <p className="text-xs text-muted-foreground">Legal Counsel</p>
+                    </div>
+                     <div className="flex flex-col items-center gap-1 text-center">
+                         <svg className="h-7 w-7 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                        <p className="text-sm font-semibold mt-2">McKinsey & Co.</p>
+                        <p className="text-xs text-muted-foreground">Strategic Advisor</p>
+                    </div>
+                </CardContent>
             </Card>
           </div>
         </div>
