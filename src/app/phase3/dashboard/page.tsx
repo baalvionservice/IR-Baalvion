@@ -12,12 +12,7 @@ import { Badge } from '@/components/ui/badge';
 import {
   Bell,
   FileText,
-  Calendar,
   Download,
-  Briefcase,
-  BarChart,
-  DollarSign,
-  FileSignature,
   Award,
   TrendingUp,
   Target,
@@ -40,14 +35,7 @@ import { Separator } from '@/components/ui/separator';
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { addMockEvent } from '@/lib/events';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import DocumentPreviewDialog from '@/components/shared/DocumentPreviewDialog';
 
 type Document = {
     id: number;
@@ -237,10 +225,7 @@ export default function Phase3DashboardPage() {
 
              <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <FileSignature />
-                  My Documents
-                </CardTitle>
+                <CardTitle>My Documents</CardTitle>
                 <CardDescription>Your signed legal and grant documents.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-2">
@@ -269,27 +254,11 @@ export default function Phase3DashboardPage() {
           </div>
         </div>
 
-        <Dialog open={isPreviewOpen} onOpenChange={setIsPreviewOpen}>
-            <DialogContent className="sm:max-w-3xl">
-                <DialogHeader>
-                    <DialogTitle>{selectedDoc?.name}</DialogTitle>
-                    <DialogDescription>
-                        This is a mock preview of your legal document.
-                    </DialogDescription>
-                </DialogHeader>
-                <div className="prose prose-sm max-w-none rounded-lg border bg-muted/30 p-4 max-h-[60vh] overflow-y-auto">
-                    <h3 className="text-foreground">Mock Document Content: {selectedDoc?.name}</h3>
-                    <p className="text-muted-foreground">This is a placeholder for the document content. In a real implementation, this would be an embedded PDF viewer or a secure HTML rendering of the document.</p>
-                    <h4 className="text-foreground">Section 1: Grant of Award</h4>
-                    <p className="text-muted-foreground">Subject to the terms and conditions of the Plan and this Agreement, the Company hereby grants to the Participant an award of Restricted Stock Units (RSUs).</p>
-                    <h4 className="text-foreground">Section 2: Vesting</h4>
-                    <p className="text-muted-foreground">The RSUs shall vest according to the schedule outlined in the Participant's dashboard, contingent upon continuous service and achievement of any specified performance milestones.</p>
-                </div>
-                <DialogFooter>
-                    <Button variant="outline" onClick={() => setIsPreviewOpen(false)}>Close</Button>
-                </DialogFooter>
-            </DialogContent>
-        </Dialog>
+        <DocumentPreviewDialog
+            isPreviewOpen={isPreviewOpen}
+            setIsPreviewOpen={setIsPreviewOpen}
+            selectedDoc={selectedDoc}
+        />
 
       </div>
     </main>

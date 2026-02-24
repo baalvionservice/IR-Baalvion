@@ -12,13 +12,18 @@ import { Separator } from '../ui/separator';
 
 export default function PaymentGateway() {
   const { toast } = useToast();
+  // State to manage the current step in the payment flow
   const [step, setStep] = useState(1);
+  // State for the selected currency
   const [currency, setCurrency] = useState('USD');
+  // State to show a loader while simulating e-signature
   const [isSigning, setIsSigning] = useState(false);
+  // State to show a loader while simulating fund transfer submission
   const [isTransferring, setIsTransferring] = useState(false);
 
   const amount = 750000;
 
+  // Mock conversion rates for different currencies
   const conversionRates: { [key: string]: number } = {
     USD: 1,
     EUR: 0.93,
@@ -34,6 +39,9 @@ export default function PaymentGateway() {
     toast({ title: 'Copied to clipboard!' });
   };
   
+  // This effect simulates the asynchronous nature of bank transfers.
+  // When the user reaches step 3, it waits 5 seconds then automatically
+  // moves to step 4, simulating the funds being verified.
   useEffect(() => {
     let timer: NodeJS.Timeout;
     if (step === 3) {
@@ -48,10 +56,12 @@ export default function PaymentGateway() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [step]);
 
+  // Handler for simulating the e-signature process
   const handleSign = () => {
     setIsSigning(true);
     toast({ title: 'Generating Secure E-Signature Session...' });
     addMockEvent({ user: 'Investor', action: 'Initiated Term Sheet E-Signature', phase: 'P1' });
+    // Simulate API call and a potential random failure
     setTimeout(() => {
        if (Math.random() > 0.15) { // 85% success rate
         toast({ title: 'Term Sheet Signed Successfully' });
@@ -70,6 +80,7 @@ export default function PaymentGateway() {
     }, 2500);
   };
   
+  // Handler for simulating the fund transfer submission
   const handleFundTransfer = () => {
     setIsTransferring(true);
     toast({ title: 'Broadcasting Secure Transfer Request...' });
@@ -80,6 +91,7 @@ export default function PaymentGateway() {
     }, 2000);
   }
 
+  // Renders the content for the current step
   const renderStepContent = () => {
     switch (step) {
       case 1:

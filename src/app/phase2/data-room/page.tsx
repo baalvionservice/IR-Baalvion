@@ -12,7 +12,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import DocumentPreviewDialog from "@/components/shared/DocumentPreviewDialog";
 
 export default function Phase2DataRoomPage() {
   const { toast } = useToast();
@@ -69,7 +69,7 @@ export default function Phase2DataRoomPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-xl">Document Library</CardTitle>
+            <CardTitle>Document Library</CardTitle>
             <CardDescription>
               All documents related to your SPV investment.
             </CardDescription>
@@ -167,29 +167,11 @@ export default function Phase2DataRoomPage() {
         </Card>
       </div>
 
-       <Dialog open={isPreviewOpen} onOpenChange={setIsPreviewOpen}>
-        <DialogContent className="sm:max-w-3xl">
-            <DialogHeader>
-                <DialogTitle>{selectedDoc?.name}</DialogTitle>
-                <DialogDescription>
-                    Category: {selectedDoc?.category} | Version: {selectedDoc?.version} | Uploaded: {selectedDoc?.date}
-                </DialogDescription>
-            </DialogHeader>
-            <div className="prose prose-sm max-w-none rounded-lg border bg-muted/30 p-4 max-h-[60vh] overflow-y-auto">
-                <h3 className="text-foreground">Mock Document Content</h3>
-                <p className="text-muted-foreground">This is a placeholder for the document content of "{selectedDoc?.name}". In a real implementation, this would be an embedded PDF viewer or a secure HTML rendering of the document.</p>
-                <h4 className="text-foreground">Section 1: Introduction</h4>
-                <p className="text-muted-foreground">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi.</p>
-                <h4 className="text-foreground">Section 2: Terms and Conditions</h4>
-                <p className="text-muted-foreground">Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat. Duis semper. Duis arcu massa, scelerisque vitae, consequat in, pretium a, enim. Pellentesque congue. Ut in risus volutpat libero pharetra tempor. Cras vestibulum bibendum augue. Praesent egestas leo in pede. Praesent blandit odio eu enim. Pellentesque sed dui ut augue blandit sodales. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam nibh.</p>
-                 <h4 className="text-foreground">Section 3: Signatures</h4>
-                <p className="text-muted-foreground">IN WITNESS WHEREOF, the parties have executed this Agreement as of the date first above written.</p>
-            </div>
-            <DialogFooter>
-                <Button variant="outline" onClick={() => setIsPreviewOpen(false)}>Close</Button>
-            </DialogFooter>
-        </DialogContent>
-    </Dialog>
+      <DocumentPreviewDialog
+        isPreviewOpen={isPreviewOpen}
+        setIsPreviewOpen={setIsPreviewOpen}
+        selectedDoc={selectedDoc}
+      />
     </main>
   );
 }

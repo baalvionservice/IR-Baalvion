@@ -31,22 +31,29 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 
 
 export default function AdminPage() {
+  // State for Phase 3 data, including operator grants and pool statistics
   const [phase3Data, setPhase3Data] = useState(initialPhase3Data);
+  // State for pending Phase 1 investor approvals
   const [p1Approvals, setP1Approvals] = useState(initialP1Approvals);
+  // State for pending Phase 2 SPV management actions
   const [p2Approvals, setP2Approvals] = useState(initialP2Approvals);
+  // State for the real-time audit log
   const [logs, setLogs] = useState<MockEvent[]>(mockEventLog);
+  // State for the dilution simulator's new investment slider
   const [newInvestment, setNewInvestment] = useState(0);
+  // State for the dilution simulator's new grants slider
   const [newGrants, setNewGrants] = useState(0);
   
-  // State for the Create Grant dialog
+  // State for the "Create Grant" dialog
   const [isGrantDialogOpen, setIsGrantDialogOpen] = useState(false);
   const [newOpName, setNewOpName] = useState('Sofia Rodriguez');
   const [newOpExpertise, setNewOpExpertise] = useState('Regulatory Tech');
-  const [newOpGrant, setNewOpGrant] = useState('25000');
+  const [newOpGrant, setNewOpGrant] = '25000');
 
 
   const { toast } = useToast();
 
+  // Effect to subscribe to the mock event bus for live audit log updates
   useEffect(() => {
     const handleNewEvent = (newEvent: MockEvent) => {
       setLogs(prev => [newEvent, ...prev]);
@@ -54,7 +61,9 @@ export default function AdminPage() {
     addEventListener(handleNewEvent);
     return () => removeEventListener(handleNewEvent);
   }, []);
-
+  
+  // Data for the Cap Table Simulator. It's recalculated on each render
+  // to incorporate the state from the sliders.
   const capTableData = [
     { class: 'Founders', allocation: 40.00, shares: 4000000 },
     { class: 'Series A', allocation: 25.00, shares: 2500000 + newInvestment },
@@ -66,6 +75,7 @@ export default function AdminPage() {
 
   const totalShares = capTableData.reduce((acc, item) => acc + item.shares, 0);
 
+  // Handler to simulate changing an operator's leaver status
   const handleLeaverStatusChange = (operatorId: string, status: "Good Leaver" | "Bad Leaver") => {
     setPhase3Data(prevData => ({
       ...prevData,
@@ -77,6 +87,7 @@ export default function AdminPage() {
     addMockEvent({ user: 'Admin', action: `Marked operator ${operatorId} as ${status}`, phase: 'Admin' });
   };
 
+  // Handler to simulate approving a Phase 1 investor
   const handleApproveP1 = (investorId: string) => {
     const investor = p1Approvals.find(inv => inv.id === investorId);
     if (!investor) return;
@@ -86,6 +97,7 @@ export default function AdminPage() {
     setP1Approvals(prev => prev.filter(inv => inv.id !== investorId));
   };
   
+  // Handler for Phase 2 SPV actions like managing docs or initiating capital calls
   const handleP2Action = (investorId: string, action: "docs" | "capital-call") => {
     const investor = p2Approvals.find(inv => inv.id === investorId);
     if (!investor) return;
@@ -99,6 +111,7 @@ export default function AdminPage() {
     }
   };
 
+  // Handler for creating a new Phase 3 operator grant
   const handleCreateGrant = () => {
     if (!newOpName || !newOpExpertise || !newOpGrant) {
         toast({ variant: 'destructive', title: 'Missing Information', description: 'Please fill out all fields.'});
@@ -141,7 +154,7 @@ export default function AdminPage() {
     toast({ title: "Grant Issued", description: `An equity grant has been issued to ${newOpName}.`});
     addMockEvent({ user: 'Admin', action: `Issued Phase 3 grant to ${newOpName}`, phase: 'Admin' });
     setIsGrantDialogOpen(false);
-    // Reset form
+    // Reset form for the next entry
     setNewOpName('');
     setNewOpExpertise('');
     setNewOpGrant('25000');
@@ -154,7 +167,7 @@ export default function AdminPage() {
         <h1 className="text-4xl font-bold mb-8 text-center">Admin Panel</h1>
         
         <Tabs defaultValue="approvals-p1" className="w-full">
-          <TabsList className="grid w-full grid-cols-6 max-w-6xl mx-auto">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 max-w-6xl mx-auto">
             <TabsTrigger value="approvals-p1">P1 Approvals</TabsTrigger>
             <TabsTrigger value="approvals-p2">P2 SPV Management</TabsTrigger>
             <TabsTrigger value="phase3">P3 Operator Equity</TabsTrigger>
@@ -274,7 +287,7 @@ export default function AdminPage() {
                   <div className="flex flex-col gap-1 rounded-lg border p-4">
                     <span className="text-sm text-muted-foreground">Available to Grant</span>
                     <span className="text-2xl font-bold">{phase3Data.pool.availableGrants}</span>
-                     <span className="text-xs text-muted-foreground">({phase3Data.pool.availableShares.toLocaleString()} shares)</span>
+                     <span className="text-xs text-muted-foreground">{phase3Data.pool.availableShares.toLocaleString()} shares)</span>
                   </div>
                 </CardContent>
               </Card>
