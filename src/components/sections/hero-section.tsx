@@ -10,6 +10,18 @@ import { ArrowDown } from "lucide-react";
 export default function HeroSection() {
     const [isModalOpen, setIsModalOpen] = useState(false);
   
+    // In a real app, post-registration would trigger a global state change or redirect.
+    // For this mock, we'll just close the modal. The user can then use the header login/nav.
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+        // Simulate a post-registration state locally if needed, e.g. show a "Thank you" message
+        // For now, we assume the user will see the login state change via the header after a refresh/navigation.
+        // A more advanced version could use a global state manager.
+        if (typeof window !== 'undefined') {
+            localStorage.setItem('hasPhase1Applied', 'true');
+        }
+    };
+
     return (
     <section className="relative flex h-[calc(100vh-4rem)] w-full items-center justify-center bg-background">
       <div className="container mx-auto px-4 text-center">
@@ -26,7 +38,7 @@ export default function HeroSection() {
                     <Button size="lg">Apply for Investment Access</Button>
                 </DialogTrigger>
                 <DialogContent className="max-w-md p-6 sm:max-w-xl md:max-w-2xl">
-                    <RegistrationModal closeModal={() => setIsModalOpen(false)} />
+                    <RegistrationModal closeModal={handleCloseModal} flowType="phase1" />
                 </DialogContent>
             </Dialog>
             <Button asChild size="lg" variant="outline">
