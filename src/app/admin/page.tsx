@@ -46,9 +46,11 @@ export default function AdminPage() {
   
   // State for the "Create Grant" dialog
   const [isGrantDialogOpen, setIsGrantDialogOpen] = useState(false);
-  const [newOpName, setNewOpName] = useState('Sofia Rodriguez');
-  const [newOpExpertise, setNewOpExpertise] = useState('Regulatory Tech');
-  const [newOpGrant, setNewOpGrant] = '25000');
+  // Form state for creating a new operator grant.
+  // Initialized with empty/default values for a clean user experience.
+  const [newOpName, setNewOpName] = useState('');
+  const [newOpExpertise, setNewOpExpertise] = useState('');
+  const [newOpGrant, setNewOpGrant] = useState('25000');
 
 
   const { toast } = useToast();
@@ -62,7 +64,7 @@ export default function AdminPage() {
     return () => removeEventListener(handleNewEvent);
   }, []);
   
-  // Data for the Cap Table Simulator. It's recalculated on each render
+  // Data for the Cap Table Simulator. It's defined here so it can be recalculated on each render
   // to incorporate the state from the sliders.
   const capTableData = [
     { class: 'Founders', allocation: 40.00, shares: 4000000 },
