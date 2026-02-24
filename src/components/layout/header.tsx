@@ -5,16 +5,19 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Globe, Mountain, Users, Briefcase, Award } from "lucide-react";
+import { Menu, Mountain, ChevronDown, Globe } from "lucide-react";
 import { cn } from "@/lib/utils";
 import RegistrationModal from "@/components/investor-registration/registration-modal";
-import { navLinks } from "@/lib/data";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu";
+import { publicNav, loggedInNav, type NavItem } from "@/lib/nav-data";
 
 type FlowType = "phase1" | "phase2";
 
@@ -25,10 +28,7 @@ export default function Header() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   
   // Simulate user authentication state
-  const [isPhase1LoggedIn, setIsPhase1LoggedIn] = useState(false);
-  const [isPhase2LoggedIn, setIsPhase2LoggedIn] = useState(false);
-  const [isPhase3LoggedIn, setIsPhase3LoggedIn] = useState(false);
-
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,16 +36,26 @@ export default function Header() {
     };
     window.addEventListener("scroll", handleScroll);
 
-    // Placeholder for real auth check
-    const hasP1Applied = !!localStorage.getItem('hasPhase1Applied');
-    const hasP2Applied = !!localStorage.getItem('hasPhase2Applied');
-    const hasP3Applied = !!localStorage.getItem('hasPhase3Applied');
+    const checkLogin = () => {
+      const hasApplied = localStorage.getItem('hasPhase1Applied') || localStorage.getItem('hasPhase2Applied') || localStorage.getItem('hasPhase3Applied');
+      setIsLoggedIn(!!hasApplied);
+    };
+    checkLogin();
 
-    if (hasP1Applied) setIsPhase1LoggedIn(true);
-    if (hasP2Applied) setIsPhase2LoggedIn(true);
-    if (hasP3Applied) setIsPhase3LoggedIn(true);
+    window.addEventListener('storage', checkLogin); // Listen for changes in other tabs
+
+    // Effect to handle navigation from admin login simulation
+    const checkLoginRedirect = () => {
+      if (window.location.pathname.startsWith('/phase3/dashboard') || window.location.pathname.startsWith('/dashboard') || window.location.pathname.startsWith('/phase2/dashboard')) {
+        setIsLoggedIn(true);
+      }
+    };
+    checkLoginRedirect();
     
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener('storage', checkLogin);
+    }
   }, [isModalOpen]);
   
   const closeSheet = () => setIsSheetOpen(false);
@@ -53,169 +63,163 @@ export default function Header() {
   const onModalOpen = (flow: FlowType) => {
     setRegistrationFlow(flow);
     setIsModalOpen(true);
+    closeSheet();
   }
 
   const onModalClose = () => {
     setIsModalOpen(false);
-    // Placeholder for real post-registration logic
+    // Simulate post-registration state change
     if (registrationFlow === 'phase1') {
       localStorage.setItem('hasPhase1Applied', 'true');
-      setIsPhase1LoggedIn(true);
     } else {
       localStorage.setItem('hasPhase2Applied', 'true');
-      setIsPhase2LoggedIn(true);
-      setIsPhase1LoggedIn(false); // P2 users are distinct
-      localStorage.removeItem('hasPhase1Applied');
     }
+    setIsLoggedIn(true);
   }
 
   const handleSignOut = () => {
     localStorage.removeItem('hasPhase1Applied');
     localStorage.removeItem('hasPhase2Applied');
     localStorage.removeItem('hasPhase3Applied');
-    setIsPhase1LoggedIn(false);
-    setIsPhase2LoggedIn(false);
-    setIsPhase3LoggedIn(false);
-    // In a real app, you would also clear tokens/session
+    setIsLoggedIn(false);
+    closeSheet();
+    // In a real app, you would also clear tokens/session and redirect
+    window.location.href = '/';
   }
 
-  const LoggedInNav = () => (
-    <>
-      {isPhase1LoggedIn && (
-        <>
-          <Link href="/dashboard" onClick={closeSheet} className="text-muted-foreground transition-colors hover:text-foreground">P1 Dashboard</Link>
-          <Link href="/data-room" onClick={closeSheet} className="text-muted-foreground transition-colors hover:text-foreground">P1 Data Room</Link>
-        </>
-      )}
-      {isPhase2LoggedIn && (
-        <>
-          <Link href="/phase2/dashboard" onClick={closeSheet} className="text-muted-foreground transition-colors hover:text-foreground flex items-center gap-2"> <Briefcase/> P2 Dashboard</Link>
-          <Link href="/phase2/data-room" onClick={closeSheet} className="text-muted-foreground transition-colors hover:text-foreground flex items-center gap-2"> <Users/> P2 Data Room</Link>
-        </>
-      )}
-       {isPhase3LoggedIn && (
-        <>
-          <Link href="/phase3/dashboard" onClick={closeSheet} className="text-muted-foreground transition-colors hover:text-foreground flex items-center gap-2"> <Award/> P3 Dashboard</Link>
-        </>
-      )}
-      <Link href="/admin" onClick={closeSheet} className="text-muted-foreground transition-colors hover:text-foreground">Admin</Link>
-    </>
-  );
-  
-  const PublicNav = () => (
-    <>
-      {navLinks.map((link) => (
-        <Link
-          key={link.label}
-          href={link.href}
-          onClick={closeSheet}
-          className="text-muted-foreground transition-colors hover:text-foreground"
-        >
-          {link.label}
-        </Link>
-      ))}
-    </>
-  );
-
-  const NavContent = () => (
-    <nav className="flex flex-col gap-6 text-lg font-medium md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
-      {isPhase1LoggedIn || isPhase2LoggedIn || isPhase3LoggedIn ? <LoggedInNav /> : <PublicNav />}
-    </nav>
-  );
-  
-  const isLoggedIn = isPhase1LoggedIn || isPhase2LoggedIn || isPhase3LoggedIn;
-
-  // Effect to handle navigation from admin login simulation
-  useEffect(() => {
-    const checkLoginRedirect = () => {
-      if (window.location.pathname.startsWith('/phase3/dashboard')) {
-        localStorage.setItem('hasPhase3Applied', 'true');
-        setIsPhase3LoggedIn(true);
-      }
-    };
-    checkLoginRedirect();
-  }, []);
-
-  return (
-    <header
-      className={cn(
-        "sticky top-0 z-50 flex h-16 items-center border-b transition-all duration-300",
-        scrolled ? "border-border bg-background/80 backdrop-blur-sm" : "border-transparent"
-      )}
-    >
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <div className="flex items-center gap-4">
-          <Link href="/" className="flex items-center gap-2 font-semibold">
-            <Mountain className="h-6 w-6 text-primary" />
-            <span className="hidden sm:inline-block">Baalvion</span>
-          </Link>
-          <div className="hidden md:flex">
-            <NavContent />
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2 md:gap-4">
-          <DropdownMenu>
+  const renderNavItems = (items: NavItem[], isMobile = false) => {
+    return items.map((item) => {
+      if (item.children) {
+        return (
+          <DropdownMenu key={item.label}>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <Globe className="h-5 w-5" />
-                <span className="sr-only">Toggle language</span>
+              <Button variant="ghost" className="text-muted-foreground hover:text-foreground text-sm font-medium flex items-center gap-1">
+                {item.label} <ChevronDown className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem>English</DropdownMenuItem>
-              <DropdownMenuItem disabled>Español (coming soon)</DropdownMenuItem>
-              <DropdownMenuItem disabled>Français (coming soon)</DropdownMenuItem>
+            <DropdownMenuContent className="w-64" align="start">
+              {item.children.map((child, index) => (
+                <div key={child.label || `separator-${index}`}>
+                  {child.label ? (
+                     <DropdownMenuItem asChild>
+                      <Link href={child.href || '#'} onClick={isMobile ? closeSheet : undefined}>{child.label}</Link>
+                    </DropdownMenuItem>
+                  ) : (
+                    <DropdownMenuSeparator />
+                  )}
+                </div>
+              ))}
             </DropdownMenuContent>
           </DropdownMenu>
+        );
+      }
+      return (
+        <Link
+          key={item.label}
+          href={item.href || '#'}
+          onClick={isMobile ? closeSheet : undefined}
+          className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+        >
+          {item.label}
+        </Link>
+      );
+    });
+  };
 
-          {isLoggedIn ? (
-             <Button size="sm" variant="outline" onClick={handleSignOut}>Sign Out</Button>
-          ) : (
+  const NavContent = ({ isMobile = false }: { isMobile?: boolean }) => (
+    <nav className={cn("items-center gap-6 text-lg font-medium", isMobile ? "flex flex-col" : "hidden md:flex")}>
+      {renderNavItems(isLoggedIn ? loggedInNav : publicNav, isMobile)}
+    </nav>
+  );
+
+  return (
+    <>
+      <header
+        className={cn(
+          "sticky top-0 z-50 flex h-16 items-center border-b transition-all duration-300",
+          scrolled ? "border-border bg-background/80 backdrop-blur-sm" : "border-transparent"
+        )}
+      >
+        <div className="container mx-auto flex h-16 items-center justify-between px-4">
+          <div className="flex items-center gap-6">
+            <Link href="/" className="flex items-center gap-2 font-semibold" onClick={closeSheet}>
+              <Mountain className="h-6 w-6 text-primary" />
+              <span className="hidden sm:inline-block">Baalvion</span>
+            </Link>
+            <NavContent />
+          </div>
+
+          <div className="flex items-center gap-2 md:gap-4">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon">
+                  <Globe className="h-5 w-5" />
+                  <span className="sr-only">Toggle language</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem>English</DropdownMenuItem>
+                <DropdownMenuItem disabled>Español (coming soon)</DropdownMenuItem>
+                <DropdownMenuItem disabled>Français (coming soon)</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
             <div className="hidden sm:flex items-center gap-2">
-              <Button size="sm" variant="outline" onClick={() => onModalOpen("phase2")}>Phase 2 Invite</Button>
-              <Dialog open={isModalOpen && registrationFlow === 'phase1'} onOpenChange={(isOpen) => !isOpen && setIsModalOpen(false)}>
-                <DialogTrigger asChild>
-                  <Button size="sm" onClick={() => onModalOpen("phase1")}>Apply for Access</Button>
-                </DialogTrigger>
-                <DialogContent className="max-w-md p-6 sm:max-w-xl md:max-w-2xl">
-                  <RegistrationModal closeModal={onModalClose} flowType="phase1" />
-                </DialogContent>
-              </Dialog>
+              {isLoggedIn ? (
+                <>
+                  <Button size="sm" variant="outline" onClick={handleSignOut}>Sign Out</Button>
+                  <Button asChild size="sm">
+                    <Link href="/dashboard">Dashboard</Link>
+                  </Button>
+                </>
+              ) : (
+                <>
+                   <Button size="sm" variant="outline" onClick={() => onModalOpen("phase2")}>Phase 2 Invite</Button>
+                   <Button size="sm" onClick={() => onModalOpen("phase1")}>Apply for Access</Button>
+                </>
+              )}
             </div>
-          )}
-          
-          <Dialog open={isModalOpen && registrationFlow === 'phase2'} onOpenChange={(isOpen) => !isOpen && setIsModalOpen(false)}>
-              <DialogContent className="max-w-md p-6 sm:max-w-xl md:max-w-2xl">
-                  <RegistrationModal closeModal={onModalClose} flowType="phase2" />
-              </DialogContent>
-          </Dialog>
 
-          <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="md:hidden">
-                <Menu className="h-5 w-5" />
-                <span className="sr-only">Toggle navigation menu</span>
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left">
-                <div className="flex flex-col p-6">
-                    <Link href="/" className="mb-8 flex items-center gap-2 font-semibold" onClick={closeSheet}>
-                        <Mountain className="h-6 w-6 text-primary" />
-                        <span>Baalvion</span>
-                    </Link>
-                    <NavContent />
-                     {!isLoggedIn && (
-                       <div className="mt-6 flex flex-col gap-2">
-                        <Button size="sm" variant="outline" onClick={() => { onModalOpen("phase2"); closeSheet(); }}>Phase 2 Invite</Button>
-                        <Button size="sm" onClick={() => { onModalOpen("phase1"); closeSheet(); }}>Apply for Access</Button>
-                       </div>
-                    )}
-                </div>
-            </SheetContent>
-          </Sheet>
+            <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="md:hidden">
+                  <Menu className="h-5 w-5" />
+                  <span className="sr-only">Toggle navigation menu</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-full">
+                  <div className="flex flex-col p-6">
+                      <Link href="/" className="mb-8 flex items-center gap-2 font-semibold" onClick={closeSheet}>
+                          <Mountain className="h-6 w-6 text-primary" />
+                          <span>Baalvion</span>
+                      </Link>
+                      <NavContent isMobile={true}/>
+                      <div className="mt-8 flex flex-col gap-4">
+                        {isLoggedIn ? (
+                           <>
+                            <Button asChild size="sm" onClick={closeSheet}><Link href="/dashboard">Dashboard</Link></Button>
+                            <Button size="sm" variant="outline" onClick={handleSignOut}>Sign Out</Button>
+                          </>
+                        ) : (
+                          <>
+                            <Button size="sm" variant="outline" onClick={() => onModalOpen("phase2")}>Phase 2 Invite</Button>
+                            <Button size="sm" onClick={() => onModalOpen("phase1")}>Apply for Access</Button>
+                          </>
+                        )}
+                      </div>
+                  </div>
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
+
+      {/* Dialogs for Registration Modals */}
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <DialogContent className="max-w-md p-6 sm:max-w-xl md:max-w-2xl">
+          <RegistrationModal closeModal={onModalClose} flowType={registrationFlow} />
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }

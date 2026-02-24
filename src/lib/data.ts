@@ -1,13 +1,4 @@
-export const navLinks = [
-    { href: "#overview", label: "Overview" },
-    { href: "#thesis", label: "Thesis" },
-    { href: "#governance", label: "Governance" },
-    { href: "#risk", label: "Compliance" },
-    { href: "#news", label: "News" },
-    { href: "#contact", label: "Contact" },
-  ];
-  
-  export const leadershipTeam = [
+export const leadershipTeam = [
     {
       name: "Alexandros Vasilias",
       title: "Founder & Chief Visionary Officer",
