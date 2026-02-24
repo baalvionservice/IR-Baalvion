@@ -61,5 +61,34 @@ export const documents = [
   { id: 3, name: "5-Year Technology Roadmap.pdf", type: "PDF", category: "Strategy", uploadDate: "2024-07-20", size: "1.8 MB" },
   { id: 4, name: "Market Analysis Q2 2024.xlsx", type: "Excel", category: "Market Data", uploadDate: "2024-07-18", size: "5.7 MB" },
   { id: 5, name: "Corporate Governance Guidelines.pdf", type: "PDF", category: "Legal", uploadDate: "2024-07-15", size: "0.8 MB" },
+  { id: 6, name: "Subscription Agreement Template.docx", type: "Word", category: "Legal", uploadDate: "2024-07-14", size: "0.4 MB" },
+  { id: 7, name: "Shareholder Agreement.pdf", type: "PDF", category: "Legal", uploadDate: "2024-07-13", size: "0.6 MB" },
+  { id: 8, name: "Risk Disclosure Statement.pdf", type: "PDF", category: "Compliance", uploadDate: "2024-07-12", size: "0.5 MB" },
+  { id: 9, name: "Capital Deployment Summary H1 2024.pdf", type: "PDF", category: "Financials", uploadDate: "2024-07-11", size: "1.2 MB" },
 ];
+
+export const investorData = {
+    name: "Alexandros Vasilias",
+    status: {
+      accreditation: "Verified",
+      dataRoomAccess: "Granted",
+      kycAml: "Passed",
+    },
+    portfolio: {
+      holdings: [
+        { name: "Series A Investment", shares: 100000, ownership: 1.25, committedCapital: 500000, date: "2024-01-15" },
+        { name: "SPV - Project Titan", shares: 50000, ownership: 0.62, committedCapital: 250000, date: "2024-05-20" },
+      ]
+    },
+    financials: {
+      totalValue: 985000,
+      totalReturnsPercent: 31.3,
+      capitalDeploymentPercent: 85,
+    },
+    notifications: [
+      { id: 1, message: "Governance Update: Q3 board meeting minutes are now available in the data room.", date: "2024-07-29" },
+      { id: 2, message: "Action Required: Please vote on the new director proposal before August 5th.", date: "2024-07-28" },
+      { id: 3, message: "New document 'Q2 2024 Financial Report.pdf' added to the data room.", date: "2024-07-25" },
+    ],
+};
   

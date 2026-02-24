@@ -1,22 +1,27 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ShieldCheck, FileText, Landmark } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Scale, ShieldAlert, FileWarning, Briefcase } from "lucide-react";
 
 export default function RiskSection({ id }: { id: string }) {
-  const compliancePoints = [
+  const riskFactors = [
     {
-      icon: ShieldCheck,
-      title: "Data Security",
-      description: "Implementing state-of-the-art cybersecurity measures to protect investor data and intellectual property."
+      icon: Scale,
+      title: "Regulatory & Legal Risks",
+      description: "Operations are subject to a variety of laws and regulations, changes to which could adversely affect our business. This includes financial regulations, data privacy laws (e.g., GDPR), and AML/KYC requirements."
     },
     {
-      icon: FileText,
-      title: "Regulatory Adherence",
-      description: "Proactively ensuring compliance with all relevant financial regulations and reporting standards across jurisdictions."
+      icon: Briefcase,
+      title: "Market Risks",
+      description: "The value of our investments can be volatile. Market risks include economic downturns, changes in interest rates, and shifts in industry trends that may impact the performance of our portfolio companies."
     },
     {
-      icon: Landmark,
-      title: "Corporate Governance",
-      description: "Upholding the highest standards of corporate governance to ensure transparency, fairness, and accountability."
+      icon: ShieldAlert,
+      title: "Execution & Operational Risks",
+      description: "Our success depends on the successful execution of our investment thesis and the operational performance of our portfolio companies. There is a risk of strategic missteps or unforeseen operational challenges."
+    },
+    {
+        icon: FileWarning,
+        title: "Private Placement & Liquidity",
+        description: "Investments are illiquid and subject to restrictions on transfer. As a private placement, this offering is intended for accredited investors who understand and can bear the risks of long-term, illiquid investments."
     }
   ];
 
@@ -25,21 +30,25 @@ export default function RiskSection({ id }: { id: string }) {
       <div className="container mx-auto px-4 py-16 md:py-24">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold">
-            Risk & Compliance
+            Risk Disclosure & Legal
           </h2>
           <p className="mt-4 max-w-2xl mx-auto text-muted-foreground">
-            Our commitment to robust risk management and uncompromising compliance forms the bedrock of our operations.
+            An investment in Baalvion involves a high degree of risk. The following considerations, among others, should be carefully reviewed.
           </p>
         </div>
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-          {compliancePoints.map((point) => (
-            <div key={point.title} className="flex flex-col items-center text-center">
-              <div className="mb-4 rounded-full bg-primary/10 p-3">
-                <point.icon className="h-8 w-8 text-primary" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">{point.title}</h3>
-              <p className="text-muted-foreground">{point.description}</p>
-            </div>
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+          {riskFactors.map((risk) => (
+            <Card key={risk.title} className="bg-background/50">
+              <CardHeader className="flex flex-row items-center gap-4">
+                <risk.icon className="h-8 w-8 text-primary" />
+                <div>
+                    <CardTitle>{risk.title}</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <CardDescription>{risk.description}</CardDescription>
+              </CardContent>
+            </Card>
           ))}
         </div>
       </div>

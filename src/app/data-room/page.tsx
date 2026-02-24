@@ -8,11 +8,11 @@ import { documents } from "@/lib/data";
 const getFileIcon = (type: string) => {
   switch (type) {
     case 'PDF':
-      return <FileText className="h-5 w-5 text-red-500" />;
+      return <FileText className="h-5 w-5" />;
     case 'Word':
-      return <File className="h-5 w-5 text-blue-500" />;
+      return <File className="h-5 w-5" />;
     case 'Excel':
-      return <FileSpreadsheet className="h-5 w-5 text-green-500" />;
+      return <FileSpreadsheet className="h-5 w-5" />;
     default:
       return <File className="h-5 w-5" />;
   }

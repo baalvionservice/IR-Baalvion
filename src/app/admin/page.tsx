@@ -3,7 +3,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { File, Download } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export default function AdminPage() {
   const pendingApprovals = [
@@ -22,10 +24,11 @@ export default function AdminPage() {
       <div className="container mx-auto px-4">
         <h1 className="text-4xl font-bold mb-8 text-center">Admin Panel</h1>
         
-        <Tabs defaultValue="approvals">
-          <TabsList className="grid w-full grid-cols-2 max-w-lg mx-auto">
+        <Tabs defaultValue="approvals" className="w-full">
+          <TabsList className="grid w-full grid-cols-3 max-w-2xl mx-auto">
             <TabsTrigger value="approvals">Investor Approvals</TabsTrigger>
-            <TabsTrigger value="audit">Audit Logs & Compliance</TabsTrigger>
+            <TabsTrigger value="audit">Audit Logs</TabsTrigger>
+            <TabsTrigger value="cms">Content Management</TabsTrigger>
           </TabsList>
           
           <TabsContent value="approvals">
@@ -93,6 +96,26 @@ export default function AdminPage() {
                     ))}
                   </TableBody>
                 </Table>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="cms">
+            <Card>
+              <CardHeader>
+                <CardTitle>Content Management</CardTitle>
+                <CardDescription>Update content for the public-facing website sections.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="space-y-2">
+                  <Label htmlFor="hero-title">Hero Section Title</Label>
+                  <Input id="hero-title" defaultValue="Invest in the Future of Innovation" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="overview-text">Company Overview Text</Label>
+                  <Textarea id="overview-text" defaultValue="At Baalvion, we are not just building products; we are crafting the future..." />
+                </div>
+                <Button>Save Changes</Button>
               </CardContent>
             </Card>
           </TabsContent>

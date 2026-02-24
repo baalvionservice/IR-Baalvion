@@ -41,6 +41,12 @@ export default function GovernanceSection({ id }: { id: string }) {
             );
           })}
         </div>
+        <div className="mt-16 text-center">
+          <h3 className="text-2xl font-bold">Elite Operator Framework (Phase 3 Teaser)</h3>
+          <p className="mt-4 max-w-3xl mx-auto text-muted-foreground">
+            In addition to our core leadership, Baalvion is pioneering an equity framework for a select group of the world's top 30 operators. This initiative reserves a dedicated equity pool for industry leaders who provide strategic value, ensuring a deep alignment of interests and unparalleled execution capability. Access to this program is by invitation only and represents the pinnacle of strategic partnership within our ecosystem.
+          </p>
+        </div>
       </div>
     </section>
   );
