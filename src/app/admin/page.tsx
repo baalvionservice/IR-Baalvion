@@ -55,6 +55,15 @@ export default function AdminPage() {
     return () => removeEventListener(handleNewEvent);
   }, []);
 
+  const capTableData = [
+    { class: 'Founders', allocation: 40.00, shares: 4000000 },
+    { class: 'Series A', allocation: 25.00, shares: 2500000 + newInvestment },
+    { class: 'Seed', allocation: 15.00, shares: 1500000 },
+    { class: 'Employee Pool (ESOP)', allocation: 10.00, shares: 1000000 },
+    { class: 'Phase 3 Operator Pool', allocation: 7.50, shares: phase3Data.pool.totalShares + newGrants * 25000 },
+    { class: 'Warrants', allocation: 2.50, shares: 250000 },
+  ];
+
   const totalShares = capTableData.reduce((acc, item) => acc + item.shares, 0);
 
   const handleLeaverStatusChange = (operatorId: string, status: "Good Leaver" | "Bad Leaver") => {
@@ -89,15 +98,6 @@ export default function AdminPage() {
         toast({ title: `Managing documents for ${investor.name}`});
     }
   };
-
-  const capTableData = [
-    { class: 'Founders', allocation: 40.00, shares: 4000000 },
-    { class: 'Series A', allocation: 25.00, shares: 2500000 + newInvestment },
-    { class: 'Seed', allocation: 15.00, shares: 1500000 },
-    { class: 'Employee Pool (ESOP)', allocation: 10.00, shares: 1000000 },
-    { class: 'Phase 3 Operator Pool', allocation: 7.50, shares: phase3Data.pool.totalShares + newGrants * 25000 },
-    { class: 'Warrants', allocation: 2.50, shares: 250000 },
-  ];
 
   const handleCreateGrant = () => {
     if (!newOpName || !newOpExpertise || !newOpGrant) {
