@@ -19,7 +19,7 @@ type RegistrationModalProps = {
 };
 
 export default function RegistrationModal({ closeModal, flowType }: RegistrationModalProps) {
-  const TOTAL_STEPS = flowType === "phase1" ? 8 : 9;
+  const TOTAL_STEPS = flowType === "phase1" ? 7 : 8;
   
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({});
@@ -30,6 +30,13 @@ export default function RegistrationModal({ closeModal, flowType }: Registration
     }
     if (step < TOTAL_STEPS) {
       setStep((prev) => prev + 1);
+    } else {
+      // If it's the last step, call the completion logic
+      if (flowType === "phase1" && step === 7) {
+        setStep(TOTAL_STEPS + 1);
+      } else if (flowType === "phase2" && step === 8) {
+        setStep(TOTAL_STEPS + 1);
+      }
     }
   };
 
@@ -40,6 +47,11 @@ export default function RegistrationModal({ closeModal, flowType }: Registration
   };
 
   const renderStep = () => {
+    // A step beyond the total shows the completion screen
+    if (step > TOTAL_STEPS) {
+       return <CompletionStep closeModal={closeModal} flowType={flowType} />;
+    }
+
     switch (step) {
       case 1:
         return <CreateAccountStep onNext={handleNext} />;
@@ -54,18 +66,18 @@ export default function RegistrationModal({ closeModal, flowType }: Registration
       case 6:
         return <AccreditationStep onNext={handleNext} onBack={handleBack} />;
       case 7:
+        if (flowType === 'phase2') {
+          return <NdaStep onNext={() => setStep(8)} onBack={handleBack} />;
+        }
         return <NdaStep onNext={handleNext} onBack={handleBack} />;
       case 8:
-        if (flowType === "phase1") {
-          return <CompletionStep closeModal={closeModal} flowType={flowType} />;
-        }
         return <SpvDeclarationStep onNext={handleNext} onBack={handleBack} />;
-      case 9:
-        return <CompletionStep closeModal={closeModal} flowType={flowType} />;
       default:
         return null;
     }
   }
+  
+  const currentDisplayStep = step > TOTAL_STEPS ? TOTAL_STEPS : step;
 
   return (
     <>
@@ -78,7 +90,7 @@ export default function RegistrationModal({ closeModal, flowType }: Registration
             ? "Complete the steps below to apply for investment access."
             : "Complete the secure steps to access your SPV documentation."}
         </DialogDescription>
-        <ProgressIndicator currentStep={step} totalSteps={TOTAL_STEPS} />
+        <ProgressIndicator currentStep={currentDisplayStep} totalSteps={TOTAL_STEPS} />
       </DialogHeader>
       <div className="py-4">
         {renderStep()}

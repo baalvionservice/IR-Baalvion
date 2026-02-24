@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Globe, Mountain, Users, Briefcase } from "lucide-react";
+import { Menu, Globe, Mountain, Users, Briefcase, Award } from "lucide-react";
 import { cn } from "@/lib/utils";
 import RegistrationModal from "@/components/investor-registration/registration-modal";
 import { navLinks } from "@/lib/data";
@@ -27,6 +27,8 @@ export default function Header() {
   // Simulate user authentication state
   const [isPhase1LoggedIn, setIsPhase1LoggedIn] = useState(false);
   const [isPhase2LoggedIn, setIsPhase2LoggedIn] = useState(false);
+  const [isPhase3LoggedIn, setIsPhase3LoggedIn] = useState(false);
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,8 +39,11 @@ export default function Header() {
     // Placeholder for real auth check
     const hasP1Applied = !!localStorage.getItem('hasPhase1Applied');
     const hasP2Applied = !!localStorage.getItem('hasPhase2Applied');
+    const hasP3Applied = !!localStorage.getItem('hasPhase3Applied');
+
     if (hasP1Applied) setIsPhase1LoggedIn(true);
     if (hasP2Applied) setIsPhase2LoggedIn(true);
+    if (hasP3Applied) setIsPhase3LoggedIn(true);
     
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isModalOpen]);
@@ -67,8 +72,10 @@ export default function Header() {
   const handleSignOut = () => {
     localStorage.removeItem('hasPhase1Applied');
     localStorage.removeItem('hasPhase2Applied');
+    localStorage.removeItem('hasPhase3Applied');
     setIsPhase1LoggedIn(false);
     setIsPhase2LoggedIn(false);
+    setIsPhase3LoggedIn(false);
     // In a real app, you would also clear tokens/session
   }
 
@@ -84,6 +91,11 @@ export default function Header() {
         <>
           <Link href="/phase2/dashboard" onClick={closeSheet} className="text-muted-foreground transition-colors hover:text-foreground flex items-center gap-2"> <Briefcase/> P2 Dashboard</Link>
           <Link href="/phase2/data-room" onClick={closeSheet} className="text-muted-foreground transition-colors hover:text-foreground flex items-center gap-2"> <Users/> P2 Data Room</Link>
+        </>
+      )}
+       {isPhase3LoggedIn && (
+        <>
+          <Link href="/phase3/dashboard" onClick={closeSheet} className="text-muted-foreground transition-colors hover:text-foreground flex items-center gap-2"> <Award/> P3 Dashboard</Link>
         </>
       )}
       <Link href="/admin" onClick={closeSheet} className="text-muted-foreground transition-colors hover:text-foreground">Admin</Link>
@@ -107,11 +119,22 @@ export default function Header() {
 
   const NavContent = () => (
     <nav className="flex flex-col gap-6 text-lg font-medium md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
-      {isPhase1LoggedIn || isPhase2LoggedIn ? <LoggedInNav /> : <PublicNav />}
+      {isPhase1LoggedIn || isPhase2LoggedIn || isPhase3LoggedIn ? <LoggedInNav /> : <PublicNav />}
     </nav>
   );
   
-  const isLoggedIn = isPhase1LoggedIn || isPhase2LoggedIn;
+  const isLoggedIn = isPhase1LoggedIn || isPhase2LoggedIn || isPhase3LoggedIn;
+
+  // Effect to handle navigation from admin login simulation
+  useEffect(() => {
+    const checkLoginRedirect = () => {
+      if (window.location.pathname.startsWith('/phase3/dashboard')) {
+        localStorage.setItem('hasPhase3Applied', 'true');
+        setIsPhase3LoggedIn(true);
+      }
+    };
+    checkLoginRedirect();
+  }, []);
 
   return (
     <header

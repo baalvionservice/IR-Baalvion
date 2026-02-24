@@ -1,3 +1,5 @@
+"use client";
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -7,24 +9,29 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { ShieldCheck } from "lucide-react";
+import { ShieldCheck, UserCheck, Award, TrendingUp, PieChart, CheckCircle, FileSignature } from "lucide-react";
+import { pendingApprovalsP1, pendingApprovalsP2, auditLogs, phase3Data } from "@/lib/admin-data";
+import { Progress } from "@/components/ui/progress";
+import Link from "next/link";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+
 
 export default function AdminPage() {
-  const pendingApprovalsP1 = [
-    { id: "INV001", name: "John Doe", date: "2024-07-28", status: "Pending" },
-    { id: "INV002", name: "Jane Smith", date: "2024-07-27", status: "Pending" },
-  ];
-
-  const pendingApprovalsP2 = [
-    { id: "SPV-003", name: "Acme Capital", entity: "Project Olympus", date: "2024-07-29", status: "Docs Submitted" },
-    { id: "SPV-004", name: "Synergy Ventures", entity: "Project Titan", date: "2024-07-28", status: "Pending Docs" },
-  ];
-
-  const auditLogs = [
-    { id: "LOG001", user: "Jane Smith (P1)", action: "Downloaded 'Q2 Financials.pdf'", timestamp: "2024-07-28 10:45:12" },
-    { id: "LOG002", user: "Admin", action: "Approved P1 investor 'John Doe'", timestamp: "2024-07-28 09:12:05" },
-    { id: "LOG003", user: "Acme Capital (P2)", action: "Acknowledged 'SPV Operating Agreement'", timestamp: "2024-07-29 14:22:01" },
-    { id: "LOG004", user: "Admin", action: "Initiated Capital Call for 'Project Olympus'", timestamp: "2024-07-29 11:05:00" },
+  const capTableData = [
+    { class: 'Founders', allocation: '40.00%', shares: '4,000,000' },
+    { class: 'Series A', allocation: '25.00%', shares: '2,500,000' },
+    { class: 'Seed', allocation: '15.00%', shares: '1,500,000' },
+    { class: 'Employee Pool (ESOP)', allocation: '10.00%', shares: '1,000,000' },
+    { class: 'Phase 3 Operator Pool', allocation: '7.50%', shares: '750,000' },
+    { class: 'Warrants', allocation: '2.50%', shares: '250,000' },
   ];
 
   return (
@@ -33,9 +40,10 @@ export default function AdminPage() {
         <h1 className="text-4xl font-bold mb-8 text-center">Admin Panel</h1>
         
         <Tabs defaultValue="approvals-p1" className="w-full">
-          <TabsList className="grid w-full grid-cols-4 max-w-4xl mx-auto">
+          <TabsList className="grid w-full grid-cols-5 max-w-5xl mx-auto">
             <TabsTrigger value="approvals-p1">P1 Approvals</TabsTrigger>
             <TabsTrigger value="approvals-p2">P2 SPV Management</TabsTrigger>
+            <TabsTrigger value="phase3">P3 Operator Equity</TabsTrigger>
             <TabsTrigger value="audit">Audit Logs</TabsTrigger>
             <TabsTrigger value="cms">Content Management</TabsTrigger>
           </TabsList>
@@ -116,6 +124,154 @@ export default function AdminPage() {
             </Card>
           </TabsContent>
           
+          <TabsContent value="phase3">
+            <div className="grid gap-8">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2"><Award /> Phase 3: Elite Operator Equity Program</CardTitle>
+                  <CardDescription>Manage the equity grants for the world's top 30 strategic operators.</CardDescription>
+                </CardHeader>
+                <CardContent className="grid md:grid-cols-3 gap-6">
+                  <div className="flex flex-col gap-1 rounded-lg border p-4">
+                    <span className="text-sm text-muted-foreground">Total Pool Allocation</span>
+                    <span className="text-2xl font-bold">{phase3Data.pool.totalAllocation}</span>
+                    <span className="text-xs text-muted-foreground">({phase3Data.pool.totalShares.toLocaleString()} shares)</span>
+                  </div>
+                   <div className="flex flex-col gap-1 rounded-lg border p-4">
+                    <span className="text-sm text-muted-foreground">Grants Issued</span>
+                    <span className="text-2xl font-bold">{phase3Data.pool.issuedGrants} / 30</span>
+                     <span className="text-xs text-muted-foreground">({phase3Data.pool.issuedShares.toLocaleString()} shares)</span>
+                  </div>
+                  <div className="flex flex-col gap-1 rounded-lg border p-4">
+                    <span className="text-sm text-muted-foreground">Available to Grant</span>
+                    <span className="text-2xl font-bold">{phase3Data.pool.availableGrants}</span>
+                     <span className="text-xs text-muted-foreground">({phase3Data.pool.availableShares.toLocaleString()} shares)</span>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <div className="grid lg:grid-cols-3 gap-8">
+                <div className="lg:col-span-2">
+                    <Card>
+                        <CardHeader className="flex flex-row items-center justify-between">
+                          <div>
+                            <CardTitle>Operator Grants</CardTitle>
+                            <CardDescription>Review and manage individual operator grants and onboarding.</CardDescription>
+                          </div>
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <Button>Create New Grant</Button>
+                            </DialogTrigger>
+                            <DialogContent className="sm:max-w-[425px]">
+                              <DialogHeader>
+                                <DialogTitle>Create Operator Grant</DialogTitle>
+                                <DialogDescription>
+                                  Onboard a new strategic operator and issue their equity grant.
+                                </DialogDescription>
+                              </DialogHeader>
+                              <div className="grid gap-4 py-4">
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                  <Label htmlFor="name" className="text-right">
+                                    Name
+                                  </Label>
+                                  <Input id="name" defaultValue="Elena Petrov" className="col-span-3" />
+                                </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                  <Label htmlFor="role" className="text-right">
+                                    Expertise
+                                  </Label>
+                                  <Input id="role" defaultValue="AI in Logistics" className="col-span-3" />
+                                </div>
+                                 <div className="grid grid-cols-4 items-center gap-4">
+                                  <Label htmlFor="grant" className="text-right">
+                                    Grant (Shares)
+                                  </Label>
+                                  <Input id="grant" type="number" defaultValue="25000" className="col-span-3" />
+                                </div>
+                              </div>
+                              <DialogFooter>
+                                <Button type="submit">Issue Grant</Button>
+                              </DialogFooter>
+                            </DialogContent>
+                          </Dialog>
+                        </CardHeader>
+                        <CardContent>
+                            <Table>
+                                <TableHeader>
+                                    <TableRow>
+                                    <TableHead>Operator</TableHead>
+                                    <TableHead>Grant Size (Shares)</TableHead>
+                                    <TableHead>Vesting Status</TableHead>
+                                    <TableHead>Onboarding Status</TableHead>
+                                    <TableHead className="text-right">Actions</TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    {phase3Data.operators.map((op) => (
+                                    <TableRow key={op.id}>
+                                        <TableCell>
+                                          <div className="font-medium">{op.name}</div>
+                                          <div className="text-xs text-muted-foreground">{op.expertise}</div>
+                                        </TableCell>
+                                        <TableCell>{op.grant.toLocaleString()}</TableCell>
+                                        <TableCell>
+                                            <div className="flex flex-col gap-2">
+                                                <Progress value={op.vestingProgress} className="h-2"/>
+                                                <span className="text-xs text-muted-foreground">{op.vestingProgress}% Vested</span>
+                                            </div>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Badge variant={op.status === "Active" ? "default" : "secondary"}>
+                                                <CheckCircle className="mr-1 h-3 w-3" />
+                                                {op.status}
+                                            </Badge>
+                                        </TableCell>
+                                        <TableCell className="text-right">
+                                            <Button variant="outline" size="sm">Manage</Button>
+                                        </TableCell>
+                                    </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </CardContent>
+                    </Card>
+                </div>
+
+                 <div className="space-y-8">
+                     <Card>
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2"><PieChart/> Simplified Cap Table</CardTitle>
+                             <CardDescription>High-level overview of equity distribution.</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="space-y-4">
+                                {capTableData.map(item => (
+                                    <div key={item.class} className="flex justify-between items-center text-sm">
+                                        <div>
+                                            <p className="font-medium">{item.class}</p>
+                                            <p className="text-xs text-muted-foreground">{item.shares} shares</p>
+                                        </div>
+                                        <div className="font-bold">{item.allocation}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        </CardContent>
+                     </Card>
+                      <Alert>
+                        <UserCheck className="h-4 w-4" />
+                        <AlertTitle>Simulate Operator Login</AlertTitle>
+                        <AlertDescription>
+                          Jump to the personalized dashboard for an elite operator.
+                        </AlertDescription>
+                        <Button asChild className="mt-4 w-full">
+                          <Link href="/phase3/dashboard">Login as Elena Petrov</Link>
+                        </Button>
+                      </Alert>
+                 </div>
+              </div>
+            </div>
+          </TabsContent>
+
           <TabsContent value="audit">
             <Card>
               <CardHeader>
@@ -163,11 +319,11 @@ export default function AdminPage() {
                 </Alert>
                 <div className="space-y-2">
                   <Label htmlFor="hero-title">Hero Section Title</Label>
-                  <Input id="hero-title" defaultValue="Invest in the Future of Innovation" />
+                  <Input id="hero-title" defaultValue="The Global B2B Trade Operating System" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="overview-text">Company Overview Text</Label>
-                  <Textarea id="overview-text" defaultValue="At Baalvion, we are not just building products; we are crafting the future..." rows={5} />
+                  <Textarea id="overview-text" defaultValue="At Baalvion, our mission is to build and operate the foundational B2B trade ecosystem for the next century..." rows={5} />
                 </div>
                 <Button>Save Changes</Button>
               </CardContent>
