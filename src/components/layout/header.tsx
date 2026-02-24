@@ -20,19 +20,52 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+  // Simulate user authentication state
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    
+    // Simulate login after registration modal closes
+    if (!isModalOpen && !isLoggedIn) {
+        // A real app would check a session or token.
+        // We'll just set it to true after first modal interaction.
+        // This is a placeholder for a real auth check.
+        const hasApplied = localStorage.getItem('hasApplied');
+        if(hasApplied) setIsLoggedIn(true);
+    }
 
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isModalOpen, isLoggedIn]);
+  
   const closeSheet = () => setIsSheetOpen(false);
 
-  const NavContent = () => (
-    <nav className="flex flex-col gap-6 text-lg font-medium md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
+  const onModalClose = () => {
+    setIsModalOpen(false);
+    // This is a placeholder for real post-registration logic
+    localStorage.setItem('hasApplied', 'true');
+    setIsLoggedIn(true);
+  }
+
+  const handleSignOut = () => {
+    localStorage.removeItem('hasApplied');
+    setIsLoggedIn(false);
+    // In a real app, you would also clear tokens/session
+  }
+
+  const LoggedInNav = () => (
+    <>
+      <Link href="/dashboard" onClick={closeSheet} className="text-muted-foreground transition-colors hover:text-foreground">Dashboard</Link>
+      <Link href="/data-room" onClick={closeSheet} className="text-muted-foreground transition-colors hover:text-foreground">Data Room</Link>
+      <Link href="/admin" onClick={closeSheet} className="text-muted-foreground transition-colors hover:text-foreground">Admin</Link>
+    </>
+  );
+  
+  const PublicNav = () => (
+    <>
       {navLinks.map((link) => (
         <Link
           key={link.label}
@@ -43,6 +76,12 @@ export default function Header() {
           {link.label}
         </Link>
       ))}
+    </>
+  );
+
+  const NavContent = () => (
+    <nav className="flex flex-col gap-6 text-lg font-medium md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
+      {isLoggedIn ? <LoggedInNav /> : <PublicNav />}
     </nav>
   );
 
@@ -79,14 +118,18 @@ export default function Header() {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-            <DialogTrigger asChild>
-              <Button size="sm" className="hidden sm:flex">Apply for Access</Button>
-            </DialogTrigger>
-            <DialogContent className="max-w-md p-6 sm:max-w-xl md:max-w-2xl">
-              <RegistrationModal closeModal={() => setIsModalOpen(false)} />
-            </DialogContent>
-          </Dialog>
+          {isLoggedIn ? (
+             <Button size="sm" variant="outline" onClick={handleSignOut}>Sign Out</Button>
+          ) : (
+            <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+              <DialogTrigger asChild>
+                <Button size="sm" className="hidden sm:flex">Apply for Access</Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-md p-6 sm:max-w-xl md:max-w-2xl">
+                <RegistrationModal closeModal={onModalClose} />
+              </DialogContent>
+            </Dialog>
+          )}
 
           <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <SheetTrigger asChild>
@@ -102,6 +145,16 @@ export default function Header() {
                         <span>Baalvion</span>
                     </Link>
                     <NavContent />
+                     {!isLoggedIn && (
+                        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+                            <DialogTrigger asChild>
+                                <Button size="sm" className="mt-6 w-full">Apply for Access</Button>
+                            </DialogTrigger>
+                             <DialogContent className="max-w-md p-6 sm:max-w-xl md:max-w-2xl">
+                                <RegistrationModal closeModal={onModalClose} />
+                            </DialogContent>
+                        </Dialog>
+                    )}
                 </div>
             </SheetContent>
           </Sheet>

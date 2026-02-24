@@ -6,6 +6,7 @@ import CreateAccountStep from "./steps/create-account-step";
 import VerifyEmailStep from "./steps/verify-email-step";
 import MfaStep from "./steps/mfa-step";
 import ProfileStep from "./steps/profile-step";
+import KycAmlStep from "./steps/kyc-aml-step";
 import AccreditationStep from "./steps/accreditation-step";
 import NdaStep from "./steps/nda-step";
 import CompletionStep from "./steps/completion-step";
@@ -15,7 +16,7 @@ type RegistrationModalProps = {
   closeModal: () => void;
 };
 
-const TOTAL_STEPS = 7;
+const TOTAL_STEPS = 8;
 
 export default function RegistrationModal({ closeModal }: RegistrationModalProps) {
   const [step, setStep] = useState(1);
@@ -52,9 +53,10 @@ export default function RegistrationModal({ closeModal }: RegistrationModalProps
         {step === 2 && <VerifyEmailStep onNext={handleNext} />}
         {step === 3 && <MfaStep onNext={handleNext} />}
         {step === 4 && <ProfileStep onNext={handleNext} onBack={handleBack} />}
-        {step === 5 && <AccreditationStep onNext={handleNext} onBack={handleBack} />}
-        {step === 6 && <NdaStep onNext={handleNext} onBack={handleBack} />}
-        {step === 7 && <CompletionStep closeModal={closeModal} />}
+        {step === 5 && <KycAmlStep onNext={handleNext} onBack={handleBack} />}
+        {step === 6 && <AccreditationStep onNext={handleNext} onBack={handleBack} />}
+        {step === 7 && <NdaStep onNext={handleNext} onBack={handleBack} />}
+        {step === 8 && <CompletionStep closeModal={closeModal} />}
       </div>
     </>
   );

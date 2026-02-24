@@ -54,4 +54,12 @@ export const navLinks = [
       imageId: "news-1-image",
     }
   ];
+
+export const documents = [
+  { id: 1, name: "Q2 2024 Financial Report.pdf", type: "PDF", category: "Financials", uploadDate: "2024-07-25", size: "2.5 MB" },
+  { id: 2, name: "Investor Pitch Deck - August 2024.pptx", type: "Word", category: "Presentations", uploadDate: "2024-07-22", size: "15.2 MB" },
+  { id: 3, name: "5-Year Technology Roadmap.pdf", type: "PDF", category: "Strategy", uploadDate: "2024-07-20", size: "1.8 MB" },
+  { id: 4, name: "Market Analysis Q2 2024.xlsx", type: "Excel", category: "Market Data", uploadDate: "2024-07-18", size: "5.7 MB" },
+  { id: 5, name: "Corporate Governance Guidelines.pdf", type: "PDF", category: "Legal", uploadDate: "2024-07-15", size: "0.8 MB" },
+];
   
