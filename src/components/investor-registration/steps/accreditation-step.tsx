@@ -6,6 +6,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Loader2 } from "lucide-react";
+import { addMockEvent } from "@/lib/events";
 
 type AccreditationStepProps = {
   onNext: () => void;
@@ -20,11 +21,13 @@ export default function AccreditationStep({ onNext, onBack }: AccreditationStepP
   const handleContinue = () => {
     setIsProcessing(true);
     setProcessingResult(null);
+    addMockEvent({ user: 'Investor', action: 'Submitted accreditation self-certification.', phase: 'P1' });
 
     // Placeholder for AI-powered screening
     setTimeout(() => {
       // Simulate a pass/fail result
       const result = Math.random() > 0.2 ? 'pass' : 'fail';
+      addMockEvent({ user: 'System', action: `Accreditation AI screening result: ${result.toUpperCase()}`, phase: 'Admin' });
       setProcessingResult(result);
       setIsProcessing(false);
       

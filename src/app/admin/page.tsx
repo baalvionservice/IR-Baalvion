@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { ShieldCheck, UserCheck, Award, TrendingUp, PieChart, CheckCircle, FileSignature, AlertCircle, UserX, UserCheck2 } from "lucide-react";
+import { ShieldCheck, UserCheck, Award, PieChart, CheckCircle, AlertCircle, UserX, UserCheck2 } from "lucide-react";
 import { pendingApprovalsP1, pendingApprovalsP2, phase3Data as initialPhase3Data } from "@/lib/admin-data";
 import { Progress } from "@/components/ui/progress";
 import Link from "next/link";
@@ -68,6 +68,12 @@ export default function AdminPage() {
     addMockEvent({ user: 'Admin', action: `Marked operator ${operatorId} as ${status}`, phase: 'Admin' });
   };
 
+  const handleApproveP1 = (investorId: string) => {
+    toast({ title: `Approved investor ${investorId}` });
+    addMockEvent({ user: 'Admin', action: `Approved Phase 1 investor ${investorId}`, phase: 'Admin' });
+    // Here you would update the actual status in a real backend
+  };
+
 
   return (
     <main className="flex-grow bg-muted/20 py-12">
@@ -111,7 +117,7 @@ export default function AdminPage() {
                         </TableCell>
                         <TableCell className="text-right">
                           <Button variant="outline" size="sm" className="mr-2">View Application</Button>
-                          <Button size="sm">Approve</Button>
+                          <Button size="sm" onClick={() => handleApproveP1(investor.id)}>Approve</Button>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -170,12 +176,12 @@ export default function AdminPage() {
                   <div className="flex flex-col gap-1 rounded-lg border p-4">
                     <span className="text-sm text-muted-foreground">Total Pool Allocation</span>
                     <span className="text-2xl font-bold">{initialPhase3Data.pool.totalAllocation}</span>
-                    <span className="text-xs text-muted-foreground">({initialPhase3Data.pool.totalShares.toLocaleString()} shares)</span>
+                    <span className="text-xs text-muted-foreground">({(initialPhase3Data.pool.totalShares).toLocaleString()} shares)</span>
                   </div>
                    <div className="flex flex-col gap-1 rounded-lg border p-4">
                     <span className="text-sm text-muted-foreground">Grants Issued</span>
                     <span className="text-2xl font-bold">{initialPhase3Data.pool.issuedGrants} / 30</span>
-                     <span className="text-xs text-muted-foreground">({initialPhase3Data.pool.issuedShares.toLocaleString()} shares)</span>
+                     <span className="text-xs text-muted-foreground">({(initialPhase3Data.pool.issuedShares).toLocaleString()} shares)</span>
                   </div>
                   <div className="flex flex-col gap-1 rounded-lg border p-4">
                     <span className="text-sm text-muted-foreground">Available to Grant</span>

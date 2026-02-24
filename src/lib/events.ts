@@ -44,21 +44,3 @@ export const addMockEvent = (event: Omit<MockEvent, 'id' | 'timestamp'>) => {
 
   return newEvent;
 };
-
-// Simulate events happening over time
-if (typeof window !== 'undefined') {
-    setTimeout(() => {
-        addMockEvent({
-            user: 'System',
-            action: 'Generated Q3 Financial Report',
-            phase: 'System',
-        });
-    }, 15000);
-     setTimeout(() => {
-        addMockEvent({
-            user: 'System',
-            action: 'Vesting event occurred for 15 operators',
-            phase: 'System',
-        });
-    }, 25000);
-}

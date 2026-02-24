@@ -7,6 +7,7 @@ import { Download, File, FileText, FileSpreadsheet } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { documents } from "@/lib/data";
 import { useToast } from "@/hooks/use-toast";
+import { addMockEvent } from "@/lib/events";
 
 const getFileIcon = (type: string) => {
   switch (type) {
@@ -28,10 +29,10 @@ export default function DataRoomPage() {
 
   const handleDownload = (docName: string) => {
     toast({
-      title: "Activity Logged",
-      description: `Download initiated for ${docName}.`,
+      title: "Download Initiated",
+      description: `Your download for ${docName} will begin shortly.`,
     });
-    // This is a mock. In a real app, you would trigger the file download.
+    addMockEvent({ user: 'Investor', action: `Downloaded document: ${docName}`, phase: 'P1' });
   };
 
   return (

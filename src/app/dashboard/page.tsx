@@ -14,8 +14,6 @@ import {
   FileText,
   Calendar,
   Download,
-  Briefcase,
-  BarChart,
   DollarSign,
   FileCertificate,
   Gavel,
@@ -39,6 +37,17 @@ import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import MeetingSchedulerModal from '@/components/dashboard/MeetingSchedulerModal';
 import { type MockEvent, mockEventLog, addEventListener, removeEventListener } from '@/lib/events';
 import PaymentGateway from '@/components/dashboard/PaymentGateway';
+import { Bar, BarChart as RechartsBarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
+
+const chartData = [
+  { name: 'Q1 23', value: 120000 },
+  { name: 'Q2 23', value: 150000 },
+  { name: 'Q3 23', value: 175000 },
+  { name: 'Q4 23', value: 210000 },
+  { name: 'Q1 24', value: 250000 },
+  { name: 'Q2 24', value: 310000 },
+  { name: 'Q3 24', value: 420000 },
+];
 
 export default function DashboardPage() {
   const {
@@ -183,7 +192,7 @@ export default function DashboardPage() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <BarChart />
+                  <RechartsBarChart className="h-5 w-5" />
                   Financial Reporting
                 </CardTitle>
                  <CardDescription>High-level financial metrics and reports.</CardDescription>
@@ -204,6 +213,21 @@ export default function DashboardPage() {
                     <p className="text-xs text-right text-muted-foreground">{financialReporting.metrics.capitalDeploymentPercent}% Deployed</p>
                     </div>
                 </div>
+                
+                 <div className="h-[200px] w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <RechartsBarChart data={chartData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
+                      <XAxis dataKey="name" stroke="#888888" fontSize={12} tickLine={false} axisLine={false}/>
+                      <YAxis stroke="#888888" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `$${Number(value) / 1000}k`}/>
+                       <Tooltip 
+                        cursor={{fill: 'hsl(var(--accent))'}}
+                        contentStyle={{background: 'hsl(var(--background))', border: '1px solid hsl(var(--border))', borderRadius: 'var(--radius)'}}
+                      />
+                      <Bar dataKey="value" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
+                    </RechartsBarChart>
+                  </ResponsiveContainer>
+                </div>
+                
                 <Separator/>
                 <div>
                     <h4 className="font-medium mb-2">Recent Reports</h4>

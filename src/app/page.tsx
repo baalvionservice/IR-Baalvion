@@ -11,13 +11,13 @@ export default function Home() {
   return (
     <main className="flex-grow">
       <HeroSection />
+      <TrustSignals />
       <div className="space-y-16 py-16 md:space-y-24 md:py-24 lg:space-y-32 lg:py-32">
         <OverviewSection id="overview" />
         <ThesisSection id="thesis" />
         <GovernanceSection id="governance" />
         <RiskSection id="risk" />
         <NewsSection id="news" />
-        <TrustSignals />
         <ContactSection id="contact" />
       </div>
     </main>

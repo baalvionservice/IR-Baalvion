@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { addMockEvent } from "@/lib/events";
 
 type NdaStepProps = {
   onNext: () => void;
@@ -13,6 +14,11 @@ type NdaStepProps = {
 
 export default function NdaStep({ onNext, onBack }: NdaStepProps) {
   const [agreed, setAgreed] = useState(false);
+
+  const handleNextClick = () => {
+    addMockEvent({ user: 'Investor', action: 'E-signed Non-Disclosure Agreement.', phase: 'P1' });
+    onNext();
+  }
 
   return (
     <div className="space-y-6">
@@ -57,7 +63,7 @@ export default function NdaStep({ onNext, onBack }: NdaStepProps) {
         <Button variant="outline" onClick={onBack}>
           Back
         </Button>
-        <Button onClick={onNext} disabled={!agreed}>
+        <Button onClick={handleNextClick} disabled={!agreed}>
           Agree & Sign
         </Button>
       </div>
