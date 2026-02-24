@@ -31,7 +31,7 @@ type Document = {
   status: 'Acknowledged' | 'Pending' | 'Not Required';
 }
 
-type DocumentCategory = {
+export type DocumentCategory = {
     category: string;
     description: string;
     docs: Document[];

@@ -1,17 +1,22 @@
 "use client";
 
+import { useState, useMemo } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Download, FileText, Check, Eye } from "lucide-react";
+import { Download, FileText, Check, Eye, Search } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { phase2Documents } from "@/lib/phase2-data";
 import { useToast } from "@/hooks/use-toast";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function Phase2DataRoomPage() {
   const { toast } = useToast();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
 
   const handleDownload = (docName: string) => {
     toast({
@@ -26,6 +31,17 @@ export default function Phase2DataRoomPage() {
       description: `${docName} has been marked as acknowledged.`,
     });
   };
+
+  const filteredDocuments = useMemo(() => {
+    return phase2Documents.map(category => {
+      const filteredDocs = category.docs.filter(doc => {
+        const matchesSearch = doc.name.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesStatus = statusFilter === 'all' || doc.status === statusFilter;
+        return matchesSearch && matchesStatus;
+      });
+      return { ...category, docs: filteredDocs };
+    }).filter(category => category.docs.length > 0);
+  }, [searchTerm, statusFilter]);
 
   return (
     <main className="flex-grow bg-muted/20 py-12">
@@ -51,8 +67,31 @@ export default function Phase2DataRoomPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Accordion type="single" collapsible defaultValue="item-0" className="w-full">
-              {phase2Documents.map((category, index) => (
+            <div className="flex items-center gap-4 mb-6">
+              <div className="relative flex-grow">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Filter documents..."
+                  className="pl-10"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Filter by status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Statuses</SelectItem>
+                  <SelectItem value="Pending">Pending</SelectItem>
+                  <SelectItem value="Acknowledged">Acknowledged</SelectItem>
+                  <SelectItem value="Not Required">Not Required</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            
+            <Accordion type="multiple" defaultValue={filteredDocuments.map((_, index) => `item-${index}`)} className="w-full">
+              {filteredDocuments.map((category, index) => (
                 <AccordionItem value={`item-${index}`} key={category.category}>
                   <AccordionTrigger className="text-lg">
                     {category.category} ({category.docs.length} docs)
@@ -111,6 +150,11 @@ export default function Phase2DataRoomPage() {
                 </AccordionItem>
               ))}
             </Accordion>
+            {filteredDocuments.length === 0 && (
+              <div className="text-center py-12 text-muted-foreground">
+                <p>No documents match your filters.</p>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
