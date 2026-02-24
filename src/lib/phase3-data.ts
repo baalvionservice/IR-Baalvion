@@ -3,7 +3,7 @@ export const operatorData = {
     expertise: "AI in Logistics & Supply Chain",
     grant: {
         totalShares: 25000,
-        type: "Restricted Stock Units (RSUs)",
+        type: "RSUs (Non-Voting)",
         date: "2024-07-30",
     },
     vesting: {

@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { ShieldCheck, UserCheck, Award, PieChart, CheckCircle, AlertCircle, UserX, UserCheck2 } from "lucide-react";
+import { ShieldCheck, UserCheck, Award, PieChart, CheckCircle, AlertCircle, UserX, UserCheck2, Calculator, FileWarning } from "lucide-react";
 import { pendingApprovalsP1, pendingApprovalsP2, phase3Data as initialPhase3Data } from "@/lib/admin-data";
 import { Progress } from "@/components/ui/progress";
 import Link from "next/link";
@@ -81,11 +81,12 @@ export default function AdminPage() {
         <h1 className="text-4xl font-bold mb-8 text-center">Admin Panel</h1>
         
         <Tabs defaultValue="approvals-p1" className="w-full">
-          <TabsList className="grid w-full grid-cols-5 max-w-5xl mx-auto">
+          <TabsList className="grid w-full grid-cols-6 max-w-6xl mx-auto">
             <TabsTrigger value="approvals-p1">P1 Approvals</TabsTrigger>
             <TabsTrigger value="approvals-p2">P2 SPV Management</TabsTrigger>
             <TabsTrigger value="phase3">P3 Operator Equity</TabsTrigger>
             <TabsTrigger value="audit">Audit Logs</TabsTrigger>
+            <TabsTrigger value="tax">Tax & Compliance</TabsTrigger>
             <TabsTrigger value="cms">Content Management</TabsTrigger>
           </TabsList>
           
@@ -254,7 +255,10 @@ export default function AdminPage() {
                                           <div className="font-medium">{op.name}</div>
                                           <div className="text-xs text-muted-foreground">{op.expertise}</div>
                                         </TableCell>
-                                        <TableCell>{op.grant.toLocaleString()}</TableCell>
+                                        <TableCell>
+                                            {op.grant.toLocaleString()}
+                                            <p className="text-xs text-muted-foreground">(Non-Voting)</p>
+                                        </TableCell>
                                         <TableCell>
                                             <div className="flex flex-col gap-2">
                                                 <Progress value={op.vestingProgress} className="h-2"/>
@@ -327,6 +331,24 @@ export default function AdminPage() {
                             </div>
                         </CardContent>
                      </Card>
+
+                     <Card>
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2"><FileWarning /> Equity Provisions</CardTitle>
+                             <CardDescription>Key terms governing the Operator Equity Program.</CardDescription>
+                        </CardHeader>
+                        <CardContent className="text-sm text-muted-foreground space-y-4">
+                           <div>
+                             <h4 className="font-semibold text-foreground">Clawback & Buyback</h4>
+                             <p>Performance-based clawbacks and company buyback rights are in effect to ensure alignment. Specific terms are detailed in individual grant agreements.</p>
+                           </div>
+                            <div>
+                             <h4 className="font-semibold text-foreground">Good/Bad Leaver Rules</h4>
+                             <p>Vesting is subject to leaver status. "Bad Leavers" may forfeit all unvested and certain vested shares, as determined by the compensation committee.</p>
+                           </div>
+                        </CardContent>
+                     </Card>
+
                       <Alert>
                         <UserCheck className="h-4 w-4" />
                         <AlertTitle>Simulate Operator Login</AlertTitle>
@@ -375,6 +397,47 @@ export default function AdminPage() {
                     ))}
                   </TableBody>
                 </Table>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="tax">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2"><Calculator /> Mock Tax Calculator</CardTitle>
+                <CardDescription>Simulate tax withholding for cross-border investments.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="grid sm:grid-cols-3 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="investment-amount">Investment Amount (USD)</Label>
+                    <Input id="investment-amount" type="number" placeholder="1000000" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="investor-country">Investor Jurisdiction</Label>
+                    <Input id="investor-country" placeholder="e.g., India, Singapore" />
+                  </div>
+                   <div className="space-y-2">
+                    <Label htmlFor="tax-treaty">Tax Treaty Rate (%)</Label>
+                    <Input id="tax-treaty" type="number" placeholder="e.g., 10, 15" />
+                  </div>
+                </div>
+                <Button>Calculate Mock Withholding Tax</Button>
+                <Separator/>
+                <div className="p-4 bg-muted/50 rounded-lg space-y-2">
+                  <h4 className="font-semibold">Mock Calculation Results</h4>
+                  <p className="text-sm">Gross Investment: <span className="font-mono text-foreground">$1,000,000.00</span></p>
+                  <p className="text-sm">Applicable Tax Rate (Simulated): <span className="font-mono text-foreground">15.00%</span></p>
+                  <p className="text-sm font-bold">Estimated Withholding Tax: <span className="font-mono text-primary">$150,000.00</span></p>
+                  <p className="text-sm">Net Investment Received: <span className="font-mono text-foreground">$850,000.00</span></p>
+                  <Alert variant="default" className="mt-4">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertTitle>For Simulation Only</AlertTitle>
+                    <AlertDescription>
+                      This is a simplified mock calculator. Actual tax obligations depend on complex international treaties and legal advice.
+                    </AlertDescription>
+                  </Alert>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>

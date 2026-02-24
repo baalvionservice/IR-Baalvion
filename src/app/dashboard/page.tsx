@@ -36,9 +36,10 @@ import { Separator } from '@/components/ui/separator';
 import { useState, useEffect } from 'react';
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import MeetingSchedulerModal from '@/components/dashboard/MeetingSchedulerModal';
-import { type MockEvent, mockEventLog, addEventListener, removeEventListener } from '@/lib/events';
+import { type MockEvent, mockEventLog, addEventListener, removeEventListener, addMockEvent } from '@/lib/events';
 import PaymentGateway from '@/components/dashboard/PaymentGateway';
 import { Bar as RechartsBar, BarChart as RechartsBarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
+import { useToast } from '@/hooks/use-toast';
 
 const chartData = [
   { name: 'Q1 23', value: 120000 },
@@ -63,14 +64,32 @@ export default function DashboardPage() {
 
   const [isMeetingModalOpen, setIsMeetingModalOpen] = useState(false);
   const [activityFeed, setActivityFeed] = useState<MockEvent[]>(mockEventLog.slice(0, 4));
+  const { toast } = useToast();
 
   useEffect(() => {
     const handleNewEvent = (newEvent: MockEvent) => {
       setActivityFeed(prev => [newEvent, ...prev].slice(0, 4));
     };
     addEventListener(handleNewEvent);
-    return () => removeEventListener(handleNewEvent);
-  }, []);
+    
+    // Simulate automated reporting notifications
+    const reportInterval = setInterval(() => {
+        addMockEvent({
+            user: 'System',
+            action: 'Generated Quarterly P&L Report',
+            phase: 'System'
+        });
+        toast({
+            title: "New Report Available",
+            description: "The Q3 2024 P&L Report has been added to the data room.",
+        });
+    }, 30000); // every 30 seconds for demo purposes
+
+    return () => {
+      removeEventListener(handleNewEvent);
+      clearInterval(reportInterval);
+    }
+  }, [toast]);
 
   return (
     <main className="flex-grow bg-muted/20 py-12">
