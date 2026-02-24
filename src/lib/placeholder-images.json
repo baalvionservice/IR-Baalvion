@@ -1,3 +1,58 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "roadmap-infographic",
+      "description": "A futuristic infographic showing a 5-year roadmap.",
+      "imageUrl": "https://images.unsplash.com/photo-1642428899339-db778a4af19a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxyb2FkbWFwJTIwaW5mb2dyYXBoaWN8ZW58MHx8fHwxNzcxOTQ5NzI3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "roadmap infographic"
+    },
+    {
+      "id": "thesis-chart-1",
+      "description": "A line graph showing upward market growth.",
+      "imageUrl": "https://images.unsplash.com/photo-1592495989226-03f88104f8cc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxsaW5lJTIwZ3JhcGh8ZW58MHx8fHwxNzcxOTQ5NzI3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "line graph"
+    },
+    {
+      "id": "thesis-chart-2",
+      "description": "A pie chart showing capital allocation.",
+      "imageUrl": "https://images.unsplash.com/photo-1542744173-05336fcc7ad4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxwaWUlMjBjaGFydHxlbnwwfHx8fDE3NzE5MzQ5OTR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "pie chart"
+    },
+    {
+      "id": "founder-photo",
+      "description": "Portrait of the company founder.",
+      "imageUrl": "https://images.unsplash.com/photo-1621273929349-678e4bdad4ad?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxwb3J0cmFpdCUyMG1hbGV8ZW58MHx8fHwxNzcxOTQ5NzI2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "portrait male"
+    },
+    {
+      "id": "executive-1-photo",
+      "description": "Portrait of a female executive.",
+      "imageUrl": "https://images.unsplash.com/photo-1578432133819-d2ef4bb97cf5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxwb3J0cmFpdCUyMGZlbWFsZXxlbnwwfHx8fDE3NzE5NDk3MjZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "portrait female"
+    },
+    {
+      "id": "executive-2-photo",
+      "description": "Portrait of a male executive.",
+      "imageUrl": "https://images.unsplash.com/photo-1556474835-b0f3ac40d4d1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxwb3J0cmFpdCUyMG1hbGV8ZW58MHx8fHwxNzcxOTQ5NzI2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "portrait male"
+    },
+    {
+      "id": "news-1-image",
+      "description": "Abstract technology background.",
+      "imageUrl": "https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8YWJzdHJhY3QlMjB0ZWNobm9sb2d5fGVufDB8fHx8MTc3MTkwMzkyOXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "abstract technology"
+    },
+    {
+      "id": "news-2-image",
+      "description": "Image of sustainable energy infrastructure.",
+      "imageUrl": "https://images.unsplash.com/photo-1616596091194-eaec099773e4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHx3aW5kJTIwdHVyYmluZXN8ZW58MHx8fHwxNzcxOTQ4MDYwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "wind turbines"
+    },
+    {
+      "id": "news-3-image",
+      "description": "A conference stage with a speaker.",
+      "imageUrl": "https://images.unsplash.com/photo-1582192730841-2a682d7375f9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxjb25mZXJlbmNlJTIwc3RhZ2V8ZW58MHx8fHwxNzcxOTQ5NzI2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "conference stage"
+    }
+  ]
 }
