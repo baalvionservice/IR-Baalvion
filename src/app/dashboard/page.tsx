@@ -1,14 +1,47 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Bell, FileText, Calendar, Download, Briefcase, BarChart, DollarSign } from "lucide-react";
-import Link from "next/link";
-import { investorData } from "@/lib/data";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Progress } from "@/components/ui/progress";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import {
+  Bell,
+  FileText,
+  Calendar,
+  Download,
+  Briefcase,
+  BarChart,
+  DollarSign,
+  FileCertificate,
+  Gavel,
+  MessagesSquare,
+} from 'lucide-react';
+import Link from 'next/link';
+import { investorData } from '@/lib/data';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import { Progress } from '@/components/ui/progress';
+import { Separator } from '@/components/ui/separator';
 
 export default function DashboardPage() {
-  const { name, status, portfolio, financials, notifications } = investorData;
+  const {
+    name,
+    executiveOverview,
+    status,
+    capitalStructure,
+    financialReporting,
+    governanceUpdates,
+    communications,
+  } = investorData;
 
   return (
     <main className="flex-grow bg-muted/20 py-12">
@@ -19,63 +52,145 @@ export default function DashboardPage() {
         </div>
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-          {/* Main Column */}
+          {/* Left Column */}
           <div className="lg:col-span-2 space-y-8">
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Briefcase />
-                  My Portfolio
+                  <DollarSign />
+                  Executive Overview
                 </CardTitle>
-                <CardDescription>Overview of your current holdings in Baalvion.</CardDescription>
               </CardHeader>
-              <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Investment</TableHead>
-                      <TableHead>Shares</TableHead>
-                      <TableHead>Ownership</TableHead>
-                      <TableHead>Committed Capital</TableHead>
-                      <TableHead>Date</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {portfolio.holdings.map((holding, i) => (
-                      <TableRow key={i}>
-                        <TableCell className="font-medium">{holding.name}</TableCell>
-                        <TableCell>{holding.shares.toLocaleString()}</TableCell>
-                        <TableCell>{holding.ownership}%</TableCell>
-                        <TableCell>${holding.committedCapital.toLocaleString()}</TableCell>
-                        <TableCell>{holding.date}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+              <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="flex flex-col gap-1">
+                  <span className="text-sm text-muted-foreground">
+                    Total Invested
+                  </span>
+                  <span className="text-2xl font-bold">
+                    ${executiveOverview.investedAmount.toLocaleString()}
+                  </span>
+                </div>
+                <div className="flex flex-col gap-1">
+                  <span className="text-sm text-muted-foreground">
+                    Ownership
+                  </span>
+                  <span className="text-2xl font-bold">
+                    {executiveOverview.ownershipPercentage}%
+                  </span>
+                </div>
+                <div className="flex flex-col gap-1">
+                  <span className="text-sm text-muted-foreground">
+                    Security Type
+                  </span>
+                  <span className="text-2xl font-bold">
+                    {executiveOverview.securityType}
+                  </span>
+                </div>
               </CardContent>
             </Card>
 
-             <Card>
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <FileCertificate />
+                  Capital Structure
+                </CardTitle>
+                <CardDescription>
+                  Your holdings and position in the company's capitalization.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                  <div>
+                    <p className="text-muted-foreground">Share Class</p>
+                    <p className="font-medium">{capitalStructure.shareClass}</p>
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground">Shares Held</p>
+                    <p className="font-medium">
+                      {capitalStructure.sharesHeld.toLocaleString()}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground">Voting Power</p>
+                    <p className="font-medium">{capitalStructure.votingPower}</p>
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground">Certificate ID</p>
+                    <p className="font-medium truncate">
+                      {capitalStructure.certificateId}
+                    </p>
+                  </div>
+                </div>
+                <Separator />
+                <div>
+                  <h4 className="font-medium mb-2">Company Cap Table (Simplified)</h4>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Class</TableHead>
+                        <TableHead>Shares</TableHead>
+                        <TableHead>Ownership</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {capitalStructure.capTable.map((row) => (
+                        <TableRow key={row.class}>
+                          <TableCell>{row.class}</TableCell>
+                          <TableCell>{row.count}</TableCell>
+                          <TableCell>{row.ownership}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+                <Button variant="outline" size="sm">
+                  <Download className="mr-2 h-4 w-4" />
+                  Download Share Certificate
+                </Button>
+              </CardContent>
+            </Card>
+            
+            <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <BarChart />
-                  Key Financials
+                  Financial Reporting
                 </CardTitle>
-                 <CardDescription>High-level financial metrics and capital deployment status.</CardDescription>
+                 <CardDescription>High-level financial metrics and reports.</CardDescription>
               </CardHeader>
-              <CardContent className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                <div className="flex flex-col gap-1">
-                  <span className="text-sm text-muted-foreground">Total Portfolio Value</span>
-                  <span className="text-2xl font-bold">${financials.totalValue.toLocaleString()}</span>
+              <CardContent className='space-y-6'>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div className="flex flex-col gap-1">
+                    <span className="text-sm text-muted-foreground">Portfolio Value</span>
+                    <span className="text-2xl font-bold">${financialReporting.metrics.totalValue.toLocaleString()}</span>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                    <span className="text-sm text-muted-foreground">Total Returns</span>
+                    <span className="text-2xl font-bold text-green-400">+{financialReporting.metrics.totalReturnsPercent}%</span>
+                    </div>
+                    <div className="flex flex-col gap-1 col-span-2">
+                    <span className="text-sm text-muted-foreground">Capital Deployment</span>
+                    <Progress value={financialReporting.metrics.capitalDeploymentPercent} className="h-3 mt-2" />
+                    <p className="text-xs text-right text-muted-foreground">{financialReporting.metrics.capitalDeploymentPercent}% Deployed</p>
+                    </div>
                 </div>
-                <div className="flex flex-col gap-1">
-                  <span className="text-sm text-muted-foreground">Total Returns</span>
-                  <span className="text-2xl font-bold text-green-400">+{financials.totalReturnsPercent}%</span>
-                </div>
-                 <div className="flex flex-col gap-1 col-span-2">
-                  <span className="text-sm text-muted-foreground">Capital Deployment</span>
-                  <Progress value={financials.capitalDeploymentPercent} className="h-3 mt-2" />
-                   <p className="text-xs text-right text-muted-foreground">{financials.capitalDeploymentPercent}% Deployed</p>
+                <Separator/>
+                <div>
+                    <h4 className="font-medium mb-2">Recent Reports</h4>
+                    <div className="space-y-2">
+                        {financialReporting.reports.map((report) => (
+                            <div key={report.name} className="flex justify-between items-center text-sm p-2 rounded-md hover:bg-muted">
+                                <div className='flex items-center gap-2'>
+                                    <FileText className='h-4 w-4 text-muted-foreground'/>
+                                    <p>{report.name}</p>
+                                </div>
+                                <Button asChild variant="ghost" size="sm">
+                                    <Link href={report.link}>View</Link>
+                                </Button>
+                            </div>
+                        ))}
+                    </div>
                 </div>
               </CardContent>
             </Card>
@@ -85,7 +200,7 @@ export default function DashboardPage() {
           <div className="space-y-8">
             <Card>
               <CardHeader>
-                <CardTitle>Your Status</CardTitle>
+                <CardTitle>Compliance Status</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex justify-between items-center">
@@ -109,45 +224,53 @@ export default function DashboardPage() {
               </CardContent>
             </Card>
 
-            <Card>
+             <Card>
               <CardHeader>
-                <CardTitle>Quick Actions</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  <MessagesSquare />
+                  Communications
+                </CardTitle>
               </CardHeader>
               <CardContent className="flex flex-col space-y-3">
-                 <Button>
-                  <DollarSign />
-                  Make an Investment
-                </Button>
-                <Button asChild variant="outline">
+                 <Button asChild>
                   <Link href="/data-room">
                     <FileText />
-                    View Documents
+                    View Data Room
                   </Link>
                 </Button>
                 <Button variant="outline">
                   <Calendar />
                   Schedule Meeting
                 </Button>
-                <Button variant="outline">
-                  <Download />
-                  Download Reports
-                </Button>
+                <div className="pt-4 space-y-4">
+                  {communications.announcements.map((note) => (
+                    <div key={note.id} className="flex items-start gap-4 text-sm">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 flex-shrink-0">
+                        <Bell className="h-4 w-4 text-primary" />
+                      </div>
+                      <div>
+                        <p className="font-medium">{note.message}</p>
+                        <p className="text-xs text-muted-foreground">{note.date}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Bell />
-                  Notifications
+                  <Gavel />
+                  Governance
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {notifications.map((note) => (
+                  {governanceUpdates.notices.map((note) => (
                     <div key={note.id} className="flex items-start gap-4 text-sm">
-                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 flex-shrink-0">
-                        <Bell className="h-4 w-4 text-primary" />
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-secondary flex-shrink-0">
+                        <Gavel className="h-4 w-4 text-secondary-foreground" />
                       </div>
                       <div>
                         <p className="font-medium">{note.message}</p>

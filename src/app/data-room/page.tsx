@@ -1,24 +1,39 @@
+"use client";
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Download, File, FileText, FileSpreadsheet } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { documents } from "@/lib/data";
+import { useToast } from "@/hooks/use-toast";
 
 const getFileIcon = (type: string) => {
   switch (type) {
     case 'PDF':
       return <FileText className="h-5 w-5" />;
-    case 'Word':
+    case 'PPTX':
       return <File className="h-5 w-5" />;
-    case 'Excel':
+    case 'XLSX':
       return <FileSpreadsheet className="h-5 w-5" />;
+    case 'DOCX':
+      return <File className="h-5 w-5" />;
     default:
       return <File className="h-5 w-5" />;
   }
 };
 
 export default function DataRoomPage() {
+  const { toast } = useToast();
+
+  const handleDownload = (docName: string) => {
+    toast({
+      title: "Activity Logged",
+      description: `Download initiated for ${docName}.`,
+    });
+    // This is a mock. In a real app, you would trigger the file download.
+  };
+
   return (
     <main className="flex-grow bg-muted/20 py-12">
       <div className="container mx-auto px-4">
@@ -26,7 +41,7 @@ export default function DataRoomPage() {
           <CardHeader>
             <CardTitle className="text-3xl">Secure Data Room</CardTitle>
             <CardDescription>
-              Access confidential documents. All activities are logged for security purposes.
+              Access confidential documents for due diligence. All activities are logged for security and compliance purposes.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -52,7 +67,7 @@ export default function DataRoomPage() {
                     <TableCell>{doc.uploadDate}</TableCell>
                     <TableCell>{doc.size}</TableCell>
                     <TableCell className="text-right">
-                      <Button variant="ghost" size="icon">
+                      <Button variant="ghost" size="icon" onClick={() => handleDownload(doc.name)}>
                         <Download className="h-5 w-5" />
                         <span className="sr-only">Download {doc.name}</span>
                       </Button>

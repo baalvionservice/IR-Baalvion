@@ -20,7 +20,7 @@ export default function NewsSection({ id }: { id: string }) {
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold">Media & News</h2>
           <p className="mt-4 max-w-2xl mx-auto text-muted-foreground">
-            Stay informed with the latest announcements and press from Baalvion.
+            Stay informed with the latest announcements, strategic partnerships, and press from Baalvion.
           </p>
         </div>
         <Carousel

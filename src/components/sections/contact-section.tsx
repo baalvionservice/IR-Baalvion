@@ -10,9 +10,9 @@ export default function ContactSection({ id }: { id: string }) {
       <div className="container mx-auto px-4">
         <Card className="max-w-3xl mx-auto">
           <CardHeader className="text-center">
-            <CardTitle className="text-3xl md:text-4xl">Contact Us</CardTitle>
+            <CardTitle className="text-3xl md:text-4xl">Contact Investor Relations</CardTitle>
             <CardDescription>
-              Have questions or want to start your application? Reach out to us.
+              For inquiries or to begin the application process, please reach out. This channel is for prospective accredited investors only.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -32,7 +32,7 @@ export default function ContactSection({ id }: { id: string }) {
                 <Textarea id="message" placeholder="Enter your message" className="min-h-[120px]" />
               </div>
               <div className="flex justify-center">
-                <Button type="submit" className="w-full sm:w-auto">Submit</Button>
+                <Button type="submit" className="w-full sm:w-auto">Submit Inquiry</Button>
               </div>
             </form>
           </CardContent>

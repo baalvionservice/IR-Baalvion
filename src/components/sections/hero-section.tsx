@@ -14,11 +14,11 @@ export default function HeroSection() {
     <section className="relative flex h-[calc(100vh-4rem)] w-full items-center justify-center bg-background">
       <div className="container mx-auto px-4 text-center">
         <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
-          <span className="block text-foreground">Invest in the</span>
-          <span className="block text-primary">Future of Innovation</span>
+          <span className="block text-foreground">The Global B2B Trade</span>
+          <span className="block text-primary">Operating System</span>
         </h1>
         <p className="mx-auto mt-6 max-w-lg text-lg text-muted-foreground md:max-w-xl">
-          Baalvion is at the forefront of transformative technology. Discover an exclusive opportunity to be part of our journey.
+         An institutional-grade investment opportunity in the backbone of modern commerce. Accredited investors only.
         </p>
         <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>

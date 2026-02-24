@@ -14,10 +14,10 @@ export default function OverviewSection({ id }: { id: string }) {
               Our Vision
             </div>
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">
-              Defining the Next Era of Technology
+              Engineering the Backbone of Global Trade
             </h2>
             <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              At Baalvion, we are not just building products; we are crafting the future. Our mission is to leverage cutting-edge research and development to create sustainable, high-impact solutions that redefine industries and create lasting value for our stakeholders.
+             At Baalvion, our mission is to build and operate the foundational B2B trade ecosystem for the next century. We create value by acquiring and integrating key technologies in logistics, finance, and compliance, creating a seamless, efficient, and transparent operating system for global commerce.
             </p>
             <div className="flex flex-col gap-2 min-[400px]:flex-row">
               <Button size="lg" disabled>Download Whitepaper (Coming Soon)</Button>

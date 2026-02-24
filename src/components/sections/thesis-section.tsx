@@ -15,7 +15,7 @@ export default function ThesisSection({ id }: { id: string }) {
             Investment Thesis
           </h2>
           <p className="mt-4 max-w-2xl mx-auto text-muted-foreground">
-            Our strategy is built on identifying and scaling disruptive technologies in high-growth markets.
+            Our strategy is centered on creating a durable competitive moat by integrating critical infrastructure for global B2B trade.
           </p>
         </div>
         
@@ -23,28 +23,28 @@ export default function ThesisSection({ id }: { id: string }) {
             <Card className="bg-transparent border-0 shadow-none">
                 <CardHeader className="items-center">
                     <TrendingUp className="h-10 w-10 text-primary mb-2" />
-                    <CardTitle>High-Growth Sectors</CardTitle>
+                    <CardTitle>Capture High-Growth Corridors</CardTitle>
                 </CardHeader>
                 <CardContent className="text-center">
-                    <p className="text-muted-foreground">We focus on sectors with exponential growth potential, including AI, sustainable energy, and biotechnology.</p>
+                    <p className="text-muted-foreground">We target trade routes and digital ecosystems experiencing exponential growth, focusing on emerging markets and technology-driven supply chains where our integrated system can provide maximum value.</p>
                 </CardContent>
             </Card>
             <Card className="bg-transparent border-0 shadow-none">
                 <CardHeader className="items-center">
                     <Target className="h-10 w-10 text-primary mb-2" />
-                    <CardTitle>Strategic Acquisitions</CardTitle>
+                    <CardTitle>Acquire Strategic Technology</CardTitle>
                 </CardHeader>
                 <CardContent className="text-center">
-                    <p className="text-muted-foreground">Targeting key technology acquisitions to accelerate our roadmap and expand market share.</p>
+                    <p className="text-muted-foreground">Our M&A strategy focuses on acquiring key technologies in trade finance, compliance automation (AML/KYC), and logistics management to accelerate our platform's capabilities and market penetration.</p>
                 </CardContent>
             </Card>
             <Card className="bg-transparent border-0 shadow-none">
                 <CardHeader className="items-center">
                     <Zap className="h-10 w-10 text-primary mb-2" />
-                    <CardTitle>Disruptive Innovation</CardTitle>
+                    <CardTitle>Build a Network Effect</CardTitle>
                 </CardHeader>
                 <CardContent className="text-center">
-                    <p className="text-muted-foreground">Investing heavily in R&D to create proprietary technologies that establish a long-term competitive moat.</p>
+                    <p className="text-muted-foreground">By integrating essential services, we create a powerful network effect. Each new partner, customer, and transaction on our platform increases its value for all other participants, creating a self-reinforcing cycle of growth.</p>
                 </CardContent>
             </Card>
         </div>

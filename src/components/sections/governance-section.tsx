@@ -12,7 +12,7 @@ export default function GovernanceSection({ id }: { id: string }) {
             Governance & Leadership
           </h2>
           <p className="mt-4 max-w-2xl mx-auto text-muted-foreground">
-            Our team is composed of experienced leaders dedicated to driving value and maintaining the highest standards of governance.
+            Our leadership comprises seasoned industry veterans committed to transparent governance, strategic execution, and long-term value creation.
           </p>
         </div>
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
