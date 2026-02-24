@@ -11,14 +11,16 @@ import AccreditationStep from "./steps/accreditation-step";
 import NdaStep from "./steps/nda-step";
 import CompletionStep from "./steps/completion-step";
 import ProgressIndicator from "./progress-indicator";
+import SpvDeclarationStep from "./steps/spv-declaration-step";
 
 type RegistrationModalProps = {
   closeModal: () => void;
+  flowType: "phase1" | "phase2";
 };
 
-const TOTAL_STEPS = 8;
-
-export default function RegistrationModal({ closeModal }: RegistrationModalProps) {
+export default function RegistrationModal({ closeModal, flowType }: RegistrationModalProps) {
+  const TOTAL_STEPS = flowType === "phase1" ? 8 : 9;
+  
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({});
 
@@ -37,26 +39,49 @@ export default function RegistrationModal({ closeModal }: RegistrationModalProps
     }
   };
 
+  const renderStep = () => {
+    switch (step) {
+      case 1:
+        return <CreateAccountStep onNext={handleNext} />;
+      case 2:
+        return <VerifyEmailStep onNext={handleNext} />;
+      case 3:
+        return <MfaStep onNext={handleNext} />;
+      case 4:
+        return <ProfileStep onNext={handleNext} onBack={handleBack} />;
+      case 5:
+        return <KycAmlStep onNext={handleNext} onBack={handleBack} />;
+      case 6:
+        return <AccreditationStep onNext={handleNext} onBack={handleBack} />;
+      case 7:
+        return <NdaStep onNext={handleNext} onBack={handleBack} />;
+      case 8:
+        if (flowType === "phase1") {
+          return <CompletionStep closeModal={closeModal} flowType={flowType} />;
+        }
+        return <SpvDeclarationStep onNext={handleNext} onBack={handleBack} />;
+      case 9:
+        return <CompletionStep closeModal={closeModal} flowType={flowType} />;
+      default:
+        return null;
+    }
+  }
+
   return (
     <>
       <DialogHeader>
         <DialogTitle className="text-center text-2xl font-bold">
-          Become an Investor
+          {flowType === "phase1" ? "Become an Investor" : "Phase 2 SPV Onboarding"}
         </DialogTitle>
         <DialogDescription className="text-center">
-          Complete the steps below to apply for investment access.
+          {flowType === "phase1"
+            ? "Complete the steps below to apply for investment access."
+            : "Complete the secure steps to access your SPV documentation."}
         </DialogDescription>
         <ProgressIndicator currentStep={step} totalSteps={TOTAL_STEPS} />
       </DialogHeader>
       <div className="py-4">
-        {step === 1 && <CreateAccountStep onNext={handleNext} />}
-        {step === 2 && <VerifyEmailStep onNext={handleNext} />}
-        {step === 3 && <MfaStep onNext={handleNext} />}
-        {step === 4 && <ProfileStep onNext={handleNext} onBack={handleBack} />}
-        {step === 5 && <KycAmlStep onNext={handleNext} onBack={handleBack} />}
-        {step === 6 && <AccreditationStep onNext={handleNext} onBack={handleBack} />}
-        {step === 7 && <NdaStep onNext={handleNext} onBack={handleBack} />}
-        {step === 8 && <CompletionStep closeModal={closeModal} />}
+        {renderStep()}
       </div>
     </>
   );
