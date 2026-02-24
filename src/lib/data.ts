@@ -112,22 +112,5 @@ export const investorData = {
             { id: 1, message: "New document 'Q2 2024 Financial Report.pdf' added to the data room.", date: "2024-07-25" },
             { id: 2, message: "Webinar: Join us for the Q3 Investor Update on August 15th.", date: "2024-07-30" },
         ]
-    },
-    // ---- DEPRECATED: Retained for compatibility with old dashboard structure if needed ---
-    portfolio: {
-      holdings: [
-        { name: "Series A Investment", shares: 100000, ownership: 1.25, committedCapital: 500000, date: "2024-01-15" },
-        { name: "SPV - Project Titan", shares: 50000, ownership: 0.62, committedCapital: 250000, date: "2024-05-20" },
-      ]
-    },
-    financials: {
-      totalValue: 985000,
-      totalReturnsPercent: 31.3,
-      capitalDeploymentPercent: 85,
-    },
-    notifications: [
-      { id: 1, message: "Governance Update: Q3 board meeting minutes are now available in the data room.", date: "2024-07-29" },
-      { id: 2, message: "Action Required: Please vote on the new director proposal before August 5th.", date: "2024-07-28" },
-      { id: 3, message: "New document 'Q2 2024 Financial Report.pdf' added to the data room.", date: "2024-07-25" },
-    ],
+    }
 };
