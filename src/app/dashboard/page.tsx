@@ -15,7 +15,7 @@ import {
   Calendar,
   Download,
   DollarSign,
-  FileCertificate,
+  FileSignature,
   Gavel,
   MessagesSquare,
   Activity,
@@ -154,7 +154,7 @@ export default function DashboardPage() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <FileCertificate />
+                  <FileSignature />
                   Capital Structure
                 </CardTitle>
                 <CardDescription>
