@@ -19,6 +19,7 @@ import {
   Gavel,
   MessagesSquare,
   Activity,
+  BarChart,
 } from 'lucide-react';
 import Link from 'next/link';
 import { investorData } from '@/lib/data';
@@ -37,7 +38,7 @@ import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import MeetingSchedulerModal from '@/components/dashboard/MeetingSchedulerModal';
 import { type MockEvent, mockEventLog, addEventListener, removeEventListener } from '@/lib/events';
 import PaymentGateway from '@/components/dashboard/PaymentGateway';
-import { Bar, BarChart as RechartsBarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
+import { Bar as RechartsBar, BarChart as RechartsBarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
 
 const chartData = [
   { name: 'Q1 23', value: 120000 },
@@ -192,7 +193,7 @@ export default function DashboardPage() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <RechartsBarChart className="h-5 w-5" />
+                  <BarChart className="h-5 w-5" />
                   Financial Reporting
                 </CardTitle>
                  <CardDescription>High-level financial metrics and reports.</CardDescription>
@@ -223,7 +224,7 @@ export default function DashboardPage() {
                         cursor={{fill: 'hsl(var(--accent))'}}
                         contentStyle={{background: 'hsl(var(--background))', border: '1px solid hsl(var(--border))', borderRadius: 'var(--radius)'}}
                       />
-                      <Bar dataKey="value" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
+                      <RechartsBar dataKey="value" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
                     </RechartsBarChart>
                   </ResponsiveContainer>
                 </div>
