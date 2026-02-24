@@ -29,7 +29,7 @@ export default function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Investments</h4>
             <ul className="space-y-2">
-              <li><Link href="#" className="text-sm text-muted-foreground hover:text-primary">Investment Thesis</Link></li>
+              <li><Link href="#thesis" className="text-sm text-muted-foreground hover:text-primary">Investment Thesis</Link></li>
               <li><Link href="#" className="text-sm text-muted-foreground hover:text-primary">Phase 1: Institutional</Link></li>
               <li><Link href="#" className="text-sm text-muted-foreground hover:text-primary">Phase 2: Private SPVs</Link></li>
               <li><Link href="#" className="text-sm text-muted-foreground hover:text-primary">Phase 3: Operators</Link></li>
@@ -38,9 +38,9 @@ export default function Footer() {
            <div>
             <h4 className="font-semibold mb-4">About Us</h4>
             <ul className="space-y-2">
-              <li><Link href="#" className="text-sm text-muted-foreground hover:text-primary">Our Mission</Link></li>
-              <li><Link href="#" className="text-sm text-muted-foreground hover:text-primary">Leadership</Link></li>
-              <li><Link href="#" className="text-sm text-muted-foreground hover:text-primary">Partners</Link></li>
+              <li><Link href="#overview" className="text-sm text-muted-foreground hover:text-primary">Our Mission</Link></li>
+              <li><Link href="#governance" className="text-sm text-muted-foreground hover:text-primary">Leadership</Link></li>
+               <li><Link href="#trust" className="text-sm text-muted-foreground hover:text-primary">Partners</Link></li>
               <li><Link href="#" className="text-sm text-muted-foreground hover:text-primary">Careers</Link></li>
             </ul>
           </div>
@@ -49,7 +49,7 @@ export default function Footer() {
             <ul className="space-y-2">
               <li><Link href="#" className="text-sm text-muted-foreground hover:text-primary">Privacy Policy</Link></li>
               <li><Link href="#" className="text-sm text-muted-foreground hover:text-primary">Terms of Service</Link></li>
-               <li><Link href="#" className="text-sm text-muted-foreground hover:text-primary">Risk Disclosure</Link></li>
+               <li><Link href="#risk" className="text-sm text-muted-foreground hover:text-primary">Risk Disclosure</Link></li>
               <li><Link href="#" className="text-sm text-muted-foreground hover:text-primary">Cookie Policy</Link></li>
             </ul>
           </div>

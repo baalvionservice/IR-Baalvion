@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, Mountain, ChevronDown, Globe } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -15,7 +15,6 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-  DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu";
 import { publicNav, loggedInNav, type NavItem } from "@/lib/nav-data";
 
@@ -93,22 +92,24 @@ export default function Header() {
         return (
           <DropdownMenu key={item.label}>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="text-muted-foreground hover:text-foreground text-sm font-medium flex items-center gap-1">
+              <Button variant="ghost" className="text-muted-foreground hover:text-foreground text-sm font-medium flex items-center gap-1 px-2">
                 {item.label} <ChevronDown className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-64" align="start">
-              {item.children.map((child, index) => (
-                <div key={child.label || `separator-${index}`}>
-                  {child.label ? (
-                     <DropdownMenuItem asChild>
-                      <Link href={child.href || '#'} onClick={isMobile ? closeSheet : undefined}>{child.label}</Link>
+              {item.children.map((child, index) => {
+                 if (child.label === '---') {
+                    return <DropdownMenuSeparator key={`separator-${index}`} />;
+                 }
+                 if (child.isHeader) {
+                    return <DropdownMenuLabel key={child.label}>{child.label}</DropdownMenuLabel>;
+                 }
+                 return (
+                    <DropdownMenuItem asChild key={child.label}>
+                        <Link href={child.href || '#'} onClick={isMobile ? closeSheet : undefined}>{child.label}</Link>
                     </DropdownMenuItem>
-                  ) : (
-                    <DropdownMenuSeparator />
-                  )}
-                </div>
-              ))}
+                 )
+              })}
             </DropdownMenuContent>
           </DropdownMenu>
         );
@@ -118,7 +119,7 @@ export default function Header() {
           key={item.label}
           href={item.href || '#'}
           onClick={isMobile ? closeSheet : undefined}
-          className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+          className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground px-2"
         >
           {item.label}
         </Link>
@@ -127,7 +128,7 @@ export default function Header() {
   };
 
   const NavContent = ({ isMobile = false }: { isMobile?: boolean }) => (
-    <nav className={cn("items-center gap-6 text-lg font-medium", isMobile ? "flex flex-col" : "hidden md:flex")}>
+    <nav className={cn("items-center gap-4 text-lg font-medium", isMobile ? "flex flex-col space-y-4" : "hidden md:flex")}>
       {renderNavItems(isLoggedIn ? loggedInNav : publicNav, isMobile)}
     </nav>
   );
@@ -173,10 +174,19 @@ export default function Header() {
                   </Button>
                 </>
               ) : (
-                <>
-                   <Button size="sm" variant="outline" onClick={() => onModalOpen("phase2")}>Phase 2 Invite</Button>
-                   <Button size="sm" onClick={() => onModalOpen("phase1")}>Apply for Access</Button>
-                </>
+                 <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button size="sm">Investor Access</Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                        <DropdownMenuItem onClick={() => onModalOpen("phase1")}>Apply for Access</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => onModalOpen("phase2")}>Phase 2 SPV Invite</DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem asChild><Link href="#">Qualification Criteria</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild><Link href="#contact">Contact IR Team</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild><Link href="#">FAQs</Link></DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
               )}
             </div>
 
@@ -201,10 +211,19 @@ export default function Header() {
                             <Button size="sm" variant="outline" onClick={handleSignOut}>Sign Out</Button>
                           </>
                         ) : (
-                          <>
-                            <Button size="sm" variant="outline" onClick={() => onModalOpen("phase2")}>Phase 2 Invite</Button>
-                            <Button size="sm" onClick={() => onModalOpen("phase1")}>Apply for Access</Button>
-                          </>
+                           <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button size="sm">Investor Access</Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                    <DropdownMenuItem onClick={() => onModalOpen("phase1")}>Apply for Access</DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => onModalOpen("phase2")}>Phase 2 SPV Invite</DropdownMenuItem>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem asChild><Link href="#">Qualification Criteria</Link></DropdownMenuItem>
+                                    <DropdownMenuItem asChild><Link href="#contact">Contact IR Team</Link></DropdownMenuItem>
+                                    <DropdownMenuItem asChild><Link href="#">FAQs</Link></DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
                         )}
                       </div>
                   </div>
@@ -214,7 +233,6 @@ export default function Header() {
         </div>
       </header>
 
-      {/* Dialogs for Registration Modals */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent className="max-w-md p-6 sm:max-w-xl md:max-w-2xl">
           <RegistrationModal closeModal={onModalClose} flowType={registrationFlow} />
