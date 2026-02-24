@@ -7,7 +7,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { useToast } from "@/hooks/use-toast";
 import { addMockEvent } from "@/lib/events";
 import { cn } from "@/lib/utils";
-import { Zoom, Calendar as CalendarIcon, Clock } from "lucide-react";
+import { ZoomIn, Calendar as CalendarIcon, Clock } from "lucide-react";
 
 type MeetingSchedulerModalProps = {
   closeModal: () => void;
@@ -81,7 +81,7 @@ export default function MeetingSchedulerModal({ closeModal }: MeetingSchedulerMo
                    <CalendarIcon className="h-4 w-4"/> An invitation will be sent to your registered email address.
                 </div>
                 <div className="flex items-center gap-2">
-                    <Zoom className="h-4 w-4"/> Meetings will be held via Zoom.
+                    <ZoomIn className="h-4 w-4"/> Meetings will be held via Zoom.
                 </div>
             </div>
         </div>
