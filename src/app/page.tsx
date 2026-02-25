@@ -9,11 +9,13 @@ import QuarterlyResultsSection from '@/components/sections/quarterly-results-sec
 import RiskSection from '@/components/sections/risk-section';
 import ThesisSection from '@/components/sections/thesis-section';
 import TrustSignals from '@/components/global/TrustSignals';
+import WhoWeAreSection from '@/components/sections/who-we-are-section';
 
 export default function Home() {
   return (
     <main className="flex-grow">
       <HeroSection />
+      <WhoWeAreSection />
       <TrustSignals />
       <QuarterlyResultsSection />
       <div className="space-y-16 py-16 md:space-y-24 md:py-24 lg:space-y-32 lg:py-32">
