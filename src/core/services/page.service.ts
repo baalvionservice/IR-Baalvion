@@ -14,7 +14,7 @@ export const pageService = {
     if (response.success && response.data) {
       const page = response.data;
       // Filter live sections based on role
-      const filteredPage = {
+      const filteredPage: PageDefinition = {
         ...page,
         sections: page.sections
           .filter(s => s.isActive && authService.hasAccess(s.roles, role))

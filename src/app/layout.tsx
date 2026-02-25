@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
 import './globals.css';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
@@ -6,9 +7,23 @@ import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 import QuickLinksSection from '@/components/sections/quick-links-section';
 
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+});
+
 export const metadata: Metadata = {
-  title: 'Baalvion | Investor Relations',
-  description: 'Public Investor Relations Website Prototype for Baalvion.',
+  title: {
+    default: 'Baalvion | Investor Relations',
+    template: '%s | Baalvion',
+  },
+  description: 'Institutional-Grade Investor Relations Platform. Engineering the backbone of global B2B trade.',
+  keywords: ['Baalvion', 'Investor Relations', 'B2B Trade', 'Logistics', 'Finance', 'Governance'],
+  authors: [{ name: 'Baalvion Corporate Communications' }],
+  viewport: 'width=device-width, initial-scale=1',
+  robots: 'index, follow',
+  metadataBase: new URL('https://baalvion.com'),
 };
 
 export default function RootLayout({
@@ -17,15 +32,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+    <html lang="en" className={cn('dark', inter.variable)}>
       <body
         className={cn(
           'min-h-screen bg-background font-body antialiased'

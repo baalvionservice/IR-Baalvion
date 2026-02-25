@@ -2,22 +2,19 @@
 
 import { useEffect, useState } from "react";
 import { navigationService } from "@/core/services/navigation.service";
-import { NavigationItem, UserRole } from "@/core/content/schemas";
+import { NavigationItem } from "@/core/content/schemas";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { 
   Plus, 
   Trash2, 
-  ChevronRight, 
   ChevronDown, 
-  GripVertical,
-  Link as LinkIcon,
-  Globe,
-  Lock
+  GripVertical
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
 
 export default function NavigationManagerPage() {
   const [items, setItems] = useState<NavigationItem[]>([]);
@@ -107,8 +104,4 @@ export default function NavigationManagerPage() {
       </Card>
     </div>
   );
-}
-
-function cn(...classes: any[]) {
-  return classes.filter(Boolean).join(' ');
 }

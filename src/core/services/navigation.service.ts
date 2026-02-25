@@ -45,7 +45,7 @@ export const navigationService = {
     const response = await navigationRepository.findAll();
     let data = response.data || [];
     
-    let previousState: any = null;
+    let previousState: NavigationItem | null = null;
     const updateRecursive = (items: NavigationItem[]): NavigationItem[] => {
       return items.map(item => {
         if (item.id === itemId) {
@@ -60,14 +60,16 @@ export const navigationService = {
     data = updateRecursive(data);
     await navigationRepository.saveAll(data);
     
-    await auditService.log({
-      userRole: role,
-      module: 'Navigation',
-      action: 'edit',
-      entityId: itemId,
-      previousState,
-      newState: updates
-    });
+    if (previousState) {
+      await auditService.log({
+        userRole: role,
+        module: 'Navigation',
+        action: 'edit',
+        entityId: itemId,
+        previousState,
+        newState: updates
+      });
+    }
 
     window.dispatchEvent(new Event('navigation-updated'));
   },
@@ -77,15 +79,21 @@ export const navigationService = {
     const response = await navigationRepository.findAll();
     let data = response.data || [];
 
-    const newItem = { ...item, id: `nav-${Math.random().toString(36).substr(2, 9)}` };
+    const newItem: NavigationItem = { 
+      ...item, 
+      id: `nav-${Math.random().toString(36).substr(2, 9)}`,
+      isActive: item.isActive ?? true,
+      order: item.order ?? data.length,
+      roles: item.roles ?? ['public']
+    };
     
     if (!parentPath) {
-      data.push(newItem as NavigationItem);
+      data.push(newItem);
     } else {
       const addRecursive = (items: NavigationItem[]): NavigationItem[] => {
         return items.map(node => {
           if (node.id === parentPath) {
-            return { ...node, children: [...(node.children || []), newItem as NavigationItem] };
+            return { ...node, children: [...(node.children || []), newItem] };
           }
           if (node.children) return { ...node, children: addRecursive(node.children) };
           return node;

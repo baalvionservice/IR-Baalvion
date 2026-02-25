@@ -4,8 +4,8 @@ import { ENV_CONFIG } from "@/config/environment";
 import { ApiResponse, ErrorCode } from "@/types/api.types";
 
 /**
- * PRODUCTION AUDIT NOTE:
- * Enhanced StorageAdapter with better hydration safety and error normalization.
+ * Institutional-Grade Storage Adapter
+ * Handles persistence with SSR safety and simulated network resilience.
  */
 export class StorageAdapter {
   private key: string;
@@ -14,18 +14,27 @@ export class StorageAdapter {
     this.key = `${ENV_CONFIG.storageKey}_${domain}`;
   }
 
+  /**
+   * Generates a request ID only when called, preventing SSR mismatches.
+   */
   private generateRequestId(): string {
     return `req_${Math.random().toString(36).substring(2, 11)}`;
   }
 
+  /**
+   * Simulated network latency and failure. 
+   * Defer to useEffect to ensure browser-only execution.
+   */
   private async simulateNetwork(): Promise<void> {
+    if (typeof window === 'undefined') return;
+
     if (ENV_CONFIG.enableMockLatency) {
       await new Promise(resolve => setTimeout(resolve, ENV_CONFIG.mockLatencyMs));
     }
 
     if (ENV_CONFIG.enableFailureSimulation) {
       // 5% controlled failure rate for resilience testing
-      if (Math.random() < 0.05) {
+      if (Math.random() < ENV_CONFIG.failureRate) {
         throw new Error("MOCK_NETWORK_TIMEOUT");
       }
     }
@@ -46,13 +55,13 @@ export class StorageAdapter {
 
   async getAll<T>(): Promise<ApiResponse<T[]>> {
     try {
-      await this.simulateNetwork();
-      
-      // SSR Safeguard
+      // Hydration safety: Return empty early if not in browser
       if (typeof window === 'undefined') {
         return this.wrapResponse([]);
       }
 
+      await this.simulateNetwork();
+      
       const raw = localStorage.getItem(this.key);
       const data = raw ? JSON.parse(raw) : [];
       
@@ -72,10 +81,9 @@ export class StorageAdapter {
 
   async saveAll<T>(data: T[]): Promise<ApiResponse<boolean>> {
     try {
-      await this.simulateNetwork();
-      
       if (typeof window === 'undefined') return this.wrapResponse(false);
       
+      await this.simulateNetwork();
       localStorage.setItem(this.key, JSON.stringify(data));
       
       if (ENV_CONFIG.enableConsoleAudit) {
