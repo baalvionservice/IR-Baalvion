@@ -46,6 +46,25 @@ export default function LeadershipPage() {
                     </div>
                 </div>
             </section>
+            <section className="bg-yellow-400 text-black py-4">
+                <div className="container mx-auto px-4 text-center">
+                    <Link href="/governance/board-of-directors" className="font-bold text-sm hover:underline">
+                        <span className="mr-2">&gt;</span> See our Board of Directors
+                    </Link>
+                </div>
+            </section>
+            <section className="py-16 md:py-24 bg-white text-black">
+                <div className="container mx-auto px-4 max-w-4xl">
+                    <div>
+                        <div className="w-[125px] h-[125px] bg-gray-200 mb-4"></div>
+                        <h3 className="text-lg font-bold">Charlie Hallac</h3>
+                        <p className="text-sm text-gray-500">IN MEMORIAM</p>
+                        <Link href="#" className="text-xs font-bold text-primary hover:underline flex items-center mt-3">
+                            <span className="mr-2">&gt;</span> Read Charlie's bio
+                        </Link>
+                    </div>
+                </div>
+            </section>
         </>
     );
 }
