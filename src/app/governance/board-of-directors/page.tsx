@@ -1,4 +1,8 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
+import Link from 'next/link';
+import { boardOfDirectors } from '@/lib/data';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export const metadata: Metadata = {
     title: 'Board of Directors | Baalvion',
@@ -15,43 +19,35 @@ export default function BoardOfDirectorsPage() {
                 </div>
             </section>
             <section className="py-16 md:py-24 bg-white text-black">
-                <div className="container mx-auto px-4 max-w-4xl text-left">
-                    <div className="space-y-12">
-                        <div>
-                            <h2 className="text-2xl font-bold mb-4">Contact Our Board of Directors</h2>
-                            <div className="space-y-4 text-gray-700">
-                                <p>
-                                    EMAIL: <a href="mailto:board@baalvion.com" className="text-primary hover:underline">board@baalvion.com</a>
-                                </p>
-                                <p>You may also send correspondence to our:</p>
-                                <address className="not-italic">
-                                    Board of Directors c/o Corporate Communications Department<br />
-                                    Yeshwant Avenue Building, NX, NX Road, Y K Nagar, Virar West, Virar, Maharashtra 401303
-                                </address>
-                            </div>
-                        </div>
+                <div className="container mx-auto px-4">
+                    <div className="text-center mb-16">
+                        <Link href="#" className="text-sm text-gray-600 hover:underline">
+                            Click here to read about Baalvion's approach to Board diversity
+                        </Link>
+                    </div>
 
-                        <div>
-                            <h2 className="text-2xl font-bold mb-4">How to report concerns, complaints and potential illegal or unethical conduct</h2>
-                            <div className="space-y-6 text-gray-700">
-                                <p>
-                                    Baalvion is committed to conducting its business activities in the highest ethical and professional manner and to achieving compliance with applicable laws, rules, regulations, accounting standards and controls and audit practices. As part of this commitment, Baalvion has adopted the Code of Business Conduct and Ethics, which sets out basic principles of conduct applicable to all employees, and numerous other policies and procedures designed to help us meet our legal, regulatory and ethical obligations.
-                                </p>
-                                <p>
-                                    The Global Policy for Reporting Potential Illegal or Unethical Conduct requires that you report any concerns you may have about potential illegal or unethical conduct. You may report any such concerns to Legal & Compliance ("L&C") by contacting a Managing Director in L&C directly or via the Business Integrity Hotline or Business Integrity Reporting Website:
-                                </p>
-                                <ul className="list-disc list-inside pl-4 space-y-2">
-                                    <li>Business Integrity Hotline</li>
-                                    <li>Business Integrity Reporting Website</li>
-                                </ul>
-                                <p>
-                                    The Business Integrity Hotline and the Business Integrity Reporting Website are administered on behalf of Baalvion by NAVEX Global, Inc. ("Navex"), an independent third party. Navex collects information and passes it to senior individuals within Baalvion L&C for handling and investigation. Navex does not use the personal data or other information collected for any other purpose.
-                                </p>
-                                <p>
-                                    Reports, which may be made anonymously, are treated confidentially to the extent reasonably possible. Reports made in good faith may be made without fear of dismissal or retaliation of any kind. You may also report potential violations of law or regulation directly to a regulator or government authority.
-                                </p>
-                            </div>
-                        </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-16 max-w-7xl mx-auto">
+                        {boardOfDirectors.map((member) => {
+                            const memberImage = PlaceHolderImages.find(p => p.id === member.imageId);
+                            return (
+                                <div key={member.name} className="text-center flex flex-col items-center">
+                                    {memberImage ? (
+                                        <Image
+                                            src={memberImage.imageUrl}
+                                            alt={`Portrait of ${member.name}`}
+                                            data-ai-hint={memberImage.imageHint}
+                                            width={150}
+                                            height={150}
+                                            className="rounded-full mb-4 object-cover"
+                                        />
+                                    ) : (
+                                        <div className="w-[150px] h-[150px] bg-gray-200 rounded-full mb-4"></div>
+                                    )}
+                                    <h3 className="text-lg font-bold">{member.name}</h3>
+                                    <p className="text-sm text-gray-600 mt-1">{member.title}</p>
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
             </section>

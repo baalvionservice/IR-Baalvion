@@ -71,6 +71,60 @@ export const globalLeaders = [
     { name: 'Audrey Parker', title: 'Chief People Officer' },
     { name: 'Christopher Reed', title: 'Chief Administrative Officer' },
 ];
+
+export const boardOfDirectors = [
+  {
+    name: "Laurence D. Fink",
+    title: "Chairman and CEO of BlackRock",
+    imageId: "bod-1"
+  },
+  {
+    name: "Pamela Daley",
+    title: "Former Senior Vice President of Corporate Business Development of General Electric Company",
+    imageId: "bod-2"
+  },
+  {
+    name: "Gregory J. Fleming",
+    title: "President and CEO of Rockefeller Capital Management",
+    imageId: "bod-3"
+  },
+  {
+    name: "William E. Ford",
+    title: "Chairman and CEO of General Atlantic",
+    imageId: "bod-4"
+  },
+  {
+    name: "Fabrizio Freda",
+    title: "Former President and CEO of the Estée Lauder Companies Inc",
+    imageId: "bod-5"
+  },
+  {
+    name: "Murry S. Gerber",
+    title: "LEAD INDEPENDENT DIRECTOR, Former Chairman and CEO of EQT",
+    imageId: "bod-6"
+  },
+  {
+    name: "Margaret \"Peggy\" L. Johnson",
+    title: "CEO of Agility Robotics",
+    imageId: "bod-7"
+  },
+  {
+    name: "Robert S. Kapito",
+    title: "President of BlackRock",
+    imageId: "bod-8"
+  },
+  { name: 'Bader M. Al-Saad', title: 'Director General and Chairman of the Board of Arab Fund for Economic and Social Development', imageId: 'bod-9' },
+  { name: 'Mathis Cabiallavetta', title: 'Former Vice Chairman of Swiss Re Ltd.', imageId: 'bod-10' },
+  { name: 'Susan Chan', title: 'Head of Asia Pacific', imageId: 'bod-11' },
+  { name: 'William C. Dudley', title: 'Former President and CEO of the Federal Reserve Bank of New York', imageId: 'bod-12' },
+  { name: 'Kristin C. Peck', title: 'CEO of Zoetis Inc.', imageId: 'bod-13' },
+  { name: 'Charles H. Robbins', title: 'Chairman and CEO of Cisco Systems, Inc.', imageId: 'bod-14' },
+  { name: 'Hans E. Vestberg', title: 'Chairman and CEO of Verizon Communications Inc.', imageId: 'bod-15' },
+  { name: 'Susan Wagner', title: 'Co-founder of BlackRock, Inc.', imageId: 'bod-16' },
+  { name: 'Mark Wilson', title: 'Former CEO of Aviva plc', imageId: 'bod-17' },
+  { name: 'Jessica Uhl', title: 'Former CFO of Shell plc', imageId: 'bod-18' },
+  { name: 'John S. Weinberg', title: 'Chairman and CEO of Evercore Inc.', imageId: 'bod-19' },
+];
   
   export const newsArticles = [
     {
