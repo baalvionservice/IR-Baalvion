@@ -5,8 +5,8 @@ import { getRequiredPermissionForRoute } from '@/lib/rbac/routeRegistry';
 import { checkPermission } from '@/lib/rbac/checkPermission';
 
 /**
- * Edge Middleware Gatekeeper
- * Intercepts requests and enforces RBAC policy.
+ * Institutional Edge Gatekeeper
+ * Enforces RBAC policy before the request reaches any application logic.
  */
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -20,7 +20,6 @@ export function middleware(request: NextRequest) {
   }
 
   // 2. Fetch Mock Session from Cookie
-  // Note: localStorage is not accessible in Edge Middleware.
   const sessionCookie = request.cookies.get('baalvion_session_mock')?.value;
   const session = getSessionFromCookie(sessionCookie);
 
@@ -28,7 +27,7 @@ export function middleware(request: NextRequest) {
   const isAuthorized = checkPermission(session.role, requiredPermission);
 
   if (!isAuthorized) {
-    console.warn(`[RBAC] Unauthorized access attempt to ${pathname} by role ${session.role}`);
+    console.warn(`[RBAC] Access Denied: ${pathname} requires ${requiredPermission}. Current role: ${session.role}`);
     
     // Redirect unauthorized users to index with a clear signal
     const url = request.nextUrl.clone();
@@ -41,7 +40,7 @@ export function middleware(request: NextRequest) {
 }
 
 /**
- * Define which paths should trigger the middleware
+ * Matcher configuration for institutional routes
  */
 export const config = {
   matcher: [
@@ -50,6 +49,8 @@ export const config = {
     '/admin/:path*',
     '/phase2/:path*',
     '/phase3/:path*',
+    '/performance/:path*',
+    '/capital-ops/:path*',
     '/governance/my-voting',
   ],
 };

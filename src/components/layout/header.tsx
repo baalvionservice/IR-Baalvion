@@ -3,11 +3,9 @@
 import { useState, useEffect, useCallback, memo } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Mountain, ChevronDown, Globe, Loader2 } from "lucide-react";
+import { Menu, Mountain, ChevronDown, Globe, Loader2, ShieldCheck, LogOut, LayoutDashboard } from "lucide-react";
 import { cn } from "@/lib/utils";
-import RegistrationModal from "@/components/investor-registration/registration-modal";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,12 +18,8 @@ import { navigationService } from "@/core/services/navigation.service";
 import { authService } from "@/core/services/auth.service";
 import { NavigationItem, UserRole } from "@/core/content/schemas";
 
-type FlowType = "phase1" | "phase2";
-
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [registrationFlow, setRegistrationFlow] = useState<FlowType>("phase1");
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [navItems, setNavItems] = useState<NavigationItem[]>([]);
   const [userRole, setUserRole] = useState<UserRole>('public');
@@ -43,36 +37,21 @@ export default function Header() {
   }, []);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const isScrolled = window.scrollY > 20;
-      setScrolled(isScrolled);
-    };
-
+    const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll, { passive: true });
+    
     loadNavigation();
-
     window.addEventListener('storage', loadNavigation);
-    window.addEventListener('navigation-updated', loadNavigation);
+    window.addEventListener('auth-updated', loadNavigation);
     
     return () => {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener('storage', loadNavigation);
-      window.removeEventListener('navigation-updated', loadNavigation);
+      window.removeEventListener('auth-updated', loadNavigation);
     }
   }, [loadNavigation]);
   
   const closeSheet = () => setIsSheetOpen(false);
-
-  const onModalOpen = (flow: FlowType) => {
-    setRegistrationFlow(flow);
-    setIsModalOpen(true);
-    closeSheet();
-  }
-
-  const handleSignOut = () => {
-    authService.setRole('public');
-    window.location.href = '/';
-  }
 
   return (
     <>
@@ -84,9 +63,9 @@ export default function Header() {
       >
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
           <div className="flex items-center gap-6">
-            <Link href="/" className="flex items-center gap-2 font-semibold hover:opacity-80 transition-opacity" aria-label="Baalvion Home">
+            <Link href="/" className="flex items-center gap-2 font-bold hover:opacity-80 transition-opacity">
               <Mountain className="h-6 w-6 text-primary" />
-              <span className="hidden sm:inline-block font-headline tracking-tighter text-xl">Baalvion</span>
+              <span className="hidden sm:inline-block tracking-tighter text-xl">Baalvion</span>
             </Link>
             
             <nav className="hidden md:flex items-center gap-1">
@@ -104,42 +83,33 @@ export default function Header() {
             <LanguageToggle />
 
             <div className="hidden sm:flex items-center gap-2">
-              <AuthButtons 
-                userRole={userRole} 
-                onSignOut={handleSignOut} 
-                onOpenModal={onModalOpen} 
-              />
+              <AuthButtons userRole={userRole} />
             </div>
 
             <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="md:hidden" aria-label="Open Menu">
+                <Button variant="ghost" size="icon" className="md:hidden">
                   <Menu className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
               <SheetContent side="left" className="w-full sm:max-w-xs">
                   <div className="flex flex-col p-4 h-full">
-                      <Link href="/" className="mb-8 flex items-center gap-2 font-semibold" onClick={closeSheet}>
+                      <Link href="/" className="mb-8 flex items-center gap-2 font-bold" onClick={closeSheet}>
                           <Mountain className="h-6 w-6 text-primary" />
                           <span className="text-xl">Baalvion</span>
                       </Link>
                       <nav className="flex flex-col space-y-4 overflow-y-auto pr-4">
                         <NavItems items={navItems} isMobile onLinkClick={closeSheet} />
                       </nav>
+                      <div className="mt-auto pt-8 border-t">
+                        <AuthButtons userRole={userRole} isMobile onAction={closeSheet} />
+                      </div>
                   </div>
               </SheetContent>
             </Sheet>
           </div>
         </div>
       </header>
-
-      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="max-w-md p-0 overflow-hidden sm:max-w-xl md:max-w-2xl bg-background border-none shadow-2xl">
-          <div className="p-6">
-            <RegistrationModal closeModal={() => setIsModalOpen(false)} flowType={registrationFlow} />
-          </div>
-        </DialogContent>
-      </Dialog>
     </>
   );
 }
@@ -150,7 +120,7 @@ const NavItems = memo(({ items, isMobile, onLinkClick }: { items: NavigationItem
       if (isMobile) {
         return (
           <div key={item.id} className="space-y-3">
-            <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest px-2">{item.label}</p>
+            <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] px-2">{item.label}</p>
             <div className="pl-4 space-y-2 flex flex-col">
               {item.children.map((child) => (
                 <NavChild key={child.id} child={child} onLinkClick={onLinkClick} isMobile />
@@ -162,16 +132,14 @@ const NavItems = memo(({ items, isMobile, onLinkClick }: { items: NavigationItem
       return (
         <DropdownMenu key={item.id}>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="text-muted-foreground hover:text-foreground hover:bg-transparent text-sm font-semibold flex items-center gap-1 px-3">
+            <Button variant="ghost" className="text-muted-foreground hover:text-foreground text-sm font-semibold flex items-center gap-1 px-3">
               {item.label} <ChevronDown className="h-3 w-3 opacity-50" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-64" align="start">
-            <div className="max-h-[70vh] overflow-y-auto py-1">
-              {item.children.map((child) => (
-                <NavChild key={child.id} child={child} onLinkClick={onLinkClick} />
-              ))}
-            </div>
+            {item.children.map((child) => (
+              <NavChild key={child.id} child={child} onLinkClick={onLinkClick} />
+            ))}
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -198,17 +166,11 @@ function NavChild({ child, onLinkClick, isMobile }: { child: NavigationItem, onL
   if (child.isHeader) {
     return <DropdownMenuLabel className="text-[10px] uppercase tracking-widest text-muted-foreground pt-4 pb-1 font-bold">{child.label}</DropdownMenuLabel>;
   }
-  if (child.label === '---') {
-    return <DropdownMenuSeparator />;
-  }
+  if (child.label === '---') return <DropdownMenuSeparator />;
   
   if (isMobile) {
     return (
-      <Link 
-        href={child.href || '#'} 
-        onClick={onLinkClick}
-        className="text-sm font-medium text-foreground/80 hover:text-primary py-1"
-      >
+      <Link href={child.href || '#'} onClick={onLinkClick} className="text-sm font-medium text-foreground/80 hover:text-primary py-1">
         {child.label}
       </Link>
     );
@@ -225,40 +187,55 @@ function LanguageToggle() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" aria-label="Switch Language">
+        <Button variant="ghost" size="icon">
           <Globe className="h-5 w-5" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem className="font-bold">English (US)</DropdownMenuItem>
-        <DropdownMenuItem disabled>Español (Coming Q2)</DropdownMenuItem>
-        <DropdownMenuItem disabled>中文 (Coming Q3)</DropdownMenuItem>
+        <DropdownMenuItem className="font-bold">English (Institutional)</DropdownMenuItem>
+        <DropdownMenuItem disabled>Español</DropdownMenuItem>
+        <DropdownMenuItem disabled>Deutsch</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
 }
 
-function AuthButtons({ userRole, onSignOut, onOpenModal }: any) {
+function AuthButtons({ userRole, isMobile, onAction }: any) {
   if (userRole !== 'public') {
     return (
-      <>
-        <Button size="sm" variant="ghost" onClick={onSignOut} className="font-semibold">Sign Out</Button>
-        <Button asChild size="sm" className="shadow-lg">
-          <Link href="/dashboard">Portal</Link>
+      <div className={cn("flex items-center gap-2", isMobile && "flex-col w-full")}>
+        <Button variant="ghost" size="sm" onClick={() => { authService.signOut(); onAction?.(); }} className="gap-2">
+          <LogOut className="h-4 w-4" /> Sign Out
         </Button>
-      </>
+        <Button asChild size="sm" className="shadow-lg gap-2 w-full">
+          <Link href="/performance" onClick={onAction}><LayoutDashboard className="h-4 w-4" /> Command Center</Link>
+        </Button>
+      </div>
     );
   }
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button size="sm" className="font-semibold shadow-md">Investor Access</Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-48">
-        <DropdownMenuItem onClick={() => onOpenModal("phase1")} className="cursor-pointer py-2">Apply for Access</DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => onOpenModal("phase2")} className="cursor-pointer py-2">Phase 2 SPV Invite</DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <div className={cn("flex items-center gap-2", isMobile && "flex-col w-full")}>
+      <Button asChild variant="outline" size="sm" className="w-full">
+        <Link href="/onboarding" onClick={onAction}>Register</Link>
+      </Button>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button size="sm" className="shadow-md w-full">Institutional Login</Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-56">
+          <DropdownMenuLabel className="text-[10px] uppercase font-bold text-muted-foreground">Simulation Profiles</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => { authService.setRole('phase1'); window.location.href='/performance'; }}>
+            Simulate Investor (LP)
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => { authService.setRole('admin'); window.location.href='/admin/dashboard'; }}>
+            Simulate Admin (GP)
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => { authService.setRole('compliance'); window.location.href='/admin/intelligence'; }}>
+            Simulate Compliance
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
   );
 }
