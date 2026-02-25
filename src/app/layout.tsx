@@ -39,6 +39,20 @@ export const metadata: Metadata = {
     siteName: 'Baalvion',
     locale: 'en_US',
     type: 'website',
+    images: [
+      {
+        url: 'https://baalvion.com/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Baalvion Investor Relations',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Baalvion Investor Relations',
+    description: 'Engineering the backbone of global trade.',
+    creator: '@baalvion',
   },
   robots: {
     index: true,
@@ -68,6 +82,20 @@ export default function RootLayout({
     parentOrganization: {
       '@type': 'Organization',
       name: 'Baalvion Group',
+    },
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: 'Yeshwant Avenue Building, NX',
+      addressLocality: 'Virar',
+      addressRegion: 'Maharashtra',
+      postalCode: '401303',
+      addressCountry: 'IN',
+    },
+    contactPoint: {
+      '@type': 'ContactPoint',
+      telephone: '+91-8951284770',
+      contactType: 'Investor Relations',
+      email: 'invrel@baalvion.com',
     },
   };
 

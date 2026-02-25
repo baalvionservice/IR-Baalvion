@@ -1,145 +1,118 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { FileText } from 'lucide-react';
+import { FileText, ShieldCheck, Scale, Gavel, UserCheck } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export const metadata: Metadata = {
-    title: 'Governance Overview | Baalvion',
-    description: 'An overview of Baalvion\'s governance structure.',
+  title: 'Governance Overview | Corporate Governance',
+  description: 'Baalvion’s corporate governance framework supports sustainable financial performance and long-term value creation.',
 };
 
-const governanceDocuments = [
-    { title: 'Categorical Standards of Director Independence' },
-    { title: 'Code of Business Conduct and Ethics' },
-    { title: 'Code of Ethics for Chief Executive and Senior Financial Officers' },
-    { title: 'Corporate Governance Guidelines' },
-    { title: 'Lead Independent Director Guidelines' },
-];
-
-const committeeCharters = [
-    { title: 'Audit Committee' },
-    { title: 'Management Development & Compensation Committee' },
-    { title: 'Executive Committee' },
-    { title: 'Nominating and Governance Committee' },
-    { title: 'Risk Committee' },
-];
-
-const organizationalDocuments = [
-    { title: 'Amended and Restated Bylaws' },
-    { title: 'Restated Certificate of Incorporation' },
+const documents = [
+  { group: "Policies & Standards", items: [
+    { title: 'Categorical Standards of Director Independence', icon: UserCheck },
+    { title: 'Code of Business Conduct and Ethics', icon: ShieldCheck },
+    { title: 'Code of Ethics for Chief Executive and Senior Financial Officers', icon: ShieldCheck },
+    { title: 'Corporate Governance Guidelines', icon: Scale },
+    { title: 'Lead Independent Director Guidelines', icon: Gavel },
+  ]},
+  { group: "Committee Charters", items: [
+    { title: 'Audit Committee Charter', icon: FileText },
+    { title: 'Management Development & Compensation Committee Charter', icon: FileText },
+    { title: 'Executive Committee Charter', icon: FileText },
+    { title: 'Nominating and Governance Committee Charter', icon: FileText },
+    { title: 'Risk Committee Charter', icon: FileText },
+  ]},
+  { group: "Organizational Documents", items: [
+    { title: 'Amended and Restated Bylaws', icon: Scale },
+    { title: 'Restated Certificate of Incorporation', icon: Scale },
+  ]}
 ];
 
 export default function GovernanceOverviewPage() {
-    return (
-        <>
-            <section className="bg-black text-white py-12 md:py-20">
-                <div className="container mx-auto px-4 text-center">
-                    <p className="text-sm font-bold text-primary tracking-widest mb-2">GOVERNANCE</p>
-                    <h1 className="text-4xl md:text-5xl font-bold">Governance Overview</h1>
-                </div>
-            </section>
-            <section className="py-16 md:py-24 bg-white">
-                <div className="container mx-auto px-4 max-w-4xl text-black">
-                    <div>
-                        <h2 className="text-3xl font-bold mb-6 text-black">Company Overview</h2>
-                        <div className="space-y-6 text-gray-700">
-                            <p>
-                                Baalvion's corporate governance framework is a set of principles, guidelines and practices that support sustainable financial performance and value creation for our shareholders over the long-term. Our commitment to good corporate governance is integral to our business and reflects not only regulatory requirements, the NYSE listing standards and broadly recognized governance practices, but effective leadership and oversight by our senior management team and Board of Directors.
-                            </p>
-                            <p>
-                                We regularly conduct calls with our shareholders to solicit feedback on our corporate governance framework. We make an effort to incorporate this feedback through enhanced policies, processes and disclosure. Please see our Corporate Governance guidelines and our latest Proxy Statement for details on our corporate governance framework.
-                            </p>
-                            <p>
-                                If you are looking for <Link href="#" className="text-primary hover:underline">Investment Stewardship</Link> information, please click here.
-                            </p>
-                        </div>
+  return (
+    <div className="animate-in fade-in duration-700">
+      <section className="bg-black text-white py-16 md:py-24 border-b border-white/10">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl">
+            <p className="text-sm font-bold text-primary tracking-[0.2em] mb-4 uppercase">Governance</p>
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tighter">Governance Overview</h1>
+            <p className="mt-6 text-lg text-gray-400 leading-relaxed max-w-2xl">
+              Our commitment to effective leadership and transparent oversight is the cornerstone of our fiduciary responsibility to shareholders.
+            </p>
+          </div>
+        </div>
+      </section>
 
-                        <h2 className="text-3xl font-bold mt-16 mb-8 text-black">Governance Documents</h2>
+      <section className="py-20 bg-white text-black">
+        <div className="container mx-auto px-4">
+          <div className="grid lg:grid-cols-3 gap-16">
+            <div className="lg:col-span-2 space-y-12">
+              <div className="prose prose-lg max-w-none">
+                <h2 className="text-3xl font-bold mb-6">Corporate Framework</h2>
+                <p className="text-gray-700 leading-relaxed mb-6">
+                  Baalvion's corporate governance framework is a set of principles, guidelines and practices that support sustainable financial performance and value creation for our shareholders over the long-term. Our commitment to good corporate governance is integral to our business and reflects not only regulatory requirements, but effective leadership and oversight by our senior management team and Board of Directors.
+                </p>
+                <p className="text-gray-700 leading-relaxed">
+                  We regularly conduct calls with our shareholders to solicit feedback on our corporate governance framework. We make an effort to incorporate this feedback through enhanced policies, processes and disclosure.
+                </p>
+              </div>
+
+              <div className="space-y-16">
+                {documents.map((group) => (
+                  <div key={group.group}>
+                    <h3 className="text-xl font-bold mb-6 border-b border-gray-200 pb-4">{group.group}</h3>
+                    <div className="grid gap-4">
+                      {group.items.map((doc) => (
+                        <Link 
+                          key={doc.title} 
+                          href="#" 
+                          className="flex items-center justify-between p-6 bg-gray-50 border border-transparent hover:border-primary/20 hover:bg-gray-100 transition-all group"
+                        >
+                          <div className="flex items-center gap-4">
+                            <doc.icon className="h-5 w-5 text-primary" />
+                            <span className="font-bold text-sm tracking-tight">{doc.title}</span>
+                          </div>
+                          <FileText className="h-5 w-5 text-gray-300 group-hover:text-primary transition-colors" />
+                        </Link>
+                      ))}
                     </div>
+                  </div>
+                ))}
+              </div>
+            </div>
 
-                    <div className="border-t border-gray-200">
-                        {governanceDocuments.map((doc, index) => (
-                            <Link 
-                                key={index} 
-                                href="#" 
-                                className="flex justify-between items-center bg-gray-50 p-6 w-full hover:bg-gray-100 transition-colors border-b border-gray-200"
-                            >
-                                <span className="font-bold text-black">{doc.title}</span>
-                                <FileText className="h-6 w-6 text-primary" />
-                            </Link>
-                        ))}
-                    </div>
+            <aside className="space-y-8">
+              <Card className="bg-gray-50 border-none shadow-none rounded-none">
+                <CardHeader>
+                  <CardTitle className="text-lg">Contact the Board</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4 text-sm">
+                  <p className="text-gray-600">Correspondence may be sent to the Board of Directors c/o Corporate Communications:</p>
+                  <div className="font-bold">
+                    Baalvion, Inc.<br />
+                    50 Hudson Yards<br />
+                    New York, NY 10001
+                  </div>
+                  <p className="text-primary font-bold hover:underline cursor-pointer">Email: board@baalvion.com</p>
+                </CardContent>
+              </Card>
 
-                    <div className="mt-16">
-                        <h2 className="text-3xl font-bold mb-8 text-black">Committee Charters</h2>
-                        <div className="border-t border-gray-200">
-                            {committeeCharters.map((charter, index) => (
-                                <Link
-                                    key={index}
-                                    href="#"
-                                    className="flex justify-between items-center bg-gray-50 p-6 w-full hover:bg-gray-100 transition-colors border-b border-gray-200"
-                                >
-                                    <span className="font-bold text-black">{charter.title}</span>
-                                    <FileText className="h-6 w-6 text-primary" />
-                                </Link>
-                            ))}
-                        </div>
-                    </div>
-
-                    <div className="mt-16">
-                        <h2 className="text-3xl font-bold mb-8 text-black">Organizational Documents</h2>
-                        <div className="border-t border-gray-200">
-                            {organizationalDocuments.map((doc, index) => (
-                                <Link
-                                    key={index}
-                                    href="#"
-                                    className="flex justify-between items-center bg-gray-50 p-6 w-full hover:bg-gray-100 transition-colors border-b border-gray-200"
-                                >
-                                    <span className="font-bold text-black">{doc.title}</span>
-                                    <FileText className="h-6 w-6 text-primary" />
-                                </Link>
-                            ))}
-                        </div>
-                    </div>
-
-                    <div className="mt-16">
-                        <h2 className="text-3xl font-bold mb-8 text-black">Contact Our Board of Directors</h2>
-                        <div className="space-y-4 text-gray-700">
-                            <p>
-                                EMAIL: <a href="mailto:board@baalvion.com" className="text-primary hover:underline">board@baalvion.com</a>
-                            </p>
-                            <p>You may also send correspondence to our:</p>
-                            <address className="not-italic">
-                                Board of Directors c/o Corporate Communications Department<br />
-                                50 Hudson Yards<br />
-                                New York, NY 10001
-                            </address>
-                        </div>
-                    </div>
-
-                    <div className="mt-16">
-                        <h2 className="text-3xl font-bold mb-8 text-black">How to report concerns, complaints and potential illegal or unethical conduct</h2>
-                        <div className="space-y-6 text-gray-700">
-                            <p>
-                                Baalvion is committed to conducting its business activities in the highest ethical and professional manner and to achieving compliance with applicable laws, rules, regulations, accounting standards and controls and audit practices. As part of this commitment, Baalvion has adopted the Code of Business Conduct and Ethics, which sets out basic principles of conduct applicable to all employees, and numerous other policies and procedures designed to help us meet our legal, regulatory and ethical obligations.
-                            </p>
-                            <p>
-                                The Global Policy for Reporting Potential Illegal or Unethical Conduct requires that you report any concerns you may have about potential illegal or unethical conduct. You may report any such concerns to Legal & Compliance ("L&C") by contacting a Managing Director in L&C directly or via the Business Integrity Hotline or Business Integrity Reporting Website:
-                            </p>
-                            <ul className="list-disc list-inside pl-4 space-y-2">
-                                <li>Business Integrity Hotline</li>
-                                <li>Business Integrity Reporting Website</li>
-                            </ul>
-                            <p>
-                                The Business Integrity Hotline and the Business Integrity Reporting Website are administered on behalf of Baalvion by NAVEX Global, Inc. ("Navex"), an independent third party. Navex collects information and passes it to senior individuals within Baalvion L&C for handling and investigation. Navex does not use the personal data or other information collected for any other purpose.
-                            </p>
-                            <p>
-                                Reports, which may be made anonymously, are treated confidentially to the extent reasonably possible. Reports made in good faith may be made without fear of dismissal or retaliation of any kind. You may also report potential violations of law or regulation directly to a regulator or government authority.
-                            </p>
-                        </div>
-                    </div>
-
-                </div>
-            </section>
-        </>
-    );
+              <Card className="bg-black text-white border-none rounded-none">
+                <CardHeader>
+                  <CardTitle className="text-lg">Business Integrity</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4 text-sm">
+                  <p className="text-gray-400">Reports of potential illegal or unethical conduct may be made via our secure integrity hotline.</p>
+                  <Link href="#" className="inline-block text-primary font-bold hover:underline">
+                    Access Integrity Portal &gt;
+                  </Link>
+                </CardContent>
+              </Card>
+            </aside>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
 }
