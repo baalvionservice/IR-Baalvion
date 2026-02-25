@@ -135,7 +135,7 @@ export default function GovernanceIntelligencePage() {
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold">{voting.quorumComplianceRate}%</div>
-            <p className="text-xs text-muted-foreground mt-1">Target: > 85%</p>
+            <p className="text-xs text-muted-foreground mt-1">Target: &gt; 85%</p>
           </CardContent>
         </Card>
         <Card>
