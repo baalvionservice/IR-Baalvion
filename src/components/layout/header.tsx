@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, memo } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, Mountain, ChevronDown, Loader2, ShieldCheck, LogOut, LayoutDashboard, Bell } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -114,7 +114,10 @@ export default function Header() {
                   <Menu className="h-5 w-5" aria-hidden="true" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left" className="w-full sm:max-w-xs" aria-label="Mobile Navigation Menu">
+              <SheetContent side="left" className="w-full sm:max-w-xs">
+                  <SheetHeader className="sr-only">
+                    <SheetTitle>Mobile Navigation Menu</SheetTitle>
+                  </SheetHeader>
                   <div className="flex flex-col p-4 h-full">
                       <Link href="/" className="mb-8 flex items-center gap-2 font-bold" onClick={closeSheet}>
                           <Mountain className="h-6 w-6 text-primary" aria-hidden="true" />

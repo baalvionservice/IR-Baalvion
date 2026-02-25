@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useMemo } from "react";
@@ -13,7 +12,7 @@ import { CapitalFlowVisualization } from "@/components/capital-ops/CapitalFlowVi
 import { RoleSwitcher } from "@/components/capital-ops/RoleSwitcher";
 import { Landmark, ShieldCheck, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 
 export default function CapitalOperationsPage() {
   // --- STATE ---
@@ -130,6 +129,9 @@ export default function CapitalOperationsPage() {
                       </Button>
                     </SheetTrigger>
                     <SheetContent side="right" className="p-0 w-80">
+                      <SheetHeader className="sr-only">
+                        <SheetTitle>Capital Operations Activity Log</SheetTitle>
+                      </SheetHeader>
                       <ActivityLogPanel logs={logs} />
                     </SheetContent>
                   </Sheet>

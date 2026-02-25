@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useMemo } from "react";
@@ -27,7 +26,7 @@ import {
   Calendar
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { authService } from "@/core/services/auth.service";
 import { Badge } from "@/components/ui/badge";
 
@@ -95,6 +94,9 @@ export default function DataRoomPage() {
                       </Button>
                     </SheetTrigger>
                     <SheetContent side="right" className="p-0 w-80">
+                      <SheetHeader className="sr-only">
+                        <SheetTitle>Data Room Activity Log</SheetTitle>
+                      </SheetHeader>
                       <ActivityLogPanel logs={logs} />
                     </SheetContent>
                   </Sheet>
