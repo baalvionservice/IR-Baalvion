@@ -158,7 +158,7 @@ export const boardOfDirectors = [
 export const pressReleases = [
   {
     title: "Baalvion's Martin S. Small to Present at the 2026 Bank of America Securities Financial Services Conference on February 10th",
-    date: "Feb 2, 2026",
+    date: "Feb 02, 2026",
     link: "#",
   },
   {
@@ -167,9 +167,12 @@ export const pressReleases = [
     link: "#",
   },
   {
-    title: "Baalvion Reports Full Year 2025 Diluted EPS of $35.31; Fourth Quarter 2025 Diluted EPS of $7.16",
+    title: "Baalvion Reports Full Year 2025 Diluted EPS of $35.31, or $48.09 as adjusted; Fourth Quarter 2025 Diluted EPS of $7.16, or $13.16 as adjusted",
     date: "Jan 15, 2026",
     link: "#",
+    download: "#",
+    webcast: "#",
+    supplement: "#"
   },
 ];
 
