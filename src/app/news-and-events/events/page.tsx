@@ -1,14 +1,8 @@
 "use client";
 
-import type { Metadata } from 'next';
 import { Card } from '@/components/ui/card';
 import { Calendar } from '@/components/ui/calendar';
 import Link from 'next/link';
-
-export const metadata: Metadata = {
-    title: 'Events & Presentations | Baalvion',
-    description: 'Upcoming and past events and presentations from Baalvion.',
-};
 
 export default function EventsPage() {
     const scheduledEvent = new Date('2026-02-10T12:00:00Z');
