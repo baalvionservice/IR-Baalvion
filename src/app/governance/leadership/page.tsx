@@ -19,7 +19,7 @@ export default function LeadershipPage() {
             <section className="py-16 md:py-24 bg-white text-black">
                 <div className="container mx-auto px-4 max-w-4xl">
                     <div className="grid md:grid-cols-2 gap-x-12 gap-y-16">
-                        {leadershipTeam.map((member) => (
+                        {leadershipTeam.slice(0, 2).map((member) => (
                             <div key={member.name}>
                                 <div className="w-48 h-48 bg-gray-200 mb-6"></div>
                                 <h3 className="text-2xl font-bold">{member.name}</h3>
