@@ -34,6 +34,12 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 's24.q4cdn.com',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 };
