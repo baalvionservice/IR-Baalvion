@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { countries } from '@/lib/countries';
 
 // Note: Metadata is typically handled in a parent layout or server-side page file
 // for pages marked with "use client".
@@ -93,13 +94,11 @@ export default function WebcastPage() {
                                                     <SelectValue placeholder="-" />
                                                 </SelectTrigger>
                                                 <SelectContent>
-                                                    <SelectItem value="north-america">North America</SelectItem>
-                                                    <SelectItem value="europe">Europe</SelectItem>
-                                                    <SelectItem value="asia">Asia</SelectItem>
-                                                    <SelectItem value="south-america">South America</SelectItem>
-                                                    <SelectItem value="africa">Africa</SelectItem>
-                                                    <SelectItem value="australia">Australia</SelectItem>
-                                                    <SelectItem value="other">Other</SelectItem>
+                                                    {countries.map((country) => (
+                                                        <SelectItem key={country} value={country.toLowerCase().replace(/\s/g, '-')}>
+                                                            {country}
+                                                        </SelectItem>
+                                                    ))}
                                                 </SelectContent>
                                             </Select>
                                         </div>
