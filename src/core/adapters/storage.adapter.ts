@@ -4,36 +4,33 @@ import { ENV_CONFIG } from "@/config/environment";
 import { ApiResponse, ErrorCode } from "@/types/api.types";
 
 /**
- * Institutional-Grade Storage Adapter
- * Handles persistence with SSR safety and simulated network resilience.
+ * Production-Hardened Storage Adapter
+ * Handles persistence with strict SSR safety and non-deterministic logic isolation.
  */
 export class StorageAdapter {
-  private key: string;
+  private readonly key: string;
 
   constructor(domain: string) {
     this.key = `${ENV_CONFIG.storageKey}_${domain}`;
   }
 
-  /**
-   * Generates a request ID only when called, preventing SSR mismatches.
-   */
+  private isBrowser(): boolean {
+    return typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
+  }
+
   private generateRequestId(): string {
     return `req_${Math.random().toString(36).substring(2, 11)}`;
   }
 
-  /**
-   * Simulated network latency and failure. 
-   * Defer to useEffect to ensure browser-only execution.
-   */
   private async simulateNetwork(): Promise<void> {
-    if (typeof window === 'undefined') return;
+    if (!this.isBrowser()) return;
 
     if (ENV_CONFIG.enableMockLatency) {
       await new Promise(resolve => setTimeout(resolve, ENV_CONFIG.mockLatencyMs));
     }
 
     if (ENV_CONFIG.enableFailureSimulation) {
-      // 5% controlled failure rate for resilience testing
+      // Logic is client-only to prevent SSR hydration mismatches
       if (Math.random() < ENV_CONFIG.failureRate) {
         throw new Error("MOCK_NETWORK_TIMEOUT");
       }
@@ -55,59 +52,40 @@ export class StorageAdapter {
 
   async getAll<T>(): Promise<ApiResponse<T[]>> {
     try {
-      // Hydration safety: Return empty early if not in browser
-      if (typeof window === 'undefined') {
-        return this.wrapResponse([]);
-      }
+      if (!this.isBrowser()) return this.wrapResponse([]);
 
       await this.simulateNetwork();
       
       const raw = localStorage.getItem(this.key);
       const data = raw ? JSON.parse(raw) : [];
       
-      if (ENV_CONFIG.enableConsoleAudit) {
-        console.info(`[StorageAdapter] GET ALL from ${this.key}`, { count: data.length });
-      }
-
       return this.wrapResponse(data);
     } catch (e: any) {
-      console.error(`[StorageAdapter] GET ALL Failure: ${this.key}`, e);
       return this.wrapResponse([], false, { 
         code: 'NETWORK_ERROR', 
-        message: e.message === "MOCK_NETWORK_TIMEOUT" ? "Connection timed out. Please retry." : "A transient storage error occurred." 
+        message: e.message === "MOCK_NETWORK_TIMEOUT" ? "Connection timed out. Please retry." : "Storage access error." 
       });
     }
   }
 
   async saveAll<T>(data: T[]): Promise<ApiResponse<boolean>> {
     try {
-      if (typeof window === 'undefined') return this.wrapResponse(false);
+      if (!this.isBrowser()) return this.wrapResponse(false);
       
       await this.simulateNetwork();
       localStorage.setItem(this.key, JSON.stringify(data));
-      
-      if (ENV_CONFIG.enableConsoleAudit) {
-        console.info(`[StorageAdapter] PERSISTED to ${this.key}`);
-      }
-
       return this.wrapResponse(true);
     } catch (e: any) {
-      return this.wrapResponse(false, false, { code: 'UNKNOWN_ERROR', message: "Failed to persist data to local storage." });
+      return this.wrapResponse(false, false, { code: 'UNKNOWN_ERROR', message: "Failed to persist data." });
     }
   }
 
-  /**
-   * Defensive initialization to prevent 'empty site' state on first run.
-   */
   async initialize<T>(defaultData: T[]): Promise<void> {
-    if (typeof window === 'undefined') return;
+    if (!this.isBrowser()) return;
     
     const existing = localStorage.getItem(this.key);
     if (!existing || existing === '[]') {
       localStorage.setItem(this.key, JSON.stringify(defaultData));
-      if (ENV_CONFIG.enableConsoleAudit) {
-        console.info(`[StorageAdapter] SEEDED ${this.key} with mock dataset.`);
-      }
     }
   }
 }

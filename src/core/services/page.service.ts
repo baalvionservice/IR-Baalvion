@@ -8,19 +8,27 @@ import { ApiResponse } from "@/types/api.types";
 
 export const pageService = {
   getPageBySlug: async (slug: string): Promise<ApiResponse<PageDefinition | null>> => {
+    // Ensure sequential initialization to prevent racing
     const { role } = await authService.getCurrentUser();
     const response = await pageRepository.findBySlug(slug);
 
     if (response.success && response.data) {
       const page = response.data;
-      // Filter live sections based on role
+      
+      // Strict role-based section filtration logic
+      const filteredSections = page.sections
+        .filter(s => s.isActive && authService.hasAccess(s.roles, role))
+        .sort((a, b) => a.order - b.order);
+
       const filteredPage: PageDefinition = {
         ...page,
-        sections: page.sections
-          .filter(s => s.isActive && authService.hasAccess(s.roles, role))
-          .sort((a, b) => a.order - b.order)
+        sections: filteredSections
       };
-      return { ...response, data: filteredPage };
+
+      return { 
+        ...response, 
+        data: filteredSections.length > 0 ? filteredPage : null 
+      };
     }
 
     return response;
@@ -38,7 +46,7 @@ export const pageService = {
       workflowStatus: 'Draft' as WorkflowStatus
     });
 
-    if (response.success) {
+    if (response.success && response.data) {
       await auditService.log({
         userRole: role,
         module: 'Pages',
@@ -60,13 +68,18 @@ export const pageService = {
     
     if (!page) return;
 
-    const updates = {
+    const updatedVersion = (page.currentVersion || 0) + 1;
+    const updates: Partial<PageDefinition> = {
       workflowStatus: 'Published' as WorkflowStatus,
       status: 'Published' as 'Published',
-      currentVersion: page.currentVersion + 1,
+      currentVersion: updatedVersion,
       versionHistory: [
-        ...page.versionHistory,
-        { version: page.currentVersion + 1, author: role, timestamp: new Date().toISOString() }
+        ...(page.versionHistory || []),
+        { 
+          version: updatedVersion, 
+          author: role, 
+          timestamp: new Date().toISOString() 
+        }
       ]
     };
 

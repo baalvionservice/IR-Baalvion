@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { cn } from '@/lib/utils';
@@ -6,24 +6,51 @@ import { Toaster } from '@/components/ui/toaster';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 import QuickLinksSection from '@/components/sections/quick-links-section';
+import Script from 'next/script';
 
 const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-inter',
+  preload: true,
 });
+
+export const viewport: Viewport = {
+  themeColor: '#18181b',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+};
 
 export const metadata: Metadata = {
   title: {
-    default: 'Baalvion | Investor Relations',
+    default: 'Baalvion | Institutional Investor Relations',
     template: '%s | Baalvion',
   },
-  description: 'Institutional-Grade Investor Relations Platform. Engineering the backbone of global B2B trade.',
-  keywords: ['Baalvion', 'Investor Relations', 'B2B Trade', 'Logistics', 'Finance', 'Governance'],
-  authors: [{ name: 'Baalvion Corporate Communications' }],
-  viewport: 'width=device-width, initial-scale=1',
-  robots: 'index, follow',
+  description: 'The global operating system for B2B trade infrastructure. Access performance reports, board resolutions, and strategic materials.',
   metadataBase: new URL('https://baalvion.com'),
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    title: 'Baalvion Investor Relations',
+    description: 'Engineering the backbone of global trade.',
+    url: 'https://baalvion.com',
+    siteName: 'Baalvion',
+    locale: 'en_US',
+    type: 'website',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 };
 
 export default function RootLayout({
@@ -31,13 +58,27 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FinancialService',
+    name: 'Baalvion Investor Relations',
+    url: 'https://baalvion.com',
+    logo: 'https://baalvion.com/logo.png',
+    description: 'Institutional-grade investment and infrastructure management.',
+    parentOrganization: {
+      '@type': 'Organization',
+      name: 'Baalvion Group',
+    },
+  };
+
   return (
     <html lang="en" className={cn('dark', inter.variable)}>
-      <body
-        className={cn(
-          'min-h-screen bg-background font-body antialiased'
-        )}
-      >
+      <body className="min-h-screen bg-background font-body antialiased selection:bg-primary/30">
+        <Script
+          id="structured-data"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <Header />
         <div className="flex min-h-screen flex-col">
           {children}

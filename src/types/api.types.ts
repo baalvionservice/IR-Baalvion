@@ -2,10 +2,10 @@ export interface ApiResponse<T> {
   success: boolean;
   data?: T;
   error?: {
-    code: string;
+    code: ErrorCode;
     message: string;
   };
-  meta?: {
+  meta: {
     timestamp: number;
     requestId: string;
     environment: string;
@@ -18,4 +18,5 @@ export type ErrorCode =
   | 'VALIDATION_FAILED'
   | 'NETWORK_ERROR'
   | 'SESSION_EXPIRED'
-  | 'UNKNOWN_ERROR';
+  | 'UNKNOWN_ERROR'
+  | 'STORAGE_UNAVAILABLE';
