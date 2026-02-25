@@ -13,11 +13,17 @@ export type UserRole =
   | 'P3Operator'
   | 'BoardMember';
 
-export type ModuleName = 'Navigation' | 'Pages' | 'DataRoom' | 'Dashboard' | 'Governance' | 'AuditLogs' | 'Settings' | 'Workflow';
+export type ModuleName = 'Navigation' | 'Pages' | 'DataRoom' | 'Dashboard' | 'Governance' | 'AuditLogs' | 'Settings' | 'Workflow' | 'Voting' | 'BoardMaterials';
 
-export type ActionType = 'view' | 'create' | 'edit' | 'delete' | 'reorder' | 'publish' | 'upload' | 'manage' | 'configure' | 'approve' | 'reject' | 'requestReview';
+export type ActionType = 'view' | 'create' | 'edit' | 'delete' | 'reorder' | 'publish' | 'upload' | 'manage' | 'configure' | 'approve' | 'reject' | 'requestReview' | 'vote';
 
 export type WorkflowStatus = 'Draft' | 'InReview' | 'Approved' | 'Published' | 'Archived' | 'Rejected';
+
+export type VoteStatus = 'Draft' | 'Open' | 'Closed' | 'Archived' | 'Invalid';
+
+export type VoteChoice = 'Approve' | 'Reject' | 'Abstain';
+
+export type BoardMaterialClassification = 'BoardOnly' | 'CommitteeOnly' | 'Confidential';
 
 export interface Permission {
   module: ModuleName;
@@ -74,6 +80,45 @@ export interface PageDefinition {
     description: string;
     keywords?: string[];
   };
+}
+
+export interface VoteRecord {
+  voterId: string;
+  voterRole: UserRole;
+  choice: VoteChoice;
+  timestamp: string;
+}
+
+export interface Vote {
+  id: string;
+  title: string;
+  description: string;
+  resolutionText: string;
+  createdByRole: UserRole;
+  eligibleRoles: UserRole[];
+  status: VoteStatus;
+  startDate: string;
+  endDate: string;
+  votes: VoteRecord[];
+  results?: {
+    approve: number;
+    reject: number;
+    abstain: number;
+    participationRate: number;
+    isQuorumMet: boolean;
+  };
+  versionHistory: VersionInfo[];
+}
+
+export interface BoardMaterial {
+  id: string;
+  title: string;
+  meetingDate: string;
+  classification: BoardMaterialClassification;
+  relatedVotes: string[]; // Vote IDs
+  documentIds: string[]; // Reference to Data Room files
+  workflowStatus: WorkflowStatus;
+  versionHistory: VersionInfo[];
 }
 
 export interface AuditLogEntry {

@@ -18,7 +18,9 @@ import {
   ChevronLeft,
   ChevronRight,
   Activity,
-  GitPullRequest
+  GitPullRequest,
+  Gavel,
+  Briefcase
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -29,6 +31,8 @@ const menuItems = [
   { icon: GitPullRequest, label: "Review Queue", href: "/admin/review-queue" },
   { icon: Navigation, label: "Navigation Manager", href: "/admin/navigation" },
   { icon: FileText, label: "Page Manager", href: "/admin/pages" },
+  { icon: Gavel, label: "Voting Manager", href: "/admin/voting" },
+  { icon: Briefcase, label: "Board Materials", href: "/admin/board-materials" },
   { icon: Layers, label: "Dashboard Modules", href: "/admin/dashboards" },
   { icon: FolderTree, label: "Data Room Manager", href: "/admin/dataroom" },
   { icon: ShieldCheck, label: "Governance Manager", href: "/admin/governance" },
@@ -62,7 +66,7 @@ export function Sidebar() {
         </Button>
       </div>
 
-      <nav className="flex-1 p-4 space-y-2">
+      <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
         {menuItems.map((item) => (
           <Link
             key={item.href}
