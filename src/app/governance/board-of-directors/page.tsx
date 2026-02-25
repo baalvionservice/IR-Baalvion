@@ -1,13 +1,15 @@
-import type { Metadata } from 'next';
+"use client";
+
+import { useState } from 'react';
 import Link from 'next/link';
 import { boardOfDirectors } from '@/lib/data';
+import BoardMemberBioDialog from '@/components/shared/BoardMemberBioDialog';
 
-export const metadata: Metadata = {
-    title: 'Board of Directors | Baalvion',
-    description: 'Information about Baalvion\'s Board of Directors.',
-};
+type BoardMember = (typeof boardOfDirectors)[0];
 
 export default function BoardOfDirectorsPage() {
+    const [selectedMember, setSelectedMember] = useState<BoardMember | null>(null);
+
     return (
         <>
             <section className="bg-black text-white py-12 md:py-20">
@@ -26,15 +28,24 @@ export default function BoardOfDirectorsPage() {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-16 max-w-7xl mx-auto">
                         {boardOfDirectors.map((member) => (
-                            <div key={member.name} className="text-center flex flex-col items-center">
-                                <div className="w-[150px] h-[150px] bg-gray-200 rounded-full mb-4"></div>
-                                <h3 className="text-lg font-bold">{member.name}</h3>
+                            <div 
+                                key={member.name} 
+                                className="text-center flex flex-col items-center cursor-pointer group"
+                                onClick={() => setSelectedMember(member)}
+                            >
+                                <div className="w-[150px] h-[150px] bg-gray-200 rounded-full mb-4 group-hover:ring-4 ring-primary/50 transition-all duration-300"></div>
+                                <h3 className="text-lg font-bold group-hover:text-primary transition-colors">{member.name}</h3>
                                 <p className="text-sm text-gray-600 mt-1">{member.title}</p>
                             </div>
                         ))}
                     </div>
                 </div>
             </section>
+            <BoardMemberBioDialog
+                isOpen={!!selectedMember}
+                onOpenChange={() => setSelectedMember(null)}
+                member={selectedMember}
+            />
         </>
     );
 }

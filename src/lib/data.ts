@@ -11,12 +11,6 @@ export const leadershipTeam = [
       bio: "Adarsh leads Baalvion's strategic execution and day-to-day operations. With a background in corporate strategy and finance, he is focused on scaling the company and delivering value to our stakeholders.",
       imageId: "executive-1-photo",
     },
-    {
-      name: "Kenji Tanaka",
-      title: "Chief Technology Officer",
-      bio: "A leading expert in distributed systems and AI, Kenji architected our core platform. His work focuses on building a secure, scalable, and resilient technology backbone capable of handling the complexities of modern global trade.",
-      imageId: "executive-2-photo",
-    },
   ];
 
 export const globalLeaders = [
@@ -76,54 +70,62 @@ export const boardOfDirectors = [
   {
     name: "Laurence D. Fink",
     title: "Chairman and CEO of BlackRock",
-    imageId: "bod-1"
+    imageId: "bod-1",
+    bio: "Mr. Fink is founder, Chairman and Chief Executive Officer of BlackRock. He also leads the firm's Global Executive Committee. He is responsible for senior leadership development and succession planning, defining and reinforcing BlackRock's vision and culture, and engaging relationships with key strategic clients, industry leaders, regulators and policy makers. Mr. Fink co-founded BlackRock in 1988, and under his leadership, the firm has grown into a global leader in investment management, risk management and advisory services for institutional and retail clients."
   },
   {
     name: "Pamela Daley",
     title: "Former Senior Vice President of Corporate Business Development of General Electric Company",
-    imageId: "bod-2"
+    imageId: "bod-2",
+    bio: "Pamela Daley brings a wealth of experience in corporate governance and strategic transactions. Her expertise guides our approach to long-term value creation and sustainable business practices. She has served on multiple public company boards."
   },
   {
     name: "Gregory J. Fleming",
     title: "President and CEO of Rockefeller Capital Management",
-    imageId: "bod-3"
+    imageId: "bod-3",
+    bio: "Gregory J. Fleming has a distinguished career in the financial services industry. His leadership in wealth and asset management provides invaluable insight into our strategic growth and client service initiatives."
   },
   {
     name: "William E. Ford",
     title: "Chairman and CEO of General Atlantic",
-    imageId: "bod-4"
+    imageId: "bod-4",
+    bio: "As a leader in global growth equity, William E. Ford offers deep expertise in identifying and nurturing high-potential companies. His perspective is crucial for our technology and market expansion strategies."
   },
   {
     name: "Fabrizio Freda",
     title: "Former President and CEO of the Estée Lauder Companies Inc",
-    imageId: "bod-5"
+    imageId: "bod-5",
+    bio: "Fabrizio Freda's extensive background in global brand management and consumer markets provides critical insights into our customer-centric strategies and international growth ambitions."
   },
   {
     name: "Murry S. Gerber",
     title: "LEAD INDEPENDENT DIRECTOR, Former Chairman and CEO of EQT",
-    imageId: "bod-6"
+    imageId: "bod-6",
+    bio: "As Lead Independent Director, Murry S. Gerber ensures robust governance and board oversight. His experience in the energy sector and as a public company CEO provides strong leadership for the board."
   },
   {
     name: "Margaret \"Peggy\" L. Johnson",
     title: "CEO of Agility Robotics",
-    imageId: "bod-7"
+    imageId: "bod-7",
+    bio: "Margaret L. Johnson is at the forefront of technological innovation in robotics and AI. Her expertise helps steer our strategy in acquiring and integrating cutting-edge technologies into our platform."
   },
   {
     name: "Robert S. Kapito",
     title: "President of BlackRock",
-    imageId: "bod-8"
+    imageId: "bod-8",
+    bio: "Robert S. Kapito's deep understanding of global markets and risk management is fundamental to our firm's strategy. He plays a key role in our client relationships and operational excellence."
   },
-  { name: 'Bader M. Al-Saad', title: 'Director General and Chairman of the Board of Arab Fund for Economic and Social Development', imageId: 'bod-9' },
-  { name: 'Mathis Cabiallavetta', title: 'Former Vice Chairman of Swiss Re Ltd.', imageId: 'bod-10' },
-  { name: 'Susan Chan', title: 'Head of Asia Pacific', imageId: 'bod-11' },
-  { name: 'William C. Dudley', title: 'Former President and CEO of the Federal Reserve Bank of New York', imageId: 'bod-12' },
-  { name: 'Kristin C. Peck', title: 'CEO of Zoetis Inc.', imageId: 'bod-13' },
-  { name: 'Charles H. Robbins', title: 'Chairman and CEO of Cisco Systems, Inc.', imageId: 'bod-14' },
-  { name: 'Hans E. Vestberg', title: 'Chairman and CEO of Verizon Communications Inc.', imageId: 'bod-15' },
-  { name: 'Susan Wagner', title: 'Co-founder of BlackRock, Inc.', imageId: 'bod-16' },
-  { name: 'Mark Wilson', title: 'Former CEO of Aviva plc', imageId: 'bod-17' },
-  { name: 'Jessica Uhl', title: 'Former CFO of Shell plc', imageId: 'bod-18' },
-  { name: 'John S. Weinberg', title: 'Chairman and CEO of Evercore Inc.', imageId: 'bod-19' },
+  { name: 'Bader M. Al-Saad', title: 'Director General and Chairman of the Board of Arab Fund for Economic and Social Development', imageId: 'bod-9', bio: "Bader M. Al-Saad's international experience in economic development and investment provides a global perspective on our market strategies and partnerships, particularly in emerging economies." },
+  { name: 'Mathis Cabiallavetta', title: 'Former Vice Chairman of Swiss Re Ltd.', imageId: 'bod-10', bio: "Mathis Cabiallavetta's extensive experience in the insurance and risk management industries is invaluable to our comprehensive risk assessment and mitigation frameworks." },
+  { name: 'Susan Chan', title: 'Head of Asia Pacific', imageId: 'bod-11', bio: "Susan Chan's leadership and deep knowledge of the Asia Pacific markets are critical to our expansion and operational success in this key growth region." },
+  { name: 'William C. Dudley', title: 'Former President and CEO of the Federal Reserve Bank of New York', imageId: 'bod-12', bio: "William C. Dudley offers unparalleled expertise in economic policy and financial stability. His guidance helps us navigate complex regulatory and macroeconomic landscapes." },
+  { name: 'Kristin C. Peck', title: 'CEO of Zoetis Inc.', imageId: 'bod-13', bio: "Kristin C. Peck's leadership in the global animal health industry brings a unique perspective on supply chains and international business operations." },
+  { name: 'Charles H. Robbins', title: 'Chairman and CEO of Cisco Systems, Inc.', imageId: 'bod-14', bio: "Charles H. Robbins is a leader in digital transformation and networking technology. His insights are vital to building our secure and scalable global trade platform." },
+  { name: 'Hans E. Vestberg', title: 'Chairman and CEO of Verizon Communications Inc.', imageId: 'bod-15', bio: "Hans E. Vestberg's expertise in telecommunications and technology infrastructure is crucial for developing the robust, connected ecosystem that underpins Baalvion's vision." },
+  { name: 'Susan Wagner', title: 'Co-founder of BlackRock, Inc.', imageId: 'bod-16', bio: "As a co-founder of a leading global investment firm, Susan Wagner's entrepreneurial and strategic vision is a cornerstone of our board's advisory strength." },
+  { name: 'Mark Wilson', title: 'Former CEO of Aviva plc', imageId: 'bod-17', bio: "Mark Wilson's experience leading a multinational insurance company provides deep insights into risk management, capital allocation, and international financial services." },
+  { name: 'Jessica Uhl', title: 'Former CFO of Shell plc', imageId: 'bod-18', bio: "Jessica Uhl's background as CFO of a global energy company brings rigorous financial discipline and strategic capital management expertise to our board." },
+  { name: 'John S. Weinberg', title: 'Chairman and CEO of Evercore Inc.', imageId: 'bod-19', bio: "John S. Weinberg's extensive career in investment banking provides expert guidance on our M&A strategy, capital markets activities, and long-term financial planning." },
 ];
   
   export const newsArticles = [
