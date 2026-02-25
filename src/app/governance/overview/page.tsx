@@ -1,9 +1,19 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
+import { FileText } from 'lucide-react';
 
 export const metadata: Metadata = {
     title: 'Governance Overview | Baalvion',
     description: 'An overview of Baalvion\'s governance structure.',
 };
+
+const governanceDocuments = [
+    { title: 'Categorical Standards of Director Independence' },
+    { title: 'Code of Business Conduct and Ethics' },
+    { title: 'Code of Ethics for Chief Executive and Senior Financial Officers' },
+    { title: 'Corporate Governance Guidelines' },
+    { title: 'Lead Independent Director Guidelines' },
+];
 
 export default function GovernanceOverviewPage() {
     return (
@@ -15,9 +25,36 @@ export default function GovernanceOverviewPage() {
                 </div>
             </section>
             <section className="py-16 md:py-24 bg-white">
-                <div className="container mx-auto px-4 text-center text-black">
-                    <h2 className="text-2xl font-bold">Content Coming Soon</h2>
-                    <p className="text-gray-600 mt-4">Details about our governance overview will be listed here.</p>
+                <div className="container mx-auto px-4 max-w-4xl text-black">
+                    <div>
+                        <h2 className="text-3xl font-bold mb-6">Company Overview</h2>
+                        <div className="space-y-6 text-gray-700">
+                            <p>
+                                Baalvion's corporate governance framework is a set of principles, guidelines and practices that support sustainable financial performance and value creation for our shareholders over the long-term. Our commitment to good corporate governance is integral to our business and reflects not only regulatory requirements, the NYSE listing standards and broadly recognized governance practices, but effective leadership and oversight by our senior management team and Board of Directors.
+                            </p>
+                            <p>
+                                We regularly conduct calls with our shareholders to solicit feedback on our corporate governance framework. We make an effort to incorporate this feedback through enhanced policies, processes and disclosure. Please see our Corporate Governance guidelines and our latest Proxy Statement for details on our corporate governance framework.
+                            </p>
+                            <p>
+                                If you are looking for <Link href="#" className="text-primary hover:underline">Investment Stewardship</Link> information, please click here.
+                            </p>
+                        </div>
+
+                        <h2 className="text-3xl font-bold mt-16 mb-8">Governance Documents</h2>
+                    </div>
+
+                    <div className="border-t border-gray-200">
+                        {governanceDocuments.map((doc, index) => (
+                            <Link 
+                                key={index} 
+                                href="#" 
+                                className="flex justify-between items-center bg-gray-50 p-5 w-full hover:bg-gray-100 transition-colors border-b border-gray-200"
+                            >
+                                <span className="font-semibold text-gray-900">{doc.title}</span>
+                                <FileText className="h-6 w-6 text-primary" />
+                            </Link>
+                        ))}
+                    </div>
                 </div>
             </section>
         </>
