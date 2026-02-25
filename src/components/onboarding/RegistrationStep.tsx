@@ -1,6 +1,6 @@
-
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -25,12 +25,36 @@ const schema = z.object({
 });
 
 export function RegistrationStep({ onNext }: { onNext: (data: any) => void }) {
+  const [mounted, setMounted] = useState(false);
   const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm({
     resolver: zodResolver(schema),
     defaultValues: { investorType: 'individual' }
   });
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const investorType = watch('investorType');
+
+  if (!mounted) {
+    return (
+      <div className="animate-pulse">
+        <CardHeader className="text-center border-b border-border/50 pb-8">
+          <div className="h-8 w-48 bg-muted mx-auto rounded mb-2" />
+          <div className="h-4 w-64 bg-muted mx-auto rounded" />
+        </CardHeader>
+        <CardContent className="p-8 space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="h-10 bg-muted rounded" />
+            <div className="h-10 bg-muted rounded" />
+          </div>
+          <div className="h-10 bg-muted rounded w-full" />
+          <div className="h-12 bg-muted rounded w-full mt-4" />
+        </CardContent>
+      </div>
+    );
+  }
 
   return (
     <form onSubmit={handleSubmit(onNext)} suppressHydrationWarning>
