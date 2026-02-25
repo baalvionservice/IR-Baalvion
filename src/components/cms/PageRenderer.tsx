@@ -19,14 +19,16 @@ export default function PageRenderer({ page }: PageRendererProps) {
           return null;
         }
 
-        // Pass any specific content or props from the schema
-        const props = {
-          key: section.id,
-          id: section.content.anchor || section.id,
-          ...section.content
+        // Pass any specific content or props from the schema.
+        // The 'key' prop must be passed directly to JSX, not via spread.
+        const { anchor, ...contentProps } = section.content || {};
+        
+        const componentProps = {
+          id: anchor || section.id,
+          ...contentProps
         };
 
-        return <Component {...props} />;
+        return <Component key={section.id} {...componentProps} />;
       })}
     </>
   );
