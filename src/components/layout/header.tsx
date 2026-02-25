@@ -33,8 +33,10 @@ export default function Header() {
   const loadNavigation = async () => {
     const { role } = await authService.getCurrentUser();
     setUserRole(role);
-    const items = await navigationService.getNavigation();
-    setNavItems(items);
+    const response = await navigationService.getNavigation();
+    if (response.success) {
+      setNavItems(response.data || []);
+    }
   };
 
   useEffect(() => {
@@ -45,7 +47,6 @@ export default function Header() {
     window.addEventListener("scroll", handleScroll);
     loadNavigation();
 
-    // Listen for role changes simulation
     window.addEventListener('storage', loadNavigation);
     
     return () => {
@@ -64,8 +65,6 @@ export default function Header() {
 
   const onModalClose = () => {
     setIsModalOpen(false);
-    // Role change is handled by authService within components sometimes, 
-    // but here we just refresh navigation.
     loadNavigation();
   }
 

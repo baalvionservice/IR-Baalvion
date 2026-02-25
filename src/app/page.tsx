@@ -5,23 +5,36 @@ import { pageService } from '@/core/services/page.service';
 import { PageDefinition } from '@/core/content/schemas';
 import PageRenderer from '@/components/cms/PageRenderer';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useToast } from '@/hooks/use-toast';
 
 export default function Home() {
   const [pageData, setPageData] = useState<PageDefinition | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
 
   useEffect(() => {
     const loadPage = async () => {
-      const data = await pageService.getPageBySlug('/');
-      setPageData(data);
+      setIsLoading(true);
+      const response = await pageService.getPageBySlug('/');
+      
+      if (response.success) {
+        setPageData(response.data || null);
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Network Error",
+          description: response.error?.message || "Failed to load page content."
+        });
+      }
       setIsLoading(false);
     };
+
     loadPage();
     
     // Refresh if role changes
     window.addEventListener('storage', loadPage);
     return () => window.removeEventListener('storage', loadPage);
-  }, []);
+  }, [toast]);
 
   if (isLoading) {
     return (
@@ -36,7 +49,11 @@ export default function Home() {
     );
   }
 
-  if (!pageData) return null;
+  if (!pageData) return (
+    <div className="flex items-center justify-center min-h-[60vh] text-muted-foreground">
+      Page not found.
+    </div>
+  );
 
   return (
     <main className="flex-grow">
