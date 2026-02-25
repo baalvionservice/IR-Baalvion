@@ -48,18 +48,18 @@ export const leadershipTeam = [
 
 export const pressReleases = [
   {
-    title: "Baalvion's CFO Isabella Rossi to Speak at the Global Finance Leadership Conference on March 5th",
-    date: "Feb 15, 2024",
+    title: "Baalvion's Martin S. Small to Present at the 2026 Bank of America Securities Financial Services Conference on February 10th",
+    date: "Feb 2, 2026",
     link: "#",
   },
   {
-    title: "Baalvion Appoints Tech Veteran Kenji Tanaka to Board of Directors",
-    date: "Jan 30, 2024",
+    title: "Baalvion Elects Gregg Lemkau to Board of Directors",
+    date: "Jan 27, 2026",
     link: "#",
   },
   {
-    title: "Baalvion Reports Record Growth in Q4 2023, Exceeding All Projections",
-    date: "Jan 18, 2024",
+    title: "Baalvion Reports Full Year 2025 Diluted EPS of $35.31; Fourth Quarter 2025 Diluted EPS of $7.16",
+    date: "Jan 15, 2026",
     link: "#",
   },
 ];
