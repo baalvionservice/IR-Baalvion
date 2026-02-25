@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { pageService } from "@/core/services/page.service";
-import { workflowService } from "@/core/services/workflow.service";
 import { PageDefinition, UserRole } from "@/core/content/schemas";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -20,10 +19,12 @@ export default function ReviewQueuePage() {
 
   const loadData = async () => {
     setIsLoading(true);
-    const [pages, { role }] = await Promise.all([
+    const [pagesResponse, { role }] = await Promise.all([
       pageService.getAllPages(),
       authService.getCurrentUser()
     ]);
+    
+    const pages = pagesResponse.data || [];
     setPendingPages(pages.filter(p => p.workflowStatus === 'InReview'));
     setUserRole(role);
     setIsLoading(false);

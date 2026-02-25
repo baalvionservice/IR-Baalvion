@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Activity, FileText, Navigation, Shield, Database, CheckCircle2, AlertCircle, GitPullRequest, Gavel, Briefcase, Bell, Users, FileBarChart } from "lucide-react";
+import { Activity, Shield, Gavel, Bell, FileBarChart } from "lucide-react";
 import { pageService } from "@/core/services/page.service";
 import { navigationService } from "@/core/services/navigation.service";
 import { auditService } from "@/core/services/audit.service";
@@ -29,7 +29,7 @@ export default function SystemDashboardPage() {
 
   const loadSystemState = async () => {
     setIsLoading(true);
-    const [pages, navItems, logs, votes, materials, notifs, subs, reports] = await Promise.all([
+    const [pagesRes, navItems, logs, votes, materials, notifs, subs, reports] = await Promise.all([
       pageService.getAllPages(),
       navigationService.getAllItems(),
       auditService.getLogs({ limit: 10 }),
@@ -39,6 +39,8 @@ export default function SystemDashboardPage() {
       subscriptionService.getSubscribers(),
       reportingService.getAllReports()
     ]);
+
+    const pages = pagesRes.data || [];
 
     const countActiveNav = (items: any[]): number => 
       items.reduce((acc, item) => acc + (item.isActive ? 1 : 0) + (item.children ? countActiveNav(item.children) : 0), 0);

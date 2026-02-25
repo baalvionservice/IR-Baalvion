@@ -2,11 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { pageService } from "@/core/services/page.service";
-import { PageDefinition, PageSection } from "@/core/content/schemas";
+import { PageDefinition } from "@/core/content/schemas";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
 import { Edit3, Eye, MoreHorizontal, Layout, Search, Plus } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -22,8 +21,8 @@ export default function PageManagerPage() {
   const [search, setSearch] = useState("");
 
   const loadPages = async () => {
-    const data = await pageService.getAllPages();
-    setPages(data);
+    const response = await pageService.getAllPages();
+    setPages(response.data || []);
   };
 
   useEffect(() => {
