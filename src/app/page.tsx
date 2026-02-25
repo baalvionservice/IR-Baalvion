@@ -4,7 +4,6 @@ import HeroSection from '@/components/sections/hero-section';
 import NewsSection from '@/components/sections/news-section';
 import OverviewSection from '@/components/sections/overview-section';
 import PressReleasesSection from '@/components/sections/press-releases-section';
-import QuickLinksSection from '@/components/sections/quick-links-section';
 import QuarterlyResultsSection from '@/components/sections/quarterly-results-section';
 import RiskSection from '@/components/sections/risk-section';
 import ThesisSection from '@/components/sections/thesis-section';
@@ -27,7 +26,6 @@ export default function Home() {
         <ContactSection id="contact" />
         <RiskSection id="risk" />
       </div>
-      <QuickLinksSection />
     </main>
   );
 }

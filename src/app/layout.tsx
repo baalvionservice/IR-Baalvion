@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
+import QuickLinksSection from '@/components/sections/quick-links-section';
 
 export const metadata: Metadata = {
   title: 'Baalvion | Investor Relations',
@@ -34,6 +35,7 @@ export default function RootLayout({
         <div className="flex min-h-screen flex-col">
           {children}
         </div>
+        <QuickLinksSection />
         <Footer />
         <Toaster />
       </body>
