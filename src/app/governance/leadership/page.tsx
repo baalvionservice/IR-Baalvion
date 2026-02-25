@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
+import { leadershipTeam } from '@/lib/data';
 
 export const metadata: Metadata = {
     title: 'Leadership | Baalvion',
@@ -9,15 +11,25 @@ export default function LeadershipPage() {
     return (
         <>
             <section className="bg-black text-white py-12 md:py-20">
-                <div className="container mx-auto px-4 text-center">
-                    <p className="text-sm font-bold text-primary tracking-widest mb-2">GOVERNANCE</p>
-                    <h1 className="text-4xl md:text-5xl font-bold">Leadership</h1>
+                <div className="container mx-auto px-4 text-left max-w-4xl">
+                    <p className="text-sm font-bold text-primary tracking-widest mb-2">ABOUT US</p>
+                    <h1 className="text-4xl md:text-5xl font-bold">The Global Executive Committee</h1>
                 </div>
             </section>
-            <section className="py-16 md:py-24 bg-white">
-                <div className="container mx-auto px-4 text-center text-black">
-                    <h2 className="text-2xl font-bold">Content Coming Soon</h2>
-                    <p className="text-gray-600 mt-4">Details about our leadership will be listed here.</p>
+            <section className="py-16 md:py-24 bg-white text-black">
+                <div className="container mx-auto px-4 max-w-4xl">
+                    <div className="grid md:grid-cols-2 gap-x-12 gap-y-16">
+                        {leadershipTeam.map((member) => (
+                            <div key={member.name}>
+                                <div className="w-48 h-48 bg-gray-200 mb-6"></div>
+                                <h3 className="text-2xl font-bold">{member.name}</h3>
+                                <p className="text-base text-gray-500">{member.title}</p>
+                                <Link href="#" className="text-sm font-bold text-primary hover:underline flex items-center mt-4">
+                                    <span className="mr-2">&gt;</span> Read {member.name.split(' ')[0]}'s bio
+                                </Link>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </section>
         </>
