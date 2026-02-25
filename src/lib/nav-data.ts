@@ -53,6 +53,11 @@ export const publicNav: NavItem[] = [
   {
     label: "Governance",
     children: [
+      { label: "Governance Overview", href: "/governance/overview" },
+      { label: "Leadership", href: "/governance/leadership" },
+      { label: "Board of Directors", href: "/governance/board-of-directors" },
+      { label: "Committee Composition", href: "/governance/committee-composition" },
+      { label: "---" as any },
       { label: "ESG & Risk Management", href: "#risk" },
       { label: "Policies & Framework", href: "#" },
       { label: "Legal & Regulatory Filings", href: "#" },
@@ -89,6 +94,11 @@ export const loggedInNav: NavItem[] = [
   {
     label: "Governance",
     children: [
+      { label: "Governance Overview", href: "/governance/overview" },
+      { label: "Leadership", href: "/governance/leadership" },
+      { label: "Board of Directors", href: "/governance/board-of-directors" },
+      { label: "Committee Composition", href: "/governance/committee-composition" },
+      { label: "---" as any },
       { label: "My Voting", href: "#" },
       { label: "Board Materials", href: "#" },
       { label: "Compliance Center", href: "#" },
