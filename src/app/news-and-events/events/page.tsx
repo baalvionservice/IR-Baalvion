@@ -123,7 +123,7 @@ export default function EventsPage() {
                         <div className="flex items-center justify-start mb-8 gap-4">
                            <p className="text-sm font-medium">Select Year:</p>
                             <Select defaultValue="2026">
-                                <SelectTrigger className="w-[120px]">
+                                <SelectTrigger className="w-[120px] bg-white text-black border-gray-300">
                                     <SelectValue/>
                                 </SelectTrigger>
                                 <SelectContent>
@@ -174,7 +174,7 @@ export default function EventsPage() {
                         <div className="flex items-center justify-start mb-8 gap-4">
                            <p className="text-sm font-medium">Select Year:</p>
                             <Select defaultValue="2025">
-                                <SelectTrigger className="w-[120px]">
+                                <SelectTrigger className="w-[120px] bg-white text-black border-gray-300">
                                     <SelectValue/>
                                 </SelectTrigger>
                                 <SelectContent>
