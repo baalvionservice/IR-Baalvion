@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { leadershipTeam } from '@/lib/data';
+import { leadershipTeam, globalLeaders } from '@/lib/data';
 
 export const metadata: Metadata = {
     title: 'Leadership | Baalvion',
@@ -25,6 +25,20 @@ export default function LeadershipPage() {
                                 <h3 className="text-2xl font-bold">{member.name}</h3>
                                 <p className="text-base text-gray-500">{member.title}</p>
                                 <Link href="#" className="text-sm font-bold text-primary hover:underline flex items-center mt-4">
+                                    <span className="mr-2">&gt;</span> Read {member.name.split(' ')[0]}'s bio
+                                </Link>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+                <div className="container mx-auto px-4 mt-24">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-12">
+                        {globalLeaders.map((member) => (
+                            <div key={member.name}>
+                                <div className="w-[125px] h-[125px] bg-gray-200 mb-4"></div>
+                                <h3 className="text-lg font-bold">{member.name}</h3>
+                                <p className="text-sm text-gray-500">{member.title}</p>
+                                <Link href="#" className="text-xs font-bold text-primary hover:underline flex items-center mt-3">
                                     <span className="mr-2">&gt;</span> Read {member.name.split(' ')[0]}'s bio
                                 </Link>
                             </div>
