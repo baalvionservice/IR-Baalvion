@@ -116,6 +116,28 @@ export default function GovernanceOverviewPage() {
                         </div>
                     </div>
 
+                    <div className="mt-16">
+                        <h2 className="text-3xl font-bold mb-8 text-black">How to report concerns, complaints and potential illegal or unethical conduct</h2>
+                        <div className="space-y-6 text-gray-700">
+                            <p>
+                                Baalvion is committed to conducting its business activities in the highest ethical and professional manner and to achieving compliance with applicable laws, rules, regulations, accounting standards and controls and audit practices. As part of this commitment, Baalvion has adopted the Code of Business Conduct and Ethics, which sets out basic principles of conduct applicable to all employees, and numerous other policies and procedures designed to help us meet our legal, regulatory and ethical obligations.
+                            </p>
+                            <p>
+                                The Global Policy for Reporting Potential Illegal or Unethical Conduct requires that you report any concerns you may have about potential illegal or unethical conduct. You may report any such concerns to Legal & Compliance ("L&C") by contacting a Managing Director in L&C directly or via the Business Integrity Hotline or Business Integrity Reporting Website:
+                            </p>
+                            <ul className="list-disc list-inside pl-4 space-y-2">
+                                <li>Business Integrity Hotline</li>
+                                <li>Business Integrity Reporting Website</li>
+                            </ul>
+                            <p>
+                                The Business Integrity Hotline and the Business Integrity Reporting Website are administered on behalf of Baalvion by NAVEX Global, Inc. ("Navex"), an independent third party. Navex collects information and passes it to senior individuals within Baalvion L&C for handling and investigation. Navex does not use the personal data or other information collected for any other purpose.
+                            </p>
+                            <p>
+                                Reports, which may be made anonymously, are treated confidentially to the extent reasonably possible. Reports made in good faith may be made without fear of dismissal or retaliation of any kind. You may also report potential violations of law or regulation directly to a regulator or government authority.
+                            </p>
+                        </div>
+                    </div>
+
                 </div>
             </section>
         </>
