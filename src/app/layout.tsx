@@ -102,13 +102,19 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn('dark', inter.variable)}>
       <body className="min-h-screen bg-background font-body antialiased selection:bg-primary/30">
+        <a 
+          href="#main-content" 
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md focus:shadow-xl focus:outline-none"
+        >
+          Skip to main content
+        </a>
         <Script
           id="structured-data"
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <Header />
-        <div className="flex min-h-screen flex-col">
+        <div id="main-content" className="flex min-h-screen flex-col" role="main">
           {children}
         </div>
         <QuickLinksSection />

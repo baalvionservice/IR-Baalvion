@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect, useCallback, memo } from "react";
@@ -59,6 +58,7 @@ export default function Header() {
   return (
     <>
       <header
+        role="banner"
         className={cn(
           "sticky top-0 z-50 flex h-16 items-center border-b transition-all duration-300",
           scrolled ? "border-border bg-background/80 backdrop-blur-md" : "border-transparent bg-background"
@@ -66,15 +66,20 @@ export default function Header() {
       >
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
           <div className="flex items-center gap-6">
-            <Link href="/" className="flex items-center gap-2 font-bold hover:opacity-80 transition-opacity">
-              <Mountain className="h-6 w-6 text-primary" />
+            <Link 
+              href="/" 
+              className="flex items-center gap-2 font-bold hover:opacity-80 transition-opacity"
+              aria-label="Baalvion Home"
+            >
+              <Mountain className="h-6 w-6 text-primary" aria-hidden="true" />
               <span className="hidden sm:inline-block tracking-tighter text-xl">Baalvion</span>
             </Link>
             
-            <nav className="hidden md:flex items-center gap-1">
+            <nav className="hidden md:flex items-center gap-1" aria-label="Main Navigation">
               {isLoading ? (
                 <div className="flex items-center gap-2 text-xs text-muted-foreground px-4">
-                  <Loader2 className="h-3 w-3 animate-spin" />
+                  <Loader2 className="h-3 w-3 animate-spin" aria-hidden="true" />
+                  <span>Loading Menu...</span>
                 </div>
               ) : (
                 <NavItems items={navItems} />
@@ -84,8 +89,14 @@ export default function Header() {
 
           <div className="flex items-center gap-2 md:gap-4">
             {userRole !== 'public' && (
-              <Button variant="ghost" size="icon" className="relative" onClick={() => setIsAlertsOpen(true)}>
-                <Bell className="h-5 w-5" />
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="relative" 
+                onClick={() => setIsAlertsOpen(true)}
+                aria-label="View institutional alerts"
+              >
+                <Bell className="h-5 w-5" aria-hidden="true" />
                 <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-primary" />
               </Button>
             )}
@@ -98,17 +109,17 @@ export default function Header() {
 
             <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="md:hidden">
-                  <Menu className="h-5 w-5" />
+                <Button variant="ghost" size="icon" className="md:hidden" aria-label="Open Mobile Menu">
+                  <Menu className="h-5 w-5" aria-hidden="true" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left" className="w-full sm:max-w-xs">
+              <SheetContent side="left" className="w-full sm:max-w-xs" aria-label="Mobile Navigation Menu">
                   <div className="flex flex-col p-4 h-full">
                       <Link href="/" className="mb-8 flex items-center gap-2 font-bold" onClick={closeSheet}>
-                          <Mountain className="h-6 w-6 text-primary" />
+                          <Mountain className="h-6 w-6 text-primary" aria-hidden="true" />
                           <span className="text-xl">Baalvion</span>
                       </Link>
-                      <nav className="flex flex-col space-y-4 overflow-y-auto pr-4">
+                      <nav className="flex flex-col space-y-4 overflow-y-auto pr-4" aria-label="Mobile Navigation">
                         <NavItems items={navItems} isMobile onLinkClick={closeSheet} />
                       </nav>
                       <div className="mt-auto pt-8 border-t">
@@ -145,7 +156,7 @@ const NavItems = memo(({ items, isMobile, onLinkClick }: { items: NavigationItem
         <DropdownMenu key={item.id}>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="text-muted-foreground hover:text-foreground text-sm font-semibold flex items-center gap-1 px-3">
-              {item.label} <ChevronDown className="h-3 w-3 opacity-50" />
+              {item.label} <ChevronDown className="h-3 w-3 opacity-50" aria-hidden="true" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-64" align="start">
@@ -178,7 +189,7 @@ function NavChild({ child, onLinkClick, isMobile }: { child: NavigationItem, onL
   if (child.isHeader) {
     return <DropdownMenuLabel className="text-[10px] uppercase tracking-widest text-muted-foreground pt-4 pb-1 font-bold">{child.label}</DropdownMenuLabel>;
   }
-  if (child.label === '---') return <DropdownMenuSeparator />;
+  if (child.label === '---') return <DropdownMenuSeparator aria-hidden="true" />;
   
   if (isMobile) {
     return (
@@ -199,8 +210,8 @@ function LanguageToggle() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon">
-          <Globe className="h-5 w-5" />
+        <Button variant="ghost" size="icon" aria-label="Change language">
+          <Globe className="h-5 w-5" aria-hidden="true" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
@@ -217,10 +228,10 @@ function AuthButtons({ userRole, isMobile, onAction }: any) {
     return (
       <div className={cn("flex items-center gap-2", isMobile && "flex-col w-full")}>
         <Button variant="ghost" size="sm" onClick={() => { authService.signOut(); onAction?.(); }} className="gap-2">
-          <LogOut className="h-4 w-4" /> Sign Out
+          <LogOut className="h-4 w-4" aria-hidden="true" /> Sign Out
         </Button>
         <Button asChild size="sm" className="shadow-lg gap-2 w-full">
-          <Link href="/performance" onClick={onAction}><LayoutDashboard className="h-4 w-4" /> Portal</Link>
+          <Link href="/performance" onClick={onAction}><LayoutDashboard className="h-4 w-4" aria-hidden="true" /> Portal</Link>
         </Button>
       </div>
     );
@@ -232,7 +243,7 @@ function AuthButtons({ userRole, isMobile, onAction }: any) {
       </Button>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button size="sm" className="shadow-md w-full">Institutional Login</Button>
+          <Button size="sm" className="shadow-md w-full" aria-label="Institutional login simulator">Institutional Login</Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-56">
           <DropdownMenuLabel className="text-[10px] uppercase font-bold text-muted-foreground">Simulation Profiles</DropdownMenuLabel>

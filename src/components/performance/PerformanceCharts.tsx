@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -39,12 +38,12 @@ export function PerformanceCharts({ navData, timelineData }: Props) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
       {/* NAV Growth Chart */}
-      <Card className="bg-card/30 border-border/50">
+      <Card>
         <CardHeader>
-          <CardTitle className="text-sm font-bold uppercase tracking-widest text-muted-foreground">NAV Growth History</CardTitle>
+          <CardTitle className="text-sm font-bold uppercase tracking-widest text-muted-foreground" id="performance-nav-title">NAV Growth History</CardTitle>
           <CardDescription className="text-xs">Consolidated market value of all underlying assets.</CardDescription>
         </CardHeader>
-        <CardContent className="h-[300px] w-full pt-4">
+        <CardContent className="h-[300px] w-full pt-4" role="img" aria-labelledby="performance-nav-title" aria-label="Line chart showing NAV growth over quarterly periods.">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={navData}>
               <defs>
@@ -87,12 +86,12 @@ export function PerformanceCharts({ navData, timelineData }: Props) {
       </Card>
 
       {/* Capital In vs. Out Timeline */}
-      <Card className="bg-card/30 border-border/50">
+      <Card>
         <CardHeader>
-          <CardTitle className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Capital Lifecycle Timeline</CardTitle>
+          <CardTitle className="text-sm font-bold uppercase tracking-widest text-muted-foreground" id="performance-timeline-title">Capital Lifecycle Timeline</CardTitle>
           <CardDescription className="text-xs">Quarterly analysis of called capital vs. realized distributions.</CardDescription>
         </CardHeader>
-        <CardContent className="h-[300px] w-full pt-4">
+        <CardContent className="h-[300px] w-full pt-4" role="img" aria-labelledby="performance-timeline-title" aria-label="Bar chart comparing called capital against distributions per quarter.">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={timelineData}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} opacity={0.1} />
@@ -106,7 +105,7 @@ export function PerformanceCharts({ navData, timelineData }: Props) {
               <YAxis 
                 fontSize={10} 
                 tickLine={false} 
-                axisLine={false}
+                axisLine={false} 
                 tickFormatter={(val) => `$${val / 1000000}M`}
                 tick={{ fill: 'hsl(var(--muted-foreground))' }}
               />

@@ -37,13 +37,20 @@ export default function NavChart({ data }: { data: NavData[] }) {
     );
   }
 
+  const chartDescription = `Area chart showing Net Asset Value growth from ${data[0]?.date} to ${data[data.length - 1]?.date}. The current NAV is ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data[data.length - 1]?.nav)}.`;
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-lg">NAV Growth History</CardTitle>
+        <CardTitle className="text-lg" id="nav-chart-title">NAV Growth History</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="h-[300px] w-full">
+        <div 
+          className="h-[300px] w-full" 
+          role="img" 
+          aria-labelledby="nav-chart-title" 
+          aria-label={chartDescription}
+        >
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
               <defs>
@@ -91,6 +98,26 @@ export default function NavChart({ data }: { data: NavData[] }) {
               />
             </AreaChart>
           </ResponsiveContainer>
+        </div>
+        {/* Hidden summary for screen readers */}
+        <div className="sr-only">
+          <table>
+            <caption>NAV Quarterly Breakdown</caption>
+            <thead>
+              <tr>
+                <th scope="col">Date</th>
+                <th scope="col">NAV Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.map((point) => (
+                <tr key={point.date}>
+                  <td>{point.date}</td>
+                  <td>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(point.nav)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </CardContent>
     </Card>
