@@ -3,54 +3,50 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Activity, FileText, Navigation, Shield, Database, CheckCircle2, AlertCircle, GitPullRequest, Gavel, Briefcase } from "lucide-react";
+import { Activity, FileText, Navigation, Shield, Database, CheckCircle2, AlertCircle, GitPullRequest, Gavel, Briefcase, Bell, Users } from "lucide-react";
 import { pageService } from "@/core/services/page.service";
 import { navigationService } from "@/core/services/navigation.service";
 import { auditService } from "@/core/services/audit.service";
 import { votingService } from "@/core/services/voting.service";
 import { boardMaterialsService } from "@/core/services/board-materials.service";
-import { AuditLogEntry, PageDefinition } from "@/core/content/schemas";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { notificationService } from "@/core/services/notification.service";
+import { subscriptionService } from "@/core/services/subscription.service";
+import { AuditLogEntry } from "@/core/content/schemas";
 
 export default function SystemDashboardPage() {
   const [stats, setStats] = useState({
     pages: 0,
-    navItems: 0,
     activeNav: 0,
-    publishedPages: 0,
-    inReview: 0,
-    drafts: 0,
     activeVotes: 0,
-    boardMaterials: 0
+    boardMaterials: 0,
+    notifsSent: 0,
+    subscribers: 0
   });
   const [recentActivity, setRecentActivity] = useState<AuditLogEntry[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const loadSystemState = async () => {
     setIsLoading(true);
-    const [pages, navItems, logs, votes, materials] = await Promise.all([
+    const [pages, navItems, logs, votes, materials, notifs, subs] = await Promise.all([
       pageService.getAllPages(),
       navigationService.getAllItems(),
       auditService.getLogs({ limit: 10 }),
       votingService.getVotes(),
-      boardMaterialsService.getMaterials()
+      boardMaterialsService.getMaterials(),
+      notificationService.getAllNotifications(),
+      subscriptionService.getSubscribers()
     ]);
-
-    const countNav = (items: any[]): number => 
-      items.reduce((acc, item) => acc + 1 + (item.children ? countNav(item.children) : 0), 0);
 
     const countActiveNav = (items: any[]): number => 
       items.reduce((acc, item) => acc + (item.isActive ? 1 : 0) + (item.children ? countActiveNav(item.children) : 0), 0);
 
     setStats({
       pages: pages.length,
-      navItems: countNav(navItems),
       activeNav: countActiveNav(navItems),
-      publishedPages: pages.filter(p => p.workflowStatus === 'Published').length,
-      inReview: pages.filter(p => p.workflowStatus === 'InReview').length,
-      drafts: pages.filter(p => p.workflowStatus === 'Draft').length,
       activeVotes: votes.filter(v => v.status === 'Open').length,
-      boardMaterials: materials.length
+      boardMaterials: materials.length,
+      notifsSent: notifs.filter(n => n.status === 'Sent').length,
+      subscribers: subs.length
     });
     setRecentActivity(logs);
     setIsLoading(false);
@@ -61,51 +57,53 @@ export default function SystemDashboardPage() {
     window.addEventListener('storage', loadSystemState);
     window.addEventListener('audit-updated', loadSystemState);
     window.addEventListener('voting-updated', loadSystemState);
+    window.addEventListener('notification-updated', loadSystemState);
     return () => {
       window.removeEventListener('storage', loadSystemState);
       window.removeEventListener('audit-updated', loadSystemState);
       window.removeEventListener('voting-updated', loadSystemState);
+      window.removeEventListener('notification-updated', loadSystemState);
     };
   }, []);
 
-  if (isLoading) return <div className="py-20 text-center text-muted-foreground">Synchronizing system state...</div>;
+  if (isLoading) return <div className="py-20 text-center text-muted-foreground">Synchronizing distribution state...</div>;
 
   return (
     <div className="space-y-8">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">System Health & Governance</h1>
-        <p className="text-muted-foreground">Institutional monitoring of platform infrastructure and activity.</p>
+        <p className="text-muted-foreground">Institutional monitoring of platform infrastructure, activity, and distribution.</p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Platform Infrastructure</CardTitle>
-            <Database className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">Broadcasts Sent</CardTitle>
+            <Bell className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">Stable</div>
-            <p className="text-xs text-muted-foreground">Mock Data Provider: Online</p>
+            <div className="text-2xl font-bold">{stats.notifsSent}</div>
+            <p className="text-xs text-muted-foreground">Distribution Engine: Active</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Governance Engine</CardTitle>
-            <Gavel className="h-4 w-4 text-primary" />
+            <CardTitle className="text-sm font-medium">Investor Segments</CardTitle>
+            <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.activeVotes} Active Votes</div>
+            <div className="text-2xl font-bold">{stats.subscribers}</div>
+            <p className="text-xs text-muted-foreground">Mailing List: Verified</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Active Votes</CardTitle>
+            <Gavel className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.activeVotes}</div>
             <p className="text-xs text-muted-foreground">Ballot Ledger: Ready</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Board Materials</CardTitle>
-            <Briefcase className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.boardMaterials} Bundles</div>
-            <p className="text-xs text-muted-foreground">Confidential Delivery: Active</p>
           </CardContent>
         </Card>
         <Card>
@@ -114,14 +112,14 @@ export default function SystemDashboardPage() {
             <Shield className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-primary">Active</div>
-            <p className="text-xs text-muted-foreground">Compliance Ledger: Operational</p>
+            <div className="text-2xl font-bold text-primary">Operational</div>
+            <p className="text-xs text-muted-foreground">Compliance Ledger: Online</p>
           </CardContent>
         </Card>
       </div>
 
       <div className="grid gap-8 md:grid-cols-2">
-        <Card className="col-span-1">
+        <Card>
           <CardHeader>
             <CardTitle>Recent Administrative Activity</CardTitle>
             <CardDescription>Live feed of system mutations and role-based actions.</CardDescription>
@@ -142,37 +140,27 @@ export default function SystemDashboardPage() {
                   </div>
                 </div>
               ))}
-              {recentActivity.length === 0 && <p className="text-center py-4 text-muted-foreground">No recent activity detected.</p>}
             </div>
           </CardContent>
         </Card>
 
-        <Card className="col-span-1">
+        <Card>
           <CardHeader>
-            <CardTitle>Lifecycle Indicators</CardTitle>
-            <CardDescription>Visual summary of the content management funnel.</CardDescription>
+            <CardTitle>Distribution Metrics</CardTitle>
+            <CardDescription>Performance of the notification engine.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-center justify-between p-3 rounded-lg border bg-muted/20">
-              <div className="flex items-center gap-3">
-                <div className="h-3 w-3 rounded-full bg-green-500" />
-                <span className="text-sm font-medium">Published Coverage</span>
-              </div>
-              <Badge variant="outline">{((stats.publishedPages / stats.pages) * 100).toFixed(0)}%</Badge>
+              <span className="text-sm font-medium">Delivery Success Rate</span>
+              <Badge variant="outline">100%</Badge>
             </div>
             <div className="flex items-center justify-between p-3 rounded-lg border bg-muted/20">
-              <div className="flex items-center gap-3">
-                <div className="h-3 w-3 rounded-full bg-amber-500" />
-                <span className="text-sm font-medium">Approval Bottlenecks</span>
-              </div>
-              <Badge variant="secondary">{stats.inReview} Entities</Badge>
+              <span className="text-sm font-medium">Segment: Institutional (P1)</span>
+              <Badge variant="secondary">2 Active</Badge>
             </div>
             <div className="flex items-center justify-between p-3 rounded-lg border bg-muted/20">
-              <div className="flex items-center gap-3">
-                <Activity className="text-blue-500 h-4 w-4" />
-                <span className="text-sm font-medium">Avg. Approval Time</span>
-              </div>
-              <Badge variant="outline">1.2 Hours</Badge>
+              <span className="text-sm font-medium">Segment: Strategic (P3)</span>
+              <Badge variant="secondary">1 Active</Badge>
             </div>
           </CardContent>
         </Card>

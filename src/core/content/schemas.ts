@@ -13,9 +13,9 @@ export type UserRole =
   | 'P3Operator'
   | 'BoardMember';
 
-export type ModuleName = 'Navigation' | 'Pages' | 'DataRoom' | 'Dashboard' | 'Governance' | 'AuditLogs' | 'Settings' | 'Workflow' | 'Voting' | 'BoardMaterials';
+export type ModuleName = 'Navigation' | 'Pages' | 'DataRoom' | 'Dashboard' | 'Governance' | 'AuditLogs' | 'Settings' | 'Workflow' | 'Voting' | 'BoardMaterials' | 'Notifications';
 
-export type ActionType = 'view' | 'create' | 'edit' | 'delete' | 'reorder' | 'publish' | 'upload' | 'manage' | 'configure' | 'approve' | 'reject' | 'requestReview' | 'vote';
+export type ActionType = 'view' | 'create' | 'edit' | 'delete' | 'reorder' | 'publish' | 'upload' | 'manage' | 'configure' | 'approve' | 'reject' | 'requestReview' | 'vote' | 'send' | 'schedule';
 
 export type WorkflowStatus = 'Draft' | 'InReview' | 'Approved' | 'Published' | 'Archived' | 'Rejected';
 
@@ -24,6 +24,10 @@ export type VoteStatus = 'Draft' | 'Open' | 'Closed' | 'Archived' | 'Invalid';
 export type VoteChoice = 'Approve' | 'Reject' | 'Abstain';
 
 export type BoardMaterialClassification = 'BoardOnly' | 'CommitteeOnly' | 'Confidential';
+
+export type NotificationStatus = 'Draft' | 'Scheduled' | 'Sent' | 'Archived';
+
+export type NotificationModuleSource = 'Page' | 'Vote' | 'DataRoom' | 'Governance' | 'Manual';
 
 export interface Permission {
   module: ModuleName;
@@ -68,9 +72,9 @@ export interface PageDefinition {
   slug: string;
   title: string;
   description?: string;
-  sections: PageSection[]; // Live versions
-  draftSections?: PageSection[]; // Work in progress
-  status: 'Draft' | 'Published'; // Legacy - keeping for compat
+  sections: PageSection[];
+  draftSections?: PageSection[];
+  status: 'Draft' | 'Published';
   workflowStatus: WorkflowStatus;
   currentVersion: number;
   versionHistory: VersionInfo[];
@@ -115,10 +119,41 @@ export interface BoardMaterial {
   title: string;
   meetingDate: string;
   classification: BoardMaterialClassification;
-  relatedVotes: string[]; // Vote IDs
-  documentIds: string[]; // Reference to Data Room files
+  relatedVotes: string[];
+  documentIds: string[];
   workflowStatus: WorkflowStatus;
   versionHistory: VersionInfo[];
+}
+
+export interface Notification {
+  id: string;
+  title: string;
+  message: string;
+  moduleSource: NotificationModuleSource;
+  entityId?: string;
+  targetRoles: UserRole[];
+  status: NotificationStatus;
+  scheduledAt?: string;
+  sentAt?: string;
+  deliveryStats?: {
+    totalRecipients: number;
+    deliveredCount: number;
+    failedCount: number;
+  };
+  versionHistory: VersionInfo[];
+}
+
+export interface Subscription {
+  id: string;
+  role: UserRole;
+  email: string;
+  preferences: {
+    News: boolean;
+    Governance: boolean;
+    Voting: boolean;
+    DataRoom: boolean;
+  };
+  active: boolean;
 }
 
 export interface AuditLogEntry {
@@ -146,6 +181,8 @@ export interface PlatformSettings {
     enableDataRoomWatermark: boolean;
     maintenanceMode: boolean;
     freezePublishing: boolean;
+    autoNotifyEnabled: boolean;
+    autoSendEnabled: boolean;
   };
   environment: 'mock' | 'production';
 }

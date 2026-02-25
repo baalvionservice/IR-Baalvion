@@ -4,6 +4,7 @@ import { authService } from "./auth.service";
 import { auditService } from "./audit.service";
 import { validationService } from "./validation.service";
 import { workflowService } from "./workflow.service";
+import { notificationService } from "./notification.service";
 
 let pagesState: PageDefinition[] = [...MOCK_PAGES];
 
@@ -44,11 +45,10 @@ export const pageService = {
     
     const previousPage = { ...pagesState[pageIndex] };
     
-    // Changes go to draft sections if we are in institutional mode
     const newPage = { 
       ...previousPage, 
       ...updates,
-      workflowStatus: 'Draft' as WorkflowStatus // Any direct edit reverts to Draft
+      workflowStatus: 'Draft' as WorkflowStatus
     };
 
     pagesState[pageIndex] = newPage;
@@ -71,7 +71,6 @@ export const pageService = {
 
     const page = pagesState[pageIndex];
 
-    // If publishing, copy draft to live
     if (status === 'Published') {
       page.sections = page.draftSections || page.sections;
       page.currentVersion += 1;
@@ -81,6 +80,14 @@ export const pageService = {
         author: (await authService.getCurrentUser()).role,
         changesSummary: "Published from workflow"
       });
+
+      // Trigger Notification Draft
+      await notificationService.triggerAutoNotification(
+        'Page', 
+        pageId, 
+        page.title, 
+        ['P1Investor', 'P2Investor', 'P3Operator', 'BoardMember']
+      );
     }
 
     page.workflowStatus = status;

@@ -1,24 +1,47 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import type { Metadata } from 'next';
 import Link from "next/link";
-
-export const metadata: Metadata = {
-    title: 'Investor Email Alerts | Baalvion',
-    description: 'Sign up for investor email alerts from Baalvion.',
-};
+import { subscriptionService } from "@/core/services/subscription.service";
+import { authService } from "@/core/services/auth.service";
+import { Subscription } from "@/core/content/schemas";
+import { useToast } from "@/hooks/use-toast";
+import { CheckCircle2, Bell } from "lucide-react";
 
 export default function EmailAlertsPage() {
-    const mailingLists = [
-        "Press Releases",
-        "Events",
-        "Presentations",
-        "SEC Filings",
-        "End of Day Stock Quote",
-        "Financial Reports"
-    ];
+    const [sub, setSub] = useState<Subscription | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const { toast } = useToast();
+
+    const loadData = async () => {
+        setIsLoading(true);
+        const { role } = await authService.getCurrentUser();
+        const data = await subscriptionService.getSubscriptionByRole(role);
+        setSub(data);
+        setIsLoading(false);
+    };
+
+    useEffect(() => {
+        loadData();
+    }, []);
+
+    const handleToggle = (key: keyof Subscription['preferences']) => {
+        if (!sub) return;
+        const newPrefs = { ...sub.preferences, [key]: !sub.preferences[key] };
+        setSub({ ...sub, preferences: newPrefs });
+    };
+
+    const handleSave = async () => {
+        if (!sub) return;
+        await subscriptionService.updatePreferences(sub.id, sub.preferences);
+        toast({ title: "Preferences Updated", description: "Your notification settings have been saved securely." });
+    };
+
+    if (isLoading) return <div className="py-40 text-center">Initializing communication center...</div>;
 
     return (
         <>
@@ -30,73 +53,94 @@ export default function EmailAlertsPage() {
             </section>
             <section className="py-16 md:py-24 bg-white text-black">
                 <div className="container mx-auto px-4 max-w-4xl">
-                    {/* Section 1: Information */}
                     <div className="mb-12 space-y-6 text-sm text-gray-700">
-                        <h2 className="text-3xl font-bold text-black text-center">Subscribe to Email Alerts</h2>
+                        <h2 className="text-3xl font-bold text-black text-center">Manage Your Subscriptions</h2>
                         <p>
-                            To opt-in for investor email alerts, please enter your email address in the field below and select at least one alert option. After submitting your request, you will receive an activation email to the requested email address. You must click the activation link in order to complete your subscription. You can sign up for additional alert options at any time.
-                        </p>
-                        <p>
-                            At Baalvion Inc., we promise to treat your data with respect and will not share your information with any third party. You can unsubscribe to any of the investor alerts you are subscribed to by visiting the 'unsubscribe' section below. If you experience any issues with this process, please contact us for further assistance.
-                        </p>
-                        <p className="font-bold">
-                            By providing your email address below, you are providing consent to Baalvion Inc. to send you the requested Investor Email Alert updates.
+                            Configure how you receive updates regarding Baalvion's financial reporting, board resolutions, and data room activity. 
+                            All communications are encrypted and tracked for institutional compliance.
                         </p>
                     </div>
 
-                    {/* Section 2: Form */}
                     <div className="border-t border-gray-200 pt-12">
-                        <form className="space-y-8">
-                            <p className="text-xs text-gray-600">* Required</p>
-                            <div className="space-y-2">
-                                <Label htmlFor="email" className="font-bold">Email Address *</Label>
-                                <Input id="email" type="email" placeholder="Your Email" className="bg-white border-gray-300" />
-                            </div>
-
-                            <div className="space-y-4">
-                                <Label className="font-bold">Mailing Lists *</Label>
-                                <div className="space-y-3">
-                                    {mailingLists.map((item) => (
-                                        <div key={item} className="flex items-center space-x-3">
-                                            <Checkbox id={item.toLowerCase().replace(/ /g, '-')} />
-                                            <Label htmlFor={item.toLowerCase().replace(/ /g, '-')} className="font-normal cursor-pointer text-sm">
-                                                {item}
-                                            </Label>
-                                        </div>
-                                    ))}
+                        {sub ? (
+                            <div className="space-y-8">
+                                <div className="p-6 bg-gray-50 border rounded-lg flex items-center justify-between">
+                                    <div>
+                                        <p className="text-xs font-bold text-gray-500 uppercase">Registered Email</p>
+                                        <p className="text-lg font-bold">{sub.email}</p>
+                                    </div>
+                                    <Badge className="bg-primary text-primary-foreground">Verified Segment: {sub.role}</Badge>
                                 </div>
-                            </div>
-                            
-                            <Button type="submit" className="bg-black text-white hover:bg-gray-800 rounded-sm px-6 py-3">
-                                Sign up <span className="ml-1">&gt;</span>
-                            </Button>
-                        </form>
-                        <p className="text-xs text-gray-600 mt-8">
-                            For further information on how we protect your information, please refer to our <Link href="#" className="underline">Privacy Policy</Link>.
-                        </p>
-                    </div>
 
-                     {/* Unsubscribe Section */}
-                    <div className="border-t border-gray-200 mt-16 pt-16">
-                        <div className="space-y-6 text-sm text-gray-700">
-                             <h2 className="text-3xl font-bold text-black">Unsubscribe from Email Alerts</h2>
-                             <p>
-                                To opt-out of investor email alerts, please enter your email address in the field below and you will be removed for ALL investor email alerts that you are subscribed to. After submitting your email, you will receive a confirmation email to the requested email address. You must click the confirmation link in order to complete your unsubscription. You can re-sign up for investor alerts at any time you would like.
-                             </p>
-                         </div>
-                         <form className="space-y-8 mt-12">
-                             <p className="text-xs text-gray-600">* Required</p>
-                             <div className="space-y-2">
-                                 <Label htmlFor="unsubscribe-email" className="font-bold">Email Address *</Label>
-                                 <Input id="unsubscribe-email" type="email" placeholder="Your Email" className="w-full bg-transparent border-0 border-b border-gray-400 rounded-none px-0 py-2 text-black ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-primary placeholder:text-gray-600" />
-                             </div>
-                             <Button type="submit" className="bg-black text-white hover:bg-gray-800 rounded-sm px-6 py-3">
-                                 Unsubscribe <span className="ml-1">&gt;</span>
-                             </Button>
-                         </form>
+                                <div className="space-y-4">
+                                    <Label className="font-bold text-lg">Notification Channels</Label>
+                                    <div className="grid gap-4">
+                                        {Object.keys(sub.preferences).map((item) => (
+                                            <div key={item} className="flex items-center justify-between p-4 border rounded-md hover:bg-gray-50 transition-colors">
+                                                <div className="flex items-center gap-3">
+                                                    <Bell className="h-5 w-5 text-primary" />
+                                                    <div>
+                                                        <p className="font-bold">{item} Updates</p>
+                                                        <p className="text-xs text-gray-500">Real-time alerts for new {item.toLowerCase()} content.</p>
+                                                    </div>
+                                                </div>
+                                                <Switch 
+                                                    checked={sub.preferences[item as keyof typeof sub.preferences]} 
+                                                    onCheckedChange={() => handleToggle(item as any)}
+                                                />
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                                
+                                <Button onClick={handleSave} className="bg-black text-white hover:bg-gray-800 rounded-sm px-8 py-6 text-lg">
+                                    Save Preferences <span className="ml-2">&gt;</span>
+                                </Button>
+                            </div>
+                        ) : (
+                            <form className="space-y-8">
+                                <p className="text-xs text-gray-600">* Required for public access</p>
+                                <div className="space-y-2">
+                                    <Label htmlFor="email" className="font-bold">Email Address *</Label>
+                                    <Input id="email" type="email" placeholder="Your Email" className="bg-white border-gray-300" />
+                                </div>
+                                <div className="space-y-4">
+                                    <Label className="font-bold">Public Mailing Lists *</Label>
+                                    <div className="space-y-3">
+                                        {["Press Releases", "Events", "Financial Reports"].map((item) => (
+                                            <div key={item} className="flex items-center space-x-3">
+                                                <Checkbox id={item} />
+                                                <Label htmlFor={item} className="font-normal cursor-pointer text-sm">
+                                                    {item}
+                                                </Label>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                                <Button type="submit" className="bg-black text-white hover:bg-gray-800 rounded-sm px-6 py-3">
+                                    Subscribe <span className="ml-1">&gt;</span>
+                                </Button>
+                            </form>
+                        )}
                     </div>
                 </div>
             </section>
         </>
+    );
+}
+
+function Badge({ children, className }: { children: React.ReactNode, className?: string }) {
+    return <span className={`px-2 py-1 text-[10px] font-bold rounded uppercase tracking-wider ${className}`}>{children}</span>;
+}
+
+function Switch({ checked, onCheckedChange }: { checked: boolean, onCheckedChange: () => void }) {
+    return (
+        <button 
+            type="button"
+            onClick={onCheckedChange}
+            className={`w-12 h-6 rounded-full transition-colors relative ${checked ? 'bg-primary' : 'bg-gray-300'}`}
+        >
+            <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${checked ? 'left-7' : 'left-1'}`} />
+        </button>
     );
 }
