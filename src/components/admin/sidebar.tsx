@@ -22,7 +22,8 @@ import {
   Gavel,
   Briefcase,
   Bell,
-  FileBarChart
+  FileBarChart,
+  Brain
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -30,6 +31,7 @@ import { Button } from "@/components/ui/button";
 const menuItems = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/admin/dashboard" },
   { icon: Activity, label: "System Health", href: "/admin/system-dashboard" },
+  { icon: Brain, label: "Intelligence", href: "/admin/intelligence" },
   { icon: GitPullRequest, label: "Review Queue", href: "/admin/review-queue" },
   { icon: Navigation, label: "Navigation Manager", href: "/admin/navigation" },
   { icon: FileText, label: "Page Manager", href: "/admin/pages" },
