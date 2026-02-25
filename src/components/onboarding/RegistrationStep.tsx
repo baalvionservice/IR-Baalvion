@@ -33,7 +33,7 @@ export function RegistrationStep({ onNext }: { onNext: (data: any) => void }) {
   const investorType = watch('investorType');
 
   return (
-    <form onSubmit={handleSubmit(onNext)}>
+    <form onSubmit={handleSubmit(onNext)} suppressHydrationWarning>
       <CardHeader className="text-center border-b border-border/50 pb-8">
         <CardTitle className="text-2xl font-bold tracking-tight">Institutional Profile</CardTitle>
         <CardDescription>Establish your corporate identity within the Baalvion registry.</CardDescription>
@@ -42,12 +42,12 @@ export function RegistrationStep({ onNext }: { onNext: (data: any) => void }) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
             <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Full Name</Label>
-            <Input {...register('fullName')} placeholder="e.g. Elena Petrov" className="bg-background/50" />
+            <Input {...register('fullName')} placeholder="e.g. Elena Petrov" className="bg-background/50" suppressHydrationWarning />
             {errors.fullName && <p className="text-[10px] text-destructive uppercase font-bold">{errors.fullName.message}</p>}
           </div>
           <div className="space-y-2">
             <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Work Email</Label>
-            <Input {...register('email')} type="email" placeholder="name@firm.com" className="bg-background/50" />
+            <Input {...register('email')} type="email" placeholder="name@firm.com" className="bg-background/50" suppressHydrationWarning />
             {errors.email && <p className="text-[10px] text-destructive uppercase font-bold">{errors.email.message}</p>}
           </div>
         </div>
@@ -68,7 +68,7 @@ export function RegistrationStep({ onNext }: { onNext: (data: any) => void }) {
         {investorType === 'institutional' && (
           <div className="space-y-2 animate-in fade-in slide-in-from-top-2">
             <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Institution Name</Label>
-            <Input {...register('institutionName')} placeholder="e.g. North Atlantic Capital" className="bg-background/50" />
+            <Input {...register('institutionName')} placeholder="e.g. North Atlantic Capital" className="bg-background/50" suppressHydrationWarning />
           </div>
         )}
 

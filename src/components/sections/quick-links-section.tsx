@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
@@ -29,7 +30,7 @@ export default function QuickLinksSection() {
         <div className="container mx-auto px-4">
             <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
                 <h2 className="text-3xl font-bold text-primary text-center md:text-left">Email Alerts</h2>
-                <form className="flex w-full max-w-md items-center gap-4">
+                <form className="flex w-full max-w-md items-center gap-4" suppressHydrationWarning>
                     <div className="w-full">
                         <label htmlFor="email-alert" className="sr-only">Your Email</label>
                         <Input 
@@ -37,6 +38,7 @@ export default function QuickLinksSection() {
                             type="email" 
                             placeholder="Your Email" 
                             className="w-full bg-transparent border-0 border-b border-gray-500 rounded-none px-0 py-2 text-white ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-primary placeholder:text-gray-400"
+                            suppressHydrationWarning
                         />
                     </div>
                     <Button type="submit" className="bg-white text-black hover:bg-gray-200 rounded-sm whitespace-nowrap px-6 py-2">

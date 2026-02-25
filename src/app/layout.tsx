@@ -1,3 +1,4 @@
+
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
@@ -107,7 +108,7 @@ export default function RootLayout({
 
   return (
     <html lang="en" className={cn('dark', inter.variable)} suppressHydrationWarning>
-      <body className="min-h-screen bg-background font-body antialiased selection:bg-primary/30">
+      <body className="min-h-screen bg-background font-body antialiased selection:bg-primary/30" suppressHydrationWarning>
         <a 
           href="#main-content" 
           className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md focus:shadow-xl focus:outline-none"
