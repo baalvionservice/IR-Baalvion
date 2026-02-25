@@ -21,7 +21,7 @@ export default function LeadershipPage() {
                     <div className="grid md:grid-cols-2 gap-x-12 gap-y-16">
                         {leadershipTeam.slice(0, 2).map((member) => (
                             <div key={member.name}>
-                                <div className="w-48 h-48 bg-gray-200 mb-6"></div>
+                                <div className="w-[89px] h-[89px] bg-gray-200 mb-6"></div>
                                 <h3 className="text-2xl font-bold">{member.name}</h3>
                                 <p className="text-base text-gray-500">{member.title}</p>
                                 <Link href="#" className="text-sm font-bold text-primary hover:underline flex items-center mt-4">
