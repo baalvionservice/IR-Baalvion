@@ -16,13 +16,15 @@ import {
   Settings,
   Mountain,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Activity
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
 const menuItems = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/admin/dashboard" },
+  { icon: Activity, label: "System Health", href: "/admin/system-dashboard" },
   { icon: Navigation, label: "Navigation Manager", href: "/admin/navigation" },
   { icon: FileText, label: "Page Manager", href: "/admin/pages" },
   { icon: Layers, label: "Dashboard Modules", href: "/admin/dashboards" },

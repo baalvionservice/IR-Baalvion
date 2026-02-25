@@ -1,4 +1,31 @@
-export type UserRole = 'public' | 'phase1' | 'phase2' | 'phase3' | 'admin' | 'compliance';
+export type UserRole = 
+  | 'public' 
+  | 'phase1' 
+  | 'phase2' 
+  | 'phase3' 
+  | 'admin' 
+  | 'compliance'
+  | 'SuperAdmin'
+  | 'IRManager'
+  | 'ComplianceOfficer'
+  | 'P1Investor'
+  | 'P2Investor'
+  | 'P3Operator'
+  | 'BoardMember';
+
+export type ModuleName = 'Navigation' | 'Pages' | 'DataRoom' | 'Dashboard' | 'Governance' | 'AuditLogs' | 'Settings';
+
+export type ActionType = 'view' | 'create' | 'edit' | 'delete' | 'reorder' | 'publish' | 'upload' | 'manage' | 'configure';
+
+export interface Permission {
+  module: ModuleName;
+  actions: ActionType[];
+}
+
+export interface RoleDefinition {
+  role: UserRole;
+  permissions: Permission[];
+}
 
 export interface NavigationItem {
   id: string;
@@ -13,8 +40,8 @@ export interface NavigationItem {
 
 export interface PageSection {
   id: string;
-  type: string; // Maps to ComponentRegistry keys
-  content: any; // Flexible data structure per component type
+  type: string;
+  content: any;
   roles: UserRole[];
   isActive: boolean;
   order: number;
@@ -26,6 +53,8 @@ export interface PageDefinition {
   title: string;
   description?: string;
   sections: PageSection[];
+  status: 'Draft' | 'Published';
+  publishDate?: string;
   seo?: {
     title: string;
     description: string;
@@ -33,36 +62,30 @@ export interface PageDefinition {
   };
 }
 
-export interface DashboardModule {
+export interface AuditLogEntry {
   id: string;
-  type: 'metric' | 'chart' | 'table' | 'documents' | 'activity';
-  title: string;
-  description?: string;
-  config: any;
-  roles: UserRole[];
-  isActive: boolean;
-  order: number;
+  userRole: UserRole;
+  module: ModuleName;
+  action: ActionType;
+  entityId: string;
+  timestamp: string;
+  previousState?: any;
+  newState?: any;
 }
 
-export interface DataRoomFile {
-  id: string;
-  name: string;
-  type: string;
-  category: string;
-  uploadDate: string;
-  size: string;
-  version: string;
-  url: string;
-  roles: UserRole[];
-  isWatermarked: boolean;
-  expiryDate?: string;
-}
-
-export interface DataRoomFolder {
-  id: string;
-  name: string;
-  description?: string;
-  parentId?: string;
-  roles: UserRole[];
-  files: string[]; // Array of DataRoomFile IDs
+export interface PlatformSettings {
+  branding: {
+    companyName: string;
+    logoUrl: string;
+  };
+  seo: {
+    defaultTitle: string;
+    defaultDescription: string;
+  };
+  features: {
+    enableRegistration: boolean;
+    enableDataRoomWatermark: boolean;
+    maintenanceMode: boolean;
+  };
+  environment: 'mock' | 'production';
 }
