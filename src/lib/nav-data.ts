@@ -29,7 +29,7 @@ export const publicNav: NavItem[] = [
     ],
   },
   {
-    label: "News & Insights",
+    label: "News & Events",
     href: "#news",
   },
   {
@@ -80,7 +80,7 @@ export const loggedInNav: NavItem[] = [
   {
     label: "Company",
     children: [
-      { label: "News & Insights", href: "/#news" },
+      { label: "News & Events", href: "/#news" },
       { label: "Contact IR", href: "/#contact" },
     ],
   },
