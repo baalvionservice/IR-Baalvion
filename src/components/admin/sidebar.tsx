@@ -21,7 +21,8 @@ import {
   GitPullRequest,
   Gavel,
   Briefcase,
-  Bell
+  Bell,
+  FileBarChart
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -36,6 +37,7 @@ const menuItems = [
   { icon: Briefcase, label: "Board Materials", href: "/admin/board-materials" },
   { icon: Bell, label: "Notifications", href: "/admin/notifications" },
   { icon: Users, label: "Subscribers", href: "/admin/subscribers" },
+  { icon: FileBarChart, label: "Reports & Exports", href: "/admin/reports" },
   { icon: FolderTree, label: "Data Room Manager", href: "/admin/dataroom" },
   { icon: ShieldCheck, label: "Governance Manager", href: "/admin/governance" },
   { icon: Newspaper, label: "News & Events", href: "/admin/news" },

@@ -13,9 +13,9 @@ export type UserRole =
   | 'P3Operator'
   | 'BoardMember';
 
-export type ModuleName = 'Navigation' | 'Pages' | 'DataRoom' | 'Dashboard' | 'Governance' | 'AuditLogs' | 'Settings' | 'Workflow' | 'Voting' | 'BoardMaterials' | 'Notifications';
+export type ModuleName = 'Navigation' | 'Pages' | 'DataRoom' | 'Dashboard' | 'Governance' | 'AuditLogs' | 'Settings' | 'Workflow' | 'Voting' | 'BoardMaterials' | 'Notifications' | 'Reporting' | 'Packets';
 
-export type ActionType = 'view' | 'create' | 'edit' | 'delete' | 'reorder' | 'publish' | 'upload' | 'manage' | 'configure' | 'approve' | 'reject' | 'requestReview' | 'vote' | 'send' | 'schedule';
+export type ActionType = 'view' | 'create' | 'edit' | 'delete' | 'reorder' | 'publish' | 'upload' | 'manage' | 'configure' | 'approve' | 'reject' | 'requestReview' | 'vote' | 'send' | 'schedule' | 'generate' | 'export';
 
 export type WorkflowStatus = 'Draft' | 'InReview' | 'Approved' | 'Published' | 'Archived' | 'Rejected';
 
@@ -28,6 +28,12 @@ export type BoardMaterialClassification = 'BoardOnly' | 'CommitteeOnly' | 'Confi
 export type NotificationStatus = 'Draft' | 'Scheduled' | 'Sent' | 'Archived';
 
 export type NotificationModuleSource = 'Page' | 'Vote' | 'DataRoom' | 'Governance' | 'Manual';
+
+export type ReportType = 'Governance' | 'Voting' | 'DataRoom' | 'Disclosure' | 'System' | 'Custom';
+
+export type ReportStatus = 'Draft' | 'Generated' | 'Archived';
+
+export type ExportFormat = 'JSON' | 'CSV' | 'PDF';
 
 export interface Permission {
   module: ModuleName;
@@ -141,6 +147,30 @@ export interface Notification {
     failedCount: number;
   };
   versionHistory: VersionInfo[];
+}
+
+export interface Report {
+  id: string;
+  title: string;
+  reportType: ReportType;
+  dateRange: { start: string; end: string };
+  includedModules: ModuleName[];
+  generatedByRole: UserRole;
+  status: ReportStatus;
+  generatedAt?: string;
+  exportFormat?: ExportFormat;
+  dataSnapshot?: any;
+  versionHistory: VersionInfo[];
+}
+
+export interface RegulatoryPacket {
+  id: string;
+  title: string;
+  includedReports: string[];
+  includedDocuments: string[];
+  createdAt: string;
+  createdByRole: UserRole;
+  status: 'Draft' | 'Finalized' | 'Archived';
 }
 
 export interface Subscription {

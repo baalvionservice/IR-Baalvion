@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Activity, FileText, Navigation, Shield, Database, CheckCircle2, AlertCircle, GitPullRequest, Gavel, Briefcase, Bell, Users } from "lucide-react";
+import { Activity, FileText, Navigation, Shield, Database, CheckCircle2, AlertCircle, GitPullRequest, Gavel, Briefcase, Bell, Users, FileBarChart } from "lucide-react";
 import { pageService } from "@/core/services/page.service";
 import { navigationService } from "@/core/services/navigation.service";
 import { auditService } from "@/core/services/audit.service";
@@ -11,6 +11,7 @@ import { votingService } from "@/core/services/voting.service";
 import { boardMaterialsService } from "@/core/services/board-materials.service";
 import { notificationService } from "@/core/services/notification.service";
 import { subscriptionService } from "@/core/services/subscription.service";
+import { reportingService } from "@/core/services/reporting.service";
 import { AuditLogEntry } from "@/core/content/schemas";
 
 export default function SystemDashboardPage() {
@@ -20,21 +21,23 @@ export default function SystemDashboardPage() {
     activeVotes: 0,
     boardMaterials: 0,
     notifsSent: 0,
-    subscribers: 0
+    subscribers: 0,
+    reports: 0
   });
   const [recentActivity, setRecentActivity] = useState<AuditLogEntry[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const loadSystemState = async () => {
     setIsLoading(true);
-    const [pages, navItems, logs, votes, materials, notifs, subs] = await Promise.all([
+    const [pages, navItems, logs, votes, materials, notifs, subs, reports] = await Promise.all([
       pageService.getAllPages(),
       navigationService.getAllItems(),
       auditService.getLogs({ limit: 10 }),
       votingService.getVotes(),
       boardMaterialsService.getMaterials(),
       notificationService.getAllNotifications(),
-      subscriptionService.getSubscribers()
+      subscriptionService.getSubscribers(),
+      reportingService.getAllReports()
     ]);
 
     const countActiveNav = (items: any[]): number => 
@@ -46,7 +49,8 @@ export default function SystemDashboardPage() {
       activeVotes: votes.filter(v => v.status === 'Open').length,
       boardMaterials: materials.length,
       notifsSent: notifs.filter(n => n.status === 'Sent').length,
-      subscribers: subs.length
+      subscribers: subs.length,
+      reports: reports.length
     });
     setRecentActivity(logs);
     setIsLoading(false);
@@ -58,11 +62,13 @@ export default function SystemDashboardPage() {
     window.addEventListener('audit-updated', loadSystemState);
     window.addEventListener('voting-updated', loadSystemState);
     window.addEventListener('notification-updated', loadSystemState);
+    window.addEventListener('report-updated', loadSystemState);
     return () => {
       window.removeEventListener('storage', loadSystemState);
       window.removeEventListener('audit-updated', loadSystemState);
       window.removeEventListener('voting-updated', loadSystemState);
       window.removeEventListener('notification-updated', loadSystemState);
+      window.removeEventListener('report-updated', loadSystemState);
     };
   }, []);
 
@@ -88,12 +94,12 @@ export default function SystemDashboardPage() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Investor Segments</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">Reports Generated</CardTitle>
+            <FileBarChart className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.subscribers}</div>
-            <p className="text-xs text-muted-foreground">Mailing List: Verified</p>
+            <div className="text-2xl font-bold">{stats.reports}</div>
+            <p className="text-xs text-muted-foreground">Regulatory Snapshots</p>
           </CardContent>
         </Card>
         <Card>
