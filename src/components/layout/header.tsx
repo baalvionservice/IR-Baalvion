@@ -1,10 +1,11 @@
+
 "use client";
 
 import { useState, useEffect, useCallback, memo } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Mountain, ChevronDown, Globe, Loader2, ShieldCheck, LogOut, LayoutDashboard } from "lucide-react";
+import { Menu, Mountain, ChevronDown, Globe, Loader2, ShieldCheck, LogOut, LayoutDashboard, Bell } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
@@ -17,10 +18,12 @@ import {
 import { navigationService } from "@/core/services/navigation.service";
 import { authService } from "@/core/services/auth.service";
 import { NavigationItem, UserRole } from "@/core/content/schemas";
+import { AlertsSidebar } from "@/components/notifications/AlertsSidebar";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [isAlertsOpen, setIsAlertsOpen] = useState(false);
   const [navItems, setNavItems] = useState<NavigationItem[]>([]);
   const [userRole, setUserRole] = useState<UserRole>('public');
   const [isLoading, setIsLoading] = useState(true);
@@ -80,6 +83,13 @@ export default function Header() {
           </div>
 
           <div className="flex items-center gap-2 md:gap-4">
+            {userRole !== 'public' && (
+              <Button variant="ghost" size="icon" className="relative" onClick={() => setIsAlertsOpen(true)}>
+                <Bell className="h-5 w-5" />
+                <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-primary" />
+              </Button>
+            )}
+            
             <LanguageToggle />
 
             <div className="hidden sm:flex items-center gap-2">
@@ -110,6 +120,8 @@ export default function Header() {
           </div>
         </div>
       </header>
+
+      <AlertsSidebar open={isAlertsOpen} onOpenChange={setIsAlertsOpen} />
     </>
   );
 }
@@ -208,7 +220,7 @@ function AuthButtons({ userRole, isMobile, onAction }: any) {
           <LogOut className="h-4 w-4" /> Sign Out
         </Button>
         <Button asChild size="sm" className="shadow-lg gap-2 w-full">
-          <Link href="/performance" onClick={onAction}><LayoutDashboard className="h-4 w-4" /> Command Center</Link>
+          <Link href="/performance" onClick={onAction}><LayoutDashboard className="h-4 w-4" /> Portal</Link>
         </Button>
       </div>
     );

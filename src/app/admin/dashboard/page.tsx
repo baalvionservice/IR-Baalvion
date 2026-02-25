@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -7,7 +8,8 @@ import { ApprovalsPanel } from "@/components/admin/ApprovalsPanel";
 import { VotingPanel } from "@/components/admin/VotingPanel";
 import { RegulatoryExportPanel } from "@/components/admin/RegulatoryExportPanel";
 import { AuditLogPanel } from "@/components/admin/AuditLogPanel";
-import { ShieldCheck, Gavel, FileBarChart, History, Activity } from "lucide-react";
+import { AlertTriggerPanel } from "@/components/notifications/AlertTriggerPanel";
+import { ShieldCheck, Gavel, FileBarChart, History, Activity, Megaphone } from "lucide-react";
 import { authService } from "@/core/services/auth.service";
 import { UserRole } from "@/core/content/schemas";
 
@@ -42,12 +44,15 @@ export default function AdminDashboardPage() {
       </div>
 
       <Tabs defaultValue="approvals" className="w-full">
-        <TabsList className="grid w-full grid-cols-4 max-w-2xl bg-card border border-border/50">
+        <TabsList className="grid w-full grid-cols-5 max-w-3xl bg-card border border-border/50">
           <TabsTrigger value="approvals" className="flex items-center gap-2">
             <Activity className="h-4 w-4" /> Approvals
           </TabsTrigger>
           <TabsTrigger value="voting" className="flex items-center gap-2">
             <Gavel className="h-4 w-4" /> Resolutions
+          </TabsTrigger>
+          <TabsTrigger value="broadcast" className="flex items-center gap-2">
+            <Megaphone className="h-4 w-4" /> Broadcast
           </TabsTrigger>
           <TabsTrigger value="reports" className="flex items-center gap-2">
             <FileBarChart className="h-4 w-4" /> Reports
@@ -64,6 +69,10 @@ export default function AdminDashboardPage() {
           
           <TabsContent value="voting">
             <VotingPanel role={activeRole} />
+          </TabsContent>
+
+          <TabsContent value="broadcast">
+            <AlertTriggerPanel role={activeRole} />
           </TabsContent>
 
           <TabsContent value="reports">

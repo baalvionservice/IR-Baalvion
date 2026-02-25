@@ -1,3 +1,4 @@
+
 import { getSessionFromCookie } from '@/lib/auth/session';
 import CapitalOverview from '@/components/dashboard/CapitalOverview';
 import CapitalCalls from '@/components/dashboard/CapitalCalls';
@@ -5,6 +6,7 @@ import DistributionLedger from '@/components/dashboard/DistributionLedger';
 import NavChart from '@/components/dashboard/NavChart';
 import DocumentPreview from '@/components/dashboard/DocumentPreview';
 import ActiveVoting from '@/components/dashboard/ActiveVoting';
+import { EventPackageDownload } from '@/components/dashboard/EventPackageDownload';
 import { cookies } from 'next/headers';
 
 async function getDashboardData() {
@@ -44,12 +46,15 @@ export default async function DashboardPage() {
   const data = await getDashboardData();
 
   return (
-    <div className="container mx-auto p-6 space-y-8">
-      <div className="flex flex-col gap-1">
-        <h1 className="text-3xl font-bold tracking-tight">Investor Dashboard</h1>
-        <p className="text-muted-foreground">
-          Institutional Capital Overview for {session.email}
-        </p>
+    <div className="container mx-auto p-6 space-y-8 animate-in fade-in duration-700">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+        <div className="flex flex-col gap-1">
+          <h1 className="text-3xl font-bold tracking-tight">Investor Dashboard</h1>
+          <p className="text-muted-foreground">
+            Institutional Capital Overview for {session.email}
+          </p>
+        </div>
+        <EventPackageDownload />
       </div>
 
       <CapitalOverview summary={data.summary} />
