@@ -4,9 +4,10 @@ import { Card } from '@/components/ui/card';
 import { Calendar } from '@/components/ui/calendar';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Download } from 'lucide-react';
+import { Download, Link as LinkIcon, FileText, FileSpreadsheet } from 'lucide-react';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function EventsPage() {
     const scheduledEvent = new Date('2026-02-10T12:00:00Z');
@@ -111,6 +112,57 @@ export default function EventsPage() {
                                     />
                                 </Card>
                            )}
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section className="py-16 md:py-24 bg-white text-black">
+                <div className="container mx-auto px-4">
+                    <h2 className="text-3xl font-bold text-center mb-12">Archived Events</h2>
+                    <div className="max-w-4xl mx-auto">
+                        <div className="flex items-center justify-start mb-8 gap-4">
+                           <p className="text-sm font-medium">Select Year:</p>
+                            <Select defaultValue="2026">
+                                <SelectTrigger className="w-[120px]">
+                                    <SelectValue/>
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="2026">2026</SelectItem>
+                                    <SelectItem value="2025">2025</SelectItem>
+                                    <SelectItem value="2024">2024</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+
+                        <div className="space-y-8">
+                            <div className="border-b border-gray-200 pb-8">
+                                <p className="text-sm text-gray-500 mb-2">10 Feb 2026 11:20 AM ET</p>
+                                <h3 className="text-xl font-bold mb-4">
+                                    Baalvion's Martin S. Small to Present at the 2026 Bank of America Securities Financial Services Conference on February 10th
+                                </h3>
+                                <div className="flex gap-4">
+                                    <Link href="#" className="text-sm font-bold text-primary hover:underline flex items-center gap-1">
+                                        <LinkIcon className="h-4 w-4" /> Webcast
+                                    </Link>
+                                </div>
+                            </div>
+                            <div className="border-b border-gray-200 pb-8">
+                                <p className="text-sm text-gray-500 mb-2">15 Jan 2026 7:30 AM ET</p>
+                                <h3 className="text-xl font-bold mb-4">
+                                    Q4 2025 Baalvion, Inc. Earnings Conference Call
+                                </h3>
+                                <div className="flex gap-4 flex-wrap">
+                                    <Link href="#" className="text-sm font-bold text-primary hover:underline flex items-center gap-1">
+                                    <LinkIcon className="h-4 w-4" /> Webcast
+                                    </Link>
+                                    <Link href="#" className="text-sm font-bold text-primary hover:underline flex items-center gap-1">
+                                        <FileText className="h-4 w-4" /> Earnings Release
+                                    </Link>
+                                    <Link href="#" className="text-sm font-bold text-primary hover:underline flex items-center gap-1">
+                                    <FileSpreadsheet className="h-4 w-4" /> Earnings Supplement
+                                    </Link>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
