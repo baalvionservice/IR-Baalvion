@@ -1,15 +1,15 @@
-import { MOCK_NAVIGATION } from "../providers/mock/mock-data";
+import { NavigationItem, UserRole } from "../content/schemas";
 import { authService } from "./auth.service";
 import { auditService } from "./audit.service";
-import { validationService } from "./validation.service";
-import { NavigationItem, UserRole } from "../content/schemas";
-
-let navigationState = [...MOCK_NAVIGATION];
+import { navigationRepository } from "../repositories/navigation.repository";
+import { ApiResponse } from "@/types/api.types";
 
 export const navigationService = {
-  getNavigation: async (): Promise<NavigationItem[]> => {
+  getNavigation: async (): Promise<ApiResponse<NavigationItem[]>> => {
     const { role } = await authService.getCurrentUser();
-    await new Promise(resolve => setTimeout(resolve, 100));
+    const response = await navigationRepository.findAll();
+
+    if (!response.success) return response;
 
     const filterItems = (items: NavigationItem[]): NavigationItem[] => {
       return items
@@ -21,17 +21,21 @@ export const navigationService = {
         .sort((a, b) => a.order - b.order);
     };
 
-    return filterItems(navigationState);
+    return {
+      ...response,
+      data: filterItems(response.data || [])
+    };
   },
 
   getAllItems: async (): Promise<NavigationItem[]> => {
-    await new Promise(resolve => setTimeout(resolve, 100));
-    return navigationState.sort((a, b) => a.order - b.order);
+    const response = await navigationRepository.findAll();
+    return (response.data || []).sort((a, b) => a.order - b.order);
   },
 
   updateItem: async (itemId: string, updates: Partial<NavigationItem>): Promise<void> => {
     const { role } = await authService.getCurrentUser();
-    await new Promise(resolve => setTimeout(resolve, 300));
+    const response = await navigationRepository.findAll();
+    let data = response.data || [];
     
     let previousState: any = null;
     const updateRecursive = (items: NavigationItem[]): NavigationItem[] => {
@@ -45,7 +49,8 @@ export const navigationService = {
       });
     };
 
-    navigationState = updateRecursive(navigationState);
+    data = updateRecursive(data);
+    await navigationRepository.saveAll(data);
     
     await auditService.log({
       userRole: role,
@@ -61,11 +66,13 @@ export const navigationService = {
 
   addItem: async (parentPath: string | null, item: Omit<NavigationItem, 'id'>): Promise<void> => {
     const { role } = await authService.getCurrentUser();
-    await new Promise(resolve => setTimeout(resolve, 300));
+    const response = await navigationRepository.findAll();
+    let data = response.data || [];
+
     const newItem = { ...item, id: `nav-${Math.random().toString(36).substr(2, 9)}` };
     
     if (!parentPath) {
-      navigationState.push(newItem as NavigationItem);
+      data.push(newItem as NavigationItem);
     } else {
       const addRecursive = (items: NavigationItem[]): NavigationItem[] => {
         return items.map(node => {
@@ -76,8 +83,10 @@ export const navigationService = {
           return node;
         });
       };
-      navigationState = addRecursive(navigationState);
+      data = addRecursive(data);
     }
+
+    await navigationRepository.saveAll(data);
 
     await auditService.log({
       userRole: role,
@@ -92,7 +101,8 @@ export const navigationService = {
 
   deleteItem: async (itemId: string): Promise<void> => {
     const { role } = await authService.getCurrentUser();
-    await new Promise(resolve => setTimeout(resolve, 300));
+    const response = await navigationRepository.findAll();
+    let data = response.data || [];
     
     const deleteRecursive = (items: NavigationItem[]): NavigationItem[] => {
       return items
@@ -102,7 +112,8 @@ export const navigationService = {
           children: item.children ? deleteRecursive(item.children) : undefined
         }));
     };
-    navigationState = deleteRecursive(navigationState);
+    data = deleteRecursive(data);
+    await navigationRepository.saveAll(data);
 
     await auditService.log({
       userRole: role,

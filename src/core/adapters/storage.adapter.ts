@@ -68,8 +68,10 @@ export class StorageAdapter {
    * Helper to initialize storage with default data if empty
    */
   async initialize<T>(defaultData: T[]): Promise<void> {
+    if (typeof window === 'undefined') return;
     const raw = localStorage.getItem(this.key);
-    if (!raw) {
+    // Only initialize if the key doesn't exist OR if it's an empty array
+    if (!raw || raw === '[]') {
       localStorage.setItem(this.key, JSON.stringify(defaultData));
     }
   }

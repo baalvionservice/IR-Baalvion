@@ -10,7 +10,6 @@ export class PageRepository {
 
   constructor() {
     this.adapter = new StorageAdapter("pages");
-    // Ensure we have data
     if (typeof window !== 'undefined') {
       this.adapter.initialize(MOCK_PAGES);
     }

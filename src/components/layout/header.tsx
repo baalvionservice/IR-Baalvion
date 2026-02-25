@@ -48,10 +48,12 @@ export default function Header() {
     loadNavigation();
 
     window.addEventListener('storage', loadNavigation);
+    window.addEventListener('navigation-updated', loadNavigation);
     
     return () => {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener('storage', loadNavigation);
+      window.removeEventListener('navigation-updated', loadNavigation);
     }
   }, []);
   

@@ -31,9 +31,14 @@ export default function Home() {
 
     loadPage();
     
-    // Refresh if role changes
+    // Refresh if role changes or content updated
     window.addEventListener('storage', loadPage);
-    return () => window.removeEventListener('storage', loadPage);
+    window.addEventListener('workflow-updated', loadPage);
+    
+    return () => {
+      window.removeEventListener('storage', loadPage);
+      window.removeEventListener('workflow-updated', loadPage);
+    };
   }, [toast]);
 
   if (isLoading) {

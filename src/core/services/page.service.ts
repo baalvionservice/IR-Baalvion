@@ -50,5 +50,27 @@ export const pageService = {
     }
 
     return response;
+  },
+
+  approvePage: async (pageId: string): Promise<void> => {
+    const { role } = await authService.getCurrentUser();
+    const response = await pageRepository.findAll();
+    const pages = response.data || [];
+    const page = pages.find(p => p.id === pageId);
+    
+    if (!page) return;
+
+    const updates = {
+      workflowStatus: 'Published' as WorkflowStatus,
+      status: 'Published' as 'Published',
+      currentVersion: page.currentVersion + 1,
+      versionHistory: [
+        ...page.versionHistory,
+        { version: page.currentVersion + 1, author: role, timestamp: new Date().toISOString() }
+      ]
+    };
+
+    await pageRepository.update(pageId, updates);
+    window.dispatchEvent(new CustomEvent('storage'));
   }
 };
