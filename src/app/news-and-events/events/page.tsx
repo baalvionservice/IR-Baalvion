@@ -3,10 +3,15 @@
 import { Card } from '@/components/ui/card';
 import { Calendar } from '@/components/ui/calendar';
 import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Download } from 'lucide-react';
+import Image from 'next/image';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default function EventsPage() {
     const scheduledEvent = new Date('2026-02-10T12:00:00Z');
     const currentDay = new Date('2026-02-25T12:00:00Z');
+    const presentationImage = PlaceHolderImages.find(p => p.id === 'news-3-image');
 
     return (
         <>
@@ -72,6 +77,40 @@ export default function EventsPage() {
                                     </Link>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section className="py-16 md:py-24 bg-yellow-400 text-black">
+                <div className="container mx-auto px-4">
+                    <h2 className="text-3xl font-bold mb-12">Featured Presentation</h2>
+                    <div className="grid lg:grid-cols-2 gap-16 items-center">
+                        <div className="space-y-4">
+                            <p className="font-semibold">12 JUN 2025</p>
+                            <h3 className="text-4xl font-bold">
+                                Baalvion, Inc. 2025 Investor Day
+                            </h3>
+                            <Button asChild variant="link" className="text-black p-0 text-base hover:underline">
+                                <Link href="#">
+                                    <Download className="mr-2 h-4 w-4" />
+                                    Download
+                                </Link>
+                            </Button>
+                        </div>
+                        <div>
+                           {presentationImage && (
+                                <Card className="overflow-hidden border-black">
+                                     <Image
+                                        src={presentationImage.imageUrl}
+                                        alt="Investor Day Presentation"
+                                        data-ai-hint={presentationImage.imageHint}
+                                        width={600}
+                                        height={400}
+                                        className="object-cover w-full h-full"
+                                    />
+                                </Card>
+                           )}
                         </div>
                     </div>
                 </div>
