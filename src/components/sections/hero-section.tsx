@@ -30,26 +30,32 @@ export default function HeroSection() {
                         </div>
                     </div>
 
-                    {/* Right Column (Stock Widget) */}
+                    {/* Right Column (Info Widget) */}
                     <div className="flex justify-center md:justify-end">
-                        <div className="border border-border p-6 rounded-lg w-full max-w-sm bg-background">
-                            <div className="flex justify-between items-center">
-                                <h3 className="font-bold">NYSE: BAA</h3>
+                       <div className="border border-border p-6 rounded-lg w-full max-w-sm bg-background">
+                            <div className="flex justify-between items-center mb-4">
+                                <h3 className="font-bold">Private Company (India)</h3>
                                 <div className="h-4 w-4 bg-primary"></div>
                             </div>
-                            <div className="mt-4">
-                                <p className="text-4xl font-bold">$1,081.05</p>
-                                <p className="text-green-400 font-semibold">+10.04 (0.94%)</p>
-                            </div>
-                            <div className="mt-4 border-t border-border pt-4">
+
+                            <div className="space-y-3">
                                 <div className="flex justify-between text-sm">
-                                    <span className="text-muted-foreground">Market Cap:</span>
-                                    <span className="font-bold">$167.73B</span>
+                                    <span className="text-muted-foreground">CIN:</span>
+                                    <span className="font-mono text-right">U43121OD2025PTC048479</span>
+                                </div>
+                                <div className="flex justify-between text-sm">
+                                    <span className="text-muted-foreground">Investor Access:</span>
+                                    <span className="font-semibold text-right">Accredited Only</span>
+                                </div>
+                                <div className="flex justify-between text-sm">
+                                    <span className="text-muted-foreground">Capital Structure:</span>
+                                    <span className="font-semibold text-right">Privately Held</span>
+                                </div>
+                                <div className="flex justify-between text-sm">
+                                    <span className="text-muted-foreground">Regulatory Status:</span>
+                                    <span className="font-semibold text-right">Unlisted</span>
                                 </div>
                             </div>
-                            <p className="text-xs text-muted-foreground mt-4">
-                                20 minutes min. delay | February 24, 2026 4:00 PM ET
-                            </p>
                         </div>
                     </div>
                 </div>
