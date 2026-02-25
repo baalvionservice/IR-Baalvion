@@ -101,6 +101,21 @@ export default function GovernanceOverviewPage() {
                         </div>
                     </div>
 
+                    <div className="mt-16">
+                        <h2 className="text-3xl font-bold mb-8 text-black">Contact Our Board of Directors</h2>
+                        <div className="space-y-4 text-gray-700">
+                            <p>
+                                EMAIL: <a href="mailto:board@baalvion.com" className="text-primary hover:underline">board@baalvion.com</a>
+                            </p>
+                            <p>You may also send correspondence to our:</p>
+                            <address className="not-italic">
+                                Board of Directors c/o Corporate Communications Department<br />
+                                50 Hudson Yards<br />
+                                New York, NY 10001
+                            </address>
+                        </div>
+                    </div>
+
                 </div>
             </section>
         </>
