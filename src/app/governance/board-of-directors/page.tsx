@@ -1,8 +1,6 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 import { boardOfDirectors } from '@/lib/data';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export const metadata: Metadata = {
     title: 'Board of Directors | Baalvion',
@@ -27,27 +25,13 @@ export default function BoardOfDirectorsPage() {
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-16 max-w-7xl mx-auto">
-                        {boardOfDirectors.map((member) => {
-                            const memberImage = PlaceHolderImages.find(p => p.id === member.imageId);
-                            return (
-                                <div key={member.name} className="text-center flex flex-col items-center">
-                                    {memberImage ? (
-                                        <Image
-                                            src={memberImage.imageUrl}
-                                            alt={`Portrait of ${member.name}`}
-                                            data-ai-hint={memberImage.imageHint}
-                                            width={150}
-                                            height={150}
-                                            className="rounded-full mb-4 object-cover"
-                                        />
-                                    ) : (
-                                        <div className="w-[150px] h-[150px] bg-gray-200 rounded-full mb-4"></div>
-                                    )}
-                                    <h3 className="text-lg font-bold">{member.name}</h3>
-                                    <p className="text-sm text-gray-600 mt-1">{member.title}</p>
-                                </div>
-                            );
-                        })}
+                        {boardOfDirectors.map((member) => (
+                            <div key={member.name} className="text-center flex flex-col items-center">
+                                <div className="w-[150px] h-[150px] bg-gray-200 rounded-full mb-4"></div>
+                                <h3 className="text-lg font-bold">{member.name}</h3>
+                                <p className="text-sm text-gray-600 mt-1">{member.title}</p>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </section>
