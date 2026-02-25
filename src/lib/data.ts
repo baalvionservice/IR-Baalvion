@@ -1,14 +1,14 @@
 export const leadershipTeam = [
     {
-      name: "Alexandros Vasilias",
+      name: "Deepak Kumar Kuldeep",
       title: "Founder & Chief Visionary Officer",
-      bio: "A serial entrepreneur with over 20 years of experience building and scaling complex logistical and financial systems. Alexandros's vision is to create a frictionless global trade environment, powered by intelligent technology and transparent governance.",
+      bio: "Deepak is the driving force behind Baalvion, bringing over two decades of experience in global trade and technology. His vision is to build a transparent and efficient ecosystem for B2B commerce worldwide.",
       imageId: "founder-photo",
     },
     {
-      name: "Isabella Rossi",
-      title: "Chief Financial Officer",
-      bio: "Isabella orchestrates the company's capital allocation strategy, drawing on a decorated career in M&A and strategic finance at top-tier global investment banks. She ensures rigorous financial discipline and sustainable, long-term growth.",
+      name: "Adarsh Patra",
+      title: "Chief Executive Officer",
+      bio: "Adarsh leads Baalvion's strategic execution and day-to-day operations. With a background in corporate strategy and finance, he is focused on scaling the company and delivering value to our stakeholders.",
       imageId: "executive-1-photo",
     },
     {
