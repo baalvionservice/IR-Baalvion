@@ -1,29 +1,46 @@
-import GovernanceSection from '@/components/sections/governance-section';
-import HeroSection from '@/components/sections/hero-section';
-import NewsSection from '@/components/sections/news-section';
-import OverviewSection from '@/components/sections/overview-section';
-import PressReleasesSection from '@/components/sections/press-releases-section';
-import QuarterlyResultsSection from '@/components/sections/quarterly-results-section';
-import RiskSection from '@/components/sections/risk-section';
-import ThesisSection from '@/components/sections/thesis-section';
-import TrustSignals from '@/components/global/TrustSignals';
-import WhoWeAreSection from '@/components/sections/who-we-are-section';
+'use client';
+
+import { useEffect, useState } from 'react';
+import { pageService } from '@/core/services/page.service';
+import { PageDefinition } from '@/core/content/schemas';
+import PageRenderer from '@/components/cms/PageRenderer';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function Home() {
+  const [pageData, setPageData] = useState<PageDefinition | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadPage = async () => {
+      const data = await pageService.getPageBySlug('/');
+      setPageData(data);
+      setIsLoading(false);
+    };
+    loadPage();
+    
+    // Refresh if role changes
+    window.addEventListener('storage', loadPage);
+    return () => window.removeEventListener('storage', loadPage);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <main className="flex-grow space-y-12 py-20 px-4">
+        <Skeleton className="h-[400px] w-full max-w-7xl mx-auto rounded-xl" />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+          <Skeleton className="h-64 rounded-xl" />
+          <Skeleton className="h-64 rounded-xl" />
+          <Skeleton className="h-64 rounded-xl" />
+        </div>
+      </main>
+    );
+  }
+
+  if (!pageData) return null;
+
   return (
     <main className="flex-grow">
-      <HeroSection />
-      <WhoWeAreSection />
-      <TrustSignals />
-      <QuarterlyResultsSection />
-      <div className="space-y-16 py-16 md:space-y-24 md:py-24 lg:space-y-32 lg:py-32">
-        <OverviewSection id="overview" />
-        <ThesisSection id="thesis" />
-        <GovernanceSection id="governance" />
-        <NewsSection id="news" />
-        <PressReleasesSection id="press-releases" />
-        <RiskSection id="risk" />
-      </div>
+      <PageRenderer page={pageData} />
     </main>
   );
 }
