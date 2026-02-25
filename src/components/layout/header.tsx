@@ -30,18 +30,18 @@ export default function Header() {
   const [navItems, setNavItems] = useState<NavigationItem[]>([]);
   const [userRole, setUserRole] = useState<UserRole>('public');
 
+  const loadNavigation = async () => {
+    const { role } = await authService.getCurrentUser();
+    setUserRole(role);
+    const items = await navigationService.getNavigation();
+    setNavItems(items);
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
     
-    const loadNavigation = async () => {
-      const { role } = await authService.getCurrentUser();
-      setUserRole(role);
-      const items = await navigationService.getNavigation();
-      setNavItems(items);
-    };
-
     window.addEventListener("scroll", handleScroll);
     loadNavigation();
 
@@ -64,8 +64,9 @@ export default function Header() {
 
   const onModalClose = () => {
     setIsModalOpen(false);
-    const role: UserRole = registrationFlow === 'phase1' ? 'phase1' : 'phase2';
-    authService.setRole(role);
+    // Role change is handled by authService within components sometimes, 
+    // but here we just refresh navigation.
+    loadNavigation();
   }
 
   const handleSignOut = () => {
@@ -83,10 +84,13 @@ export default function Header() {
                 {item.label} <ChevronDown className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-64" align="start">
-              {item.children.map((child, index) => {
+            <DropdownMenuContent className="w-64 max-h-[80vh] overflow-y-auto" align="start">
+              {item.children.map((child) => {
                  if (child.isHeader) {
                     return <DropdownMenuLabel key={child.id}>{child.label}</DropdownMenuLabel>;
+                 }
+                 if (child.label === '---') {
+                    return <DropdownMenuSeparator key={child.id} />;
                  }
                  return (
                     <DropdownMenuItem asChild key={child.id}>
@@ -112,7 +116,7 @@ export default function Header() {
   };
 
   const NavContent = ({ isMobile = false }: { isMobile?: boolean }) => (
-    <nav className={cn("items-center gap-4 text-lg font-medium", isMobile ? "flex flex-col space-y-4" : "hidden md:flex")}>
+    <nav className={cn("items-center gap-2", isMobile ? "flex flex-col space-y-4" : "hidden md:flex")}>
       {renderNavItems(navItems, isMobile)}
     </nav>
   );
@@ -122,7 +126,7 @@ export default function Header() {
       <header
         className={cn(
           "sticky top-0 z-50 flex h-16 items-center border-b transition-all duration-300",
-          scrolled ? "border-border bg-background/80 backdrop-blur-sm" : "border-transparent"
+          scrolled ? "border-border bg-background/80 backdrop-blur-sm" : "border-transparent bg-background"
         )}
       >
         <div className="container mx-auto flex h-16 items-center justify-between px-4">

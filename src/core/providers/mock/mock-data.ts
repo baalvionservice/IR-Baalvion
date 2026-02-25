@@ -1,4 +1,4 @@
-import { NavigationItem, PageDefinition, UserRole } from "../../content/schemas";
+import { NavigationItem, PageDefinition } from "../../content/schemas";
 
 export const MOCK_NAVIGATION: NavigationItem[] = [
   {
@@ -9,9 +9,41 @@ export const MOCK_NAVIGATION: NavigationItem[] = [
     isActive: true,
     order: 0,
     children: [
-      { id: 'sub-overview', label: 'Overview', href: '/#overview', roles: ['public'], isActive: true, order: 1 },
-      { id: 'sub-thesis', label: 'Investment Thesis', href: '/#thesis', roles: ['public'], isActive: true, order: 2 },
-      { id: 'sub-gov', label: 'Governance Principles', href: '/#governance', roles: ['public'], isActive: true, order: 3 },
+      { id: 'sub-overview', label: 'Overview', href: '/#overview', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 1 },
+      { id: 'sub-thesis', label: 'Investment Thesis', href: '/#thesis', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 2 },
+      { id: 'sub-gov-principles', label: 'Governance Principles', href: '/#governance', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 3 },
+      { id: 'sub-esg-risk', label: 'ESG & Risk Management', href: '/#risk', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 4 },
+      { id: 'sub-highlights', label: 'Corporate Highlights', href: '/#news', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 5 },
+    ]
+  },
+  {
+    id: 'nav-about',
+    label: 'About Us',
+    roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'],
+    isActive: true,
+    order: 1,
+    children: [
+      { id: 'about-mission', label: 'Mission & Vision', href: '/#overview', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 1 },
+      { id: 'about-leadership', label: 'Leadership Team', href: '/#governance', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 2 },
+      { id: 'about-bod', label: 'Board of Directors', href: '/governance/board-of-directors', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 3 },
+      { id: 'about-partners', label: 'Advisors & Partners', href: '/#trust', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 4 },
+      { id: 'about-history', label: 'History & Milestones', href: '#', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 5 },
+    ]
+  },
+  {
+    id: 'nav-investments',
+    label: 'Investments',
+    roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'],
+    isActive: true,
+    order: 2,
+    children: [
+      { id: 'inv-header-active', label: 'Active Opportunities', isHeader: true, roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 1 },
+      { id: 'inv-p1', label: 'Phase 1: Institutional', href: '#', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 2 },
+      { id: 'inv-p2', label: 'Phase 2: Private SPVs', href: '#', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 3 },
+      { id: 'inv-p3', label: 'Phase 3: Strategic Operators', href: '#', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 4 },
+      { id: 'inv-sep', label: '---', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 5 },
+      { id: 'inv-past', label: 'Past Investments / Case Studies', href: '#', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 6 },
+      { id: 'inv-strategy', label: 'Investment Approach & Strategy', href: '/#thesis', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 7 },
     ]
   },
   {
@@ -20,24 +52,71 @@ export const MOCK_NAVIGATION: NavigationItem[] = [
     href: '/news-and-events/news',
     roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'],
     isActive: true,
-    order: 1,
+    order: 3,
     children: [
-      { id: 'news-news', label: 'News', href: '/news-and-events/news', roles: ['public'], isActive: true, order: 1 },
-      { id: 'news-pr', label: 'Press Releases', href: '/news-and-events/press-releases', roles: ['public'], isActive: true, order: 2 },
-      { id: 'news-events', label: 'Events', href: '/news-and-events/events', roles: ['public'], isActive: true, order: 3 },
+      { id: 'news-news', label: 'News', href: '/news-and-events/news', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 1 },
+      { id: 'news-pr', label: 'Press Releases', href: '/news-and-events/press-releases', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 2 },
+      { id: 'news-events', label: 'Events & Presentations', href: '/news-and-events/events', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 3 },
+      { id: 'news-day', label: 'Investor Day', href: '/news-and-events/investor-day', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 4 },
+      { id: 'news-webcast', label: 'Webcast', href: '/news-and-events/webcast', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 5 },
     ]
   },
   {
-      id: 'nav-dashboards',
-      label: 'Dashboards',
-      roles: ['phase1', 'phase2', 'phase3', 'admin'],
-      isActive: true,
-      order: 2,
-      children: [
-          { id: 'dash-p1', label: 'P1: Investor Dashboard', href: '/dashboard', roles: ['phase1', 'admin'], isActive: true, order: 1 },
-          { id: 'dash-p2', label: 'P2: SPV Dashboard', href: '/phase2/dashboard', roles: ['phase2', 'admin'], isActive: true, order: 2 },
-          { id: 'dash-p3', label: 'P3: Operator Dashboard', href: '/phase3/dashboard', roles: ['phase3', 'admin'], isActive: true, order: 3 },
-      ]
+    id: 'nav-governance',
+    label: 'Governance',
+    roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'],
+    isActive: true,
+    order: 4,
+    children: [
+      { id: 'gov-over', label: 'Governance Overview', href: '/governance/overview', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 1 },
+      { id: 'gov-lead', label: 'Leadership', href: '/governance/leadership', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 2 },
+      { id: 'gov-bod', label: 'Board of Directors', href: '/governance/board-of-directors', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 3 },
+      { id: 'gov-comm', label: 'Committee Composition', href: '/governance/committee-composition', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 4 },
+      { id: 'gov-sep', label: '---', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 5 },
+      { id: 'gov-esg', label: 'ESG & Risk Management', href: '/#risk', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 6 },
+      { id: 'gov-policy', label: 'Policies & Framework', href: '#', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 7 },
+      { id: 'gov-filings', label: 'Legal & Regulatory Filings', href: '#', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 8 },
+      { id: 'gov-dash', label: 'Compliance Dashboard', href: '/admin/dashboard', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 9 },
+      { id: 'gov-audit', label: 'Audit Reports', href: '#', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 10 },
+    ]
+  },
+  {
+    id: 'nav-resources',
+    label: 'Resources',
+    roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'],
+    isActive: true,
+    order: 5,
+    children: [
+      { id: 'res-alerts', label: 'Investor Email Alerts', href: '/resources/email-alerts', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 1 },
+      { id: 'res-contact', label: 'Contact IR', href: '/resources/contact-ir', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 2 },
+    ]
+  },
+  {
+    id: 'nav-dashboards',
+    label: 'Dashboards',
+    roles: ['phase1', 'phase2', 'phase3', 'admin'],
+    isActive: true,
+    order: 6,
+    children: [
+      { id: 'dash-p1', label: 'P1: Investor Dashboard', href: '/dashboard', roles: ['phase1', 'admin'], isActive: true, order: 1 },
+      { id: 'dash-p2', label: 'P2: SPV Dashboard', href: '/phase2/dashboard', roles: ['phase2', 'admin'], isActive: true, order: 2 },
+      { id: 'dash-p3', label: 'P3: Operator Dashboard', href: '/phase3/dashboard', roles: ['phase3', 'admin'], isActive: true, order: 3 },
+      { id: 'dash-sep', label: '---', roles: ['admin'], isActive: true, order: 4 },
+      { id: 'dash-admin', label: 'Admin Panel', href: '/admin/dashboard', roles: ['admin'], isActive: true, order: 5 },
+    ]
+  },
+  {
+    id: 'nav-datarooms',
+    label: 'Data Rooms',
+    roles: ['phase1', 'phase2', 'phase3', 'admin'],
+    isActive: true,
+    order: 7,
+    children: [
+      { id: 'dr-p1', label: 'P1: Institutional Data Room', href: '/data-room', roles: ['phase1', 'admin'], isActive: true, order: 1 },
+      { id: 'dr-p2', label: 'P2: SPV Data Room', href: '/phase2/data-room', roles: ['phase2', 'admin'], isActive: true, order: 2 },
+      { id: 'dr-down', label: 'Download Center', href: '#', roles: ['phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 3 },
+      { id: 'dr-audit', label: 'Audit & Version History', href: '/admin/dashboard', roles: ['admin'], isActive: true, order: 4 },
+    ]
   }
 ];
 
@@ -49,16 +128,16 @@ export const MOCK_PAGES: PageDefinition[] = [
     description: 'Engineering the Backbone of Global Trade',
     seo: { title: 'Baalvion | Home', description: 'Institutional-Grade IR Platform' },
     sections: [
-      { id: 'sec-hero', type: 'hero', content: {}, roles: ['public'], isActive: true, order: 0 },
-      { id: 'sec-who', type: 'who-we-are', content: {}, roles: ['public'], isActive: true, order: 1 },
-      { id: 'sec-trust', type: 'trust-signals', content: {}, roles: ['public'], isActive: true, order: 2 },
-      { id: 'sec-results', type: 'quarterly-results', content: {}, roles: ['public'], isActive: true, order: 3 },
-      { id: 'sec-overview', type: 'overview', content: { anchor: 'overview' }, roles: ['public'], isActive: true, order: 4 },
-      { id: 'sec-thesis', type: 'thesis', content: { anchor: 'thesis' }, roles: ['public'], isActive: true, order: 5 },
-      { id: 'sec-gov', type: 'governance', content: { anchor: 'governance' }, roles: ['public'], isActive: true, order: 6 },
-      { id: 'sec-news', type: 'news', content: { anchor: 'news' }, roles: ['public'], isActive: true, order: 7 },
-      { id: 'sec-press', type: 'press-releases', content: { anchor: 'press-releases' }, roles: ['public'], isActive: true, order: 8 },
-      { id: 'sec-risk', type: 'risk', content: { anchor: 'risk' }, roles: ['public'], isActive: true, order: 9 },
+      { id: 'sec-hero', type: 'hero', content: {}, roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 0 },
+      { id: 'sec-who', type: 'who-we-are', content: {}, roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 1 },
+      { id: 'sec-trust', type: 'trust-signals', content: {}, roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 2 },
+      { id: 'sec-results', type: 'quarterly-results', content: {}, roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 3 },
+      { id: 'sec-overview', type: 'overview', content: { anchor: 'overview' }, roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 4 },
+      { id: 'sec-thesis', type: 'thesis', content: { anchor: 'thesis' }, roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 5 },
+      { id: 'sec-gov', type: 'governance', content: { anchor: 'governance' }, roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 6 },
+      { id: 'sec-news', type: 'news', content: { anchor: 'news' }, roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 7 },
+      { id: 'sec-press', type: 'press-releases', content: { anchor: 'press-releases' }, roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 8 },
+      { id: 'sec-risk', type: 'risk', content: { anchor: 'risk' }, roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 9 },
     ]
   }
 ];
