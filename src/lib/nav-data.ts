@@ -47,6 +47,7 @@ export const publicNav: NavItem[] = [
       { label: "Press Releases", href: "/news-and-events/press-releases" },
       { label: "Events & Presentations", href: "/news-and-events/events" },
       { label: "Investor Day", href: "/news-and-events/investor-day" },
+      { label: "Webcast", href: "/news-and-events/webcast" },
     ],
   },
   {
@@ -101,6 +102,7 @@ export const loggedInNav: NavItem[] = [
       { label: "Press Releases", href: "/news-and-events/press-releases" },
       { label: "Events & Presentations", href: "/news-and-events/events" },
       { label: "Investor Day", href: "/news-and-events/investor-day" },
+      { label: "Webcast", href: "/news-and-events/webcast" },
       { label: "---" as any },
       { label: "Contact IR", href: "/#contact" },
     ],
