@@ -22,7 +22,7 @@ export default function Footer() {
             <address className="not-italic">
                 Yeshwant Avenue Building, NX, NX Road, Y K Nagar, Virar West, Virar, Maharashtra 401303
                 <br />
-                Phone: +91 8951284770
+                {"Phone: +91 8951284770"}
             </address>
           </div>
 

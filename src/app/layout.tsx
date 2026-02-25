@@ -32,6 +32,12 @@ export const metadata: Metadata = {
   alternates: {
     canonical: '/',
   },
+  formatDetection: {
+    telephone: false,
+    date: false,
+    email: false,
+    address: false,
+  },
   openGraph: {
     title: 'Baalvion Investor Relations',
     description: 'Engineering the backbone of global trade.',
@@ -100,7 +106,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" className={cn('dark', inter.variable)}>
+    <html lang="en" className={cn('dark', inter.variable)} suppressHydrationWarning>
       <body className="min-h-screen bg-background font-body antialiased selection:bg-primary/30">
         <a 
           href="#main-content" 
