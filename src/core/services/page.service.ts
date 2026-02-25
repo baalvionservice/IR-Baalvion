@@ -1,10 +1,11 @@
 import { MOCK_PAGES } from "../providers/mock/mock-data";
-import { PageDefinition, PageSection, UserRole } from "../content/schemas";
+import { PageDefinition, PageSection, UserRole, WorkflowStatus } from "../content/schemas";
 import { authService } from "./auth.service";
 import { auditService } from "./audit.service";
 import { validationService } from "./validation.service";
+import { workflowService } from "./workflow.service";
 
-let pagesState = MOCK_PAGES.map(p => ({ ...p, status: 'Published' as const }));
+let pagesState: PageDefinition[] = [...MOCK_PAGES];
 
 export const pageService = {
   getPageBySlug: async (slug: string): Promise<PageDefinition | null> => {
@@ -14,6 +15,7 @@ export const pageService = {
     const page = pagesState.find(p => p.slug === slug);
     if (!page) return null;
 
+    // Filter live sections based on role
     return {
       ...page,
       sections: page.sections
@@ -30,6 +32,9 @@ export const pageService = {
   updatePage: async (pageId: string, updates: Partial<PageDefinition>): Promise<void> => {
     const { role } = await authService.getCurrentUser();
     
+    const pageIndex = pagesState.findIndex(p => p.id === pageId);
+    if (pageIndex === -1) throw new Error("Page not found");
+
     if (updates.slug) {
       const validation = await validationService.validateSlug(updates.slug, pageId);
       if (!validation.valid) throw new Error(validation.message);
@@ -37,8 +42,16 @@ export const pageService = {
 
     await new Promise(resolve => setTimeout(resolve, 300));
     
-    const previousPage = pagesState.find(p => p.id === pageId);
-    pagesState = pagesState.map(p => p.id === pageId ? { ...p, ...updates } : p);
+    const previousPage = { ...pagesState[pageIndex] };
+    
+    // Changes go to draft sections if we are in institutional mode
+    const newPage = { 
+      ...previousPage, 
+      ...updates,
+      workflowStatus: 'Draft' as WorkflowStatus // Any direct edit reverts to Draft
+    };
+
+    pagesState[pageIndex] = newPage;
     
     await auditService.log({
       userRole: role,
@@ -52,26 +65,44 @@ export const pageService = {
     window.dispatchEvent(new CustomEvent('storage'));
   },
 
-  updateSection: async (pageId: string, sectionId: string, updates: Partial<PageSection>): Promise<void> => {
-    const { role } = await authService.getCurrentUser();
-    await new Promise(resolve => setTimeout(resolve, 300));
-    
-    pagesState = pagesState.map(p => {
-      if (p.id !== pageId) return p;
-      return {
-        ...p,
-        sections: p.sections.map(s => s.id === sectionId ? { ...s, ...updates } : s)
-      };
-    });
+  updateWorkflowStatus: async (pageId: string, status: WorkflowStatus): Promise<void> => {
+    const pageIndex = pagesState.findIndex(p => p.id === pageId);
+    if (pageIndex === -1) return;
 
-    await auditService.log({
-      userRole: role,
-      module: 'Pages',
-      action: 'edit',
-      entityId: `${pageId}/${sectionId}`,
-      newState: updates
-    });
+    const page = pagesState[pageIndex];
 
+    // If publishing, copy draft to live
+    if (status === 'Published') {
+      page.sections = page.draftSections || page.sections;
+      page.currentVersion += 1;
+      page.versionHistory.push({
+        version: page.currentVersion,
+        timestamp: new Date().toISOString(),
+        author: (await authService.getCurrentUser()).role,
+        changesSummary: "Published from workflow"
+      });
+    }
+
+    page.workflowStatus = status;
+    pagesState[pageIndex] = { ...page };
     window.dispatchEvent(new CustomEvent('storage'));
+  },
+
+  requestReview: async (pageId: string) => {
+    const page = pagesState.find(p => p.id === pageId);
+    if (!page) return;
+    await workflowService.handleTransition(pageId, 'Pages', page.workflowStatus, 'InReview', (s) => pageService.updateWorkflowStatus(pageId, s));
+  },
+
+  approvePage: async (pageId: string) => {
+    const page = pagesState.find(p => p.id === pageId);
+    if (!page) return;
+    await workflowService.handleTransition(pageId, 'Pages', page.workflowStatus, 'Approved', (s) => pageService.updateWorkflowStatus(pageId, s));
+  },
+
+  publishPage: async (pageId: string) => {
+    const page = pagesState.find(p => p.id === pageId);
+    if (!page) return;
+    await workflowService.handleTransition(pageId, 'Pages', page.workflowStatus, 'Published', (s) => pageService.updateWorkflowStatus(pageId, s));
   }
 };

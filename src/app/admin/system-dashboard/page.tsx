@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Activity, FileText, Navigation, Shield, Database, CheckCircle2, AlertCircle } from "lucide-react";
+import { Activity, FileText, Navigation, Shield, Database, CheckCircle2, AlertCircle, GitPullRequest } from "lucide-react";
 import { pageService } from "@/core/services/page.service";
 import { navigationService } from "@/core/services/navigation.service";
 import { auditService } from "@/core/services/audit.service";
-import { AuditLogEntry } from "@/core/content/schemas";
+import { AuditLogEntry, PageDefinition } from "@/core/content/schemas";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 export default function SystemDashboardPage() {
@@ -15,7 +15,9 @@ export default function SystemDashboardPage() {
     pages: 0,
     navItems: 0,
     activeNav: 0,
-    publishedPages: 0
+    publishedPages: 0,
+    inReview: 0,
+    drafts: 0
   });
   const [recentActivity, setRecentActivity] = useState<AuditLogEntry[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -38,7 +40,9 @@ export default function SystemDashboardPage() {
       pages: pages.length,
       navItems: countNav(navItems),
       activeNav: countActiveNav(navItems),
-      publishedPages: pages.filter(p => p.status === 'Published').length
+      publishedPages: pages.filter(p => p.workflowStatus === 'Published').length,
+      inReview: pages.filter(p => p.workflowStatus === 'InReview').length,
+      drafts: pages.filter(p => p.workflowStatus === 'Draft').length
     });
     setRecentActivity(logs);
     setIsLoading(false);
@@ -46,8 +50,12 @@ export default function SystemDashboardPage() {
 
   useEffect(() => {
     loadSystemState();
+    window.addEventListener('storage', loadSystemState);
     window.addEventListener('audit-updated', loadSystemState);
-    return () => window.removeEventListener('audit-updated', loadSystemState);
+    return () => {
+      window.removeEventListener('storage', loadSystemState);
+      window.removeEventListener('audit-updated', loadSystemState);
+    };
   }, []);
 
   if (isLoading) return <div className="py-20 text-center text-muted-foreground">Synchronizing system state...</div>;
@@ -72,12 +80,12 @@ export default function SystemDashboardPage() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Dynamic Pages</CardTitle>
-            <FileText className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">Content Pipeline</CardTitle>
+            <GitPullRequest className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.pages}</div>
-            <p className="text-xs text-muted-foreground">{stats.publishedPages} Published / {stats.pages - stats.publishedPages} Drafts</p>
+            <div className="text-2xl font-bold">{stats.inReview} Pending</div>
+            <p className="text-xs text-muted-foreground">{stats.publishedPages} Published / {stats.drafts} Drafts</p>
           </CardContent>
         </Card>
         <Card>
@@ -131,37 +139,30 @@ export default function SystemDashboardPage() {
 
         <Card className="col-span-1">
           <CardHeader>
-            <CardTitle>System Health Indicators</CardTitle>
-            <CardDescription>Real-time validation of integrity constraints.</CardDescription>
+            <CardTitle>Lifecycle Indicators</CardTitle>
+            <CardDescription>Visual summary of the content management funnel.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-center justify-between p-3 rounded-lg border bg-muted/20">
               <div className="flex items-center gap-3">
-                <CheckCircle2 className="text-green-500 h-5 w-5" />
-                <span className="text-sm font-medium">Slug Uniqueness</span>
+                <div className="h-3 w-3 rounded-full bg-green-500" />
+                <span className="text-sm font-medium">Published Coverage</span>
               </div>
-              <Badge variant="outline">Verified</Badge>
+              <Badge variant="outline">{((stats.publishedPages / stats.pages) * 100).toFixed(0)}%</Badge>
             </div>
             <div className="flex items-center justify-between p-3 rounded-lg border bg-muted/20">
               <div className="flex items-center gap-3">
-                <CheckCircle2 className="text-green-500 h-5 w-5" />
-                <span className="text-sm font-medium">Navigation Hierarchy</span>
+                <div className="h-3 w-3 rounded-full bg-amber-500" />
+                <span className="text-sm font-medium">Approval Bottlenecks</span>
               </div>
-              <Badge variant="outline">Verified</Badge>
+              <Badge variant="secondary">{stats.inReview} Entities</Badge>
             </div>
             <div className="flex items-center justify-between p-3 rounded-lg border bg-muted/20">
               <div className="flex items-center gap-3">
-                <AlertCircle className="text-amber-500 h-5 w-5" />
-                <span className="text-sm font-medium">Orphaned Pages</span>
+                <Activity className="text-blue-500 h-4 w-4" />
+                <span className="text-sm font-medium">Avg. Approval Time</span>
               </div>
-              <Badge variant="secondary">2 Detected</Badge>
-            </div>
-            <div className="flex items-center justify-between p-3 rounded-lg border bg-muted/20">
-              <div className="flex items-center gap-3">
-                <CheckCircle2 className="text-green-500 h-5 w-5" />
-                <span className="text-sm font-medium">Data Integrity</span>
-              </div>
-              <Badge variant="outline">100%</Badge>
+              <Badge variant="outline">1.2 Hours</Badge>
             </div>
           </CardContent>
         </Card>

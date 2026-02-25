@@ -12,7 +12,8 @@ let currentSettings: PlatformSettings = {
   features: {
     enableRegistration: true,
     enableDataRoomWatermark: true,
-    maintenanceMode: false
+    maintenanceMode: false,
+    freezePublishing: false
   },
   environment: 'mock'
 };

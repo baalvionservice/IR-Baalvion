@@ -17,7 +17,8 @@ import {
   Mountain,
   ChevronLeft,
   ChevronRight,
-  Activity
+  Activity,
+  GitPullRequest
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,7 @@ import { Button } from "@/components/ui/button";
 const menuItems = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/admin/dashboard" },
   { icon: Activity, label: "System Health", href: "/admin/system-dashboard" },
+  { icon: GitPullRequest, label: "Review Queue", href: "/admin/review-queue" },
   { icon: Navigation, label: "Navigation Manager", href: "/admin/navigation" },
   { icon: FileText, label: "Page Manager", href: "/admin/pages" },
   { icon: Layers, label: "Dashboard Modules", href: "/admin/dashboards" },
@@ -79,7 +81,7 @@ export function Sidebar() {
       </nav>
 
       <div className="p-4 border-t text-[10px] text-muted-foreground text-center">
-        {!isCollapsed && <p>© 2026 CMS v1.0.4-beta</p>}
+        {!isCollapsed && <p>© 2026 CMS v1.1.0-alpha</p>}
       </div>
     </aside>
   );

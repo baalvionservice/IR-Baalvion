@@ -13,9 +13,11 @@ export type UserRole =
   | 'P3Operator'
   | 'BoardMember';
 
-export type ModuleName = 'Navigation' | 'Pages' | 'DataRoom' | 'Dashboard' | 'Governance' | 'AuditLogs' | 'Settings';
+export type ModuleName = 'Navigation' | 'Pages' | 'DataRoom' | 'Dashboard' | 'Governance' | 'AuditLogs' | 'Settings' | 'Workflow';
 
-export type ActionType = 'view' | 'create' | 'edit' | 'delete' | 'reorder' | 'publish' | 'upload' | 'manage' | 'configure';
+export type ActionType = 'view' | 'create' | 'edit' | 'delete' | 'reorder' | 'publish' | 'upload' | 'manage' | 'configure' | 'approve' | 'reject' | 'requestReview';
+
+export type WorkflowStatus = 'Draft' | 'InReview' | 'Approved' | 'Published' | 'Archived' | 'Rejected';
 
 export interface Permission {
   module: ModuleName;
@@ -36,6 +38,7 @@ export interface NavigationItem {
   isHeader?: boolean;
   isActive: boolean;
   order: number;
+  workflowStatus?: WorkflowStatus;
 }
 
 export interface PageSection {
@@ -47,13 +50,24 @@ export interface PageSection {
   order: number;
 }
 
+export interface VersionInfo {
+  version: number;
+  timestamp: string;
+  author: string;
+  changesSummary?: string;
+}
+
 export interface PageDefinition {
   id: string;
   slug: string;
   title: string;
   description?: string;
-  sections: PageSection[];
-  status: 'Draft' | 'Published';
+  sections: PageSection[]; // Live versions
+  draftSections?: PageSection[]; // Work in progress
+  status: 'Draft' | 'Published'; // Legacy - keeping for compat
+  workflowStatus: WorkflowStatus;
+  currentVersion: number;
+  versionHistory: VersionInfo[];
   publishDate?: string;
   seo?: {
     title: string;
@@ -86,6 +100,7 @@ export interface PlatformSettings {
     enableRegistration: boolean;
     enableDataRoomWatermark: boolean;
     maintenanceMode: boolean;
+    freezePublishing: boolean;
   };
   environment: 'mock' | 'production';
 }

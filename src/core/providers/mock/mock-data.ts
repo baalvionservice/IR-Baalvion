@@ -1,4 +1,4 @@
-import { NavigationItem, PageDefinition } from "../../content/schemas";
+import { NavigationItem, PageDefinition, WorkflowStatus } from "../../content/schemas";
 
 export const MOCK_NAVIGATION: NavigationItem[] = [
   {
@@ -8,6 +8,7 @@ export const MOCK_NAVIGATION: NavigationItem[] = [
     roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'],
     isActive: true,
     order: 0,
+    workflowStatus: 'Published',
     children: [
       { id: 'sub-overview', label: 'Overview', href: '/#overview', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 1 },
       { id: 'sub-thesis', label: 'Investment Thesis', href: '/#thesis', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 2 },
@@ -22,6 +23,7 @@ export const MOCK_NAVIGATION: NavigationItem[] = [
     roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'],
     isActive: true,
     order: 1,
+    workflowStatus: 'Published',
     children: [
       { id: 'about-mission', label: 'Mission & Vision', href: '/#overview', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 1 },
       { id: 'about-leadership', label: 'Leadership Team', href: '/#governance', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 2 },
@@ -36,6 +38,7 @@ export const MOCK_NAVIGATION: NavigationItem[] = [
     roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'],
     isActive: true,
     order: 2,
+    workflowStatus: 'Published',
     children: [
       { id: 'inv-header-active', label: 'Active Opportunities', isHeader: true, roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 1 },
       { id: 'inv-p1', label: 'Phase 1: Institutional', href: '#', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 2 },
@@ -53,6 +56,7 @@ export const MOCK_NAVIGATION: NavigationItem[] = [
     roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'],
     isActive: true,
     order: 3,
+    workflowStatus: 'Published',
     children: [
       { id: 'news-news', label: 'News', href: '/news-and-events/news', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 1 },
       { id: 'news-pr', label: 'Press Releases', href: '/news-and-events/press-releases', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 2 },
@@ -67,6 +71,7 @@ export const MOCK_NAVIGATION: NavigationItem[] = [
     roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'],
     isActive: true,
     order: 4,
+    workflowStatus: 'Published',
     children: [
       { id: 'gov-over', label: 'Governance Overview', href: '/governance/overview', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 1 },
       { id: 'gov-lead', label: 'Leadership', href: '/governance/leadership', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 2 },
@@ -86,6 +91,7 @@ export const MOCK_NAVIGATION: NavigationItem[] = [
     roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'],
     isActive: true,
     order: 5,
+    workflowStatus: 'Published',
     children: [
       { id: 'res-alerts', label: 'Investor Email Alerts', href: '/resources/email-alerts', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 1 },
       { id: 'res-contact', label: 'Contact IR', href: '/resources/contact-ir', roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 2 },
@@ -97,6 +103,7 @@ export const MOCK_NAVIGATION: NavigationItem[] = [
     roles: ['phase1', 'phase2', 'phase3', 'admin'],
     isActive: true,
     order: 6,
+    workflowStatus: 'Published',
     children: [
       { id: 'dash-p1', label: 'P1: Investor Dashboard', href: '/dashboard', roles: ['phase1', 'admin'], isActive: true, order: 1 },
       { id: 'dash-p2', label: 'P2: SPV Dashboard', href: '/phase2/dashboard', roles: ['phase2', 'admin'], isActive: true, order: 2 },
@@ -111,6 +118,7 @@ export const MOCK_NAVIGATION: NavigationItem[] = [
     roles: ['phase1', 'phase2', 'phase3', 'admin'],
     isActive: true,
     order: 7,
+    workflowStatus: 'Published',
     children: [
       { id: 'dr-p1', label: 'P1: Institutional Data Room', href: '/data-room', roles: ['phase1', 'admin'], isActive: true, order: 1 },
       { id: 'dr-p2', label: 'P2: SPV Data Room', href: '/phase2/data-room', roles: ['phase2', 'admin'], isActive: true, order: 2 },
@@ -127,6 +135,10 @@ export const MOCK_PAGES: PageDefinition[] = [
     title: 'Baalvion | Investor Relations',
     description: 'Engineering the Backbone of Global Trade',
     seo: { title: 'Baalvion | Home', description: 'Institutional-Grade IR Platform' },
+    status: 'Published',
+    workflowStatus: 'Published',
+    currentVersion: 1,
+    versionHistory: [{ version: 1, author: 'SuperAdmin', timestamp: '2024-01-01T00:00:00Z' }],
     sections: [
       { id: 'sec-hero', type: 'hero', content: {}, roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 0 },
       { id: 'sec-who', type: 'who-we-are', content: {}, roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 1 },
@@ -138,6 +150,19 @@ export const MOCK_PAGES: PageDefinition[] = [
       { id: 'sec-news', type: 'news', content: { anchor: 'news' }, roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 7 },
       { id: 'sec-press', type: 'press-releases', content: { anchor: 'press-releases' }, roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 8 },
       { id: 'sec-risk', type: 'risk', content: { anchor: 'risk' }, roles: ['public', 'phase1', 'phase2', 'phase3', 'admin'], isActive: true, order: 9 },
+    ]
+  },
+  {
+    id: 'page-pending-test',
+    slug: '/compliance-test',
+    title: 'Q3 Financial Strategy Update',
+    description: 'INTERNAL REVIEW ONLY',
+    workflowStatus: 'InReview',
+    status: 'Draft',
+    currentVersion: 0,
+    versionHistory: [],
+    sections: [
+      { id: 'sec-test-hero', type: 'hero', content: { title: 'Strategy Update' }, roles: ['admin'], isActive: true, order: 0 }
     ]
   }
 ];
