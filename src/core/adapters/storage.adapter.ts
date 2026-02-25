@@ -4,8 +4,8 @@ import { ENV_CONFIG } from "@/config/environment";
 import { ApiResponse, ErrorCode } from "@/types/api.types";
 
 /**
- * StorageAdapter handles the low-level persistence logic.
- * In this phase, it uses LocalStorage to simulate a persistent backend.
+ * PRODUCTION AUDIT NOTE:
+ * Enhanced StorageAdapter with better hydration safety and error normalization.
  */
 export class StorageAdapter {
   private key: string;
@@ -15,7 +15,7 @@ export class StorageAdapter {
   }
 
   private generateRequestId(): string {
-    return Math.random().toString(36).substring(2, 15);
+    return `req_${Math.random().toString(36).substring(2, 11)}`;
   }
 
   private async simulateNetwork(): Promise<void> {
@@ -24,8 +24,9 @@ export class StorageAdapter {
     }
 
     if (ENV_CONFIG.enableFailureSimulation) {
-      if (Math.random() < 0.05) { // 5% failure rate
-        throw new Error("Simulated Network Failure");
+      // 5% controlled failure rate for resilience testing
+      if (Math.random() < 0.05) {
+        throw new Error("MOCK_NETWORK_TIMEOUT");
       }
     }
   }
@@ -46,35 +47,59 @@ export class StorageAdapter {
   async getAll<T>(): Promise<ApiResponse<T[]>> {
     try {
       await this.simulateNetwork();
-      if (typeof window === 'undefined') return this.wrapResponse([]);
+      
+      // SSR Safeguard
+      if (typeof window === 'undefined') {
+        return this.wrapResponse([]);
+      }
+
       const raw = localStorage.getItem(this.key);
       const data = raw ? JSON.parse(raw) : [];
+      
+      if (ENV_CONFIG.enableConsoleAudit) {
+        console.info(`[StorageAdapter] GET ALL from ${this.key}`, { count: data.length });
+      }
+
       return this.wrapResponse(data);
     } catch (e: any) {
-      return this.wrapResponse([], false, { code: 'NETWORK_ERROR', message: e.message });
+      console.error(`[StorageAdapter] GET ALL Failure: ${this.key}`, e);
+      return this.wrapResponse([], false, { 
+        code: 'NETWORK_ERROR', 
+        message: e.message === "MOCK_NETWORK_TIMEOUT" ? "Connection timed out. Please retry." : "A transient storage error occurred." 
+      });
     }
   }
 
   async saveAll<T>(data: T[]): Promise<ApiResponse<boolean>> {
     try {
       await this.simulateNetwork();
+      
       if (typeof window === 'undefined') return this.wrapResponse(false);
+      
       localStorage.setItem(this.key, JSON.stringify(data));
+      
+      if (ENV_CONFIG.enableConsoleAudit) {
+        console.info(`[StorageAdapter] PERSISTED to ${this.key}`);
+      }
+
       return this.wrapResponse(true);
     } catch (e: any) {
-      return this.wrapResponse(false, false, { code: 'UNKNOWN_ERROR', message: e.message });
+      return this.wrapResponse(false, false, { code: 'UNKNOWN_ERROR', message: "Failed to persist data to local storage." });
     }
   }
 
   /**
-   * Helper to initialize storage with default data if empty
+   * Defensive initialization to prevent 'empty site' state on first run.
    */
   async initialize<T>(defaultData: T[]): Promise<void> {
     if (typeof window === 'undefined') return;
-    const raw = localStorage.getItem(this.key);
-    // Only initialize if the key doesn't exist OR if it's an empty array string
-    if (!raw || raw === '[]') {
+    
+    const existing = localStorage.getItem(this.key);
+    if (!existing || existing === '[]') {
       localStorage.setItem(this.key, JSON.stringify(defaultData));
+      if (ENV_CONFIG.enableConsoleAudit) {
+        console.info(`[StorageAdapter] SEEDED ${this.key} with mock dataset.`);
+      }
     }
   }
 }

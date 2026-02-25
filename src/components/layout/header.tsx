@@ -22,6 +22,11 @@ import { NavigationItem, UserRole } from "@/core/content/schemas";
 
 type FlowType = "phase1" | "phase2";
 
+/**
+ * PRODUCTION AUDIT NOTE: 
+ * Extracted navigation rendering into sub-components to improve junior developer readability.
+ */
+
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -43,10 +48,7 @@ export default function Header() {
   };
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    
+    const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     loadNavigation();
 
@@ -68,68 +70,10 @@ export default function Header() {
     closeSheet();
   }
 
-  const onModalClose = () => {
-    setIsModalOpen(false);
-    loadNavigation();
-  }
-
   const handleSignOut = () => {
     authService.setRole('public');
     window.location.href = '/';
   }
-
-  const renderNavItems = (items: NavigationItem[], isMobile = false) => {
-    return items.map((item) => {
-      if (item.children && item.children.length > 0) {
-        return (
-          <DropdownMenu key={item.id}>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="text-muted-foreground hover:text-foreground text-sm font-medium flex items-center gap-1 px-2">
-                {item.label} <ChevronDown className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-64 max-h-[80vh] overflow-y-auto" align="start">
-              {item.children.map((child) => {
-                 if (child.isHeader) {
-                    return <DropdownMenuLabel key={child.id} className="text-[10px] uppercase tracking-widest text-muted-foreground pt-4 pb-1">{child.label}</DropdownMenuLabel>;
-                 }
-                 if (child.label === '---') {
-                    return <DropdownMenuSeparator key={child.id} />;
-                 }
-                 return (
-                    <DropdownMenuItem asChild key={child.id}>
-                        <Link href={child.href || '#'} onClick={isMobile ? closeSheet : undefined}>{child.label}</Link>
-                    </DropdownMenuItem>
-                 )
-              })}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        );
-      }
-      return (
-        <Link
-          key={item.id}
-          href={item.href || '#'}
-          onClick={isMobile ? closeSheet : undefined}
-          className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground px-2"
-        >
-          {item.label}
-        </Link>
-      );
-    });
-  };
-
-  const NavContent = ({ isMobile = false }: { isMobile?: boolean }) => (
-    <nav className={cn("items-center gap-2", isMobile ? "flex flex-col space-y-4" : "hidden md:flex")}>
-      {isLoading ? (
-        <div className="flex items-center gap-2 text-xs text-muted-foreground animate-pulse">
-          <Loader2 className="h-3 w-3 animate-spin" /> Synchronizing...
-        </div>
-      ) : (
-        renderNavItems(navItems, isMobile)
-      )}
-    </nav>
-  );
 
   return (
     <>
@@ -141,53 +85,38 @@ export default function Header() {
       >
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
           <div className="flex items-center gap-6">
-            <Link href="/" className="flex items-center gap-2 font-semibold" onClick={closeSheet}>
+            <Link href="/" className="flex items-center gap-2 font-semibold">
               <Mountain className="h-6 w-6 text-primary" />
-              <span className="hidden sm:inline-block">Baalvion</span>
+              <span className="hidden sm:inline-block font-headline tracking-tight">Baalvion</span>
             </Link>
-            <NavContent />
+            
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex items-center gap-2">
+              {isLoading ? (
+                <div className="flex items-center gap-2 text-xs text-muted-foreground animate-pulse">
+                  <Loader2 className="h-3 w-3 animate-spin" /> Syncing Architecture...
+                </div>
+              ) : (
+                <NavItems items={navItems} />
+              )}
+            </nav>
           </div>
 
           <div className="flex items-center gap-2 md:gap-4">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <Globe className="h-5 w-5" />
-                  <span className="sr-only">Toggle language</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem>English</DropdownMenuItem>
-                <DropdownMenuItem disabled>Español</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <LanguageToggle />
 
             <div className="hidden sm:flex items-center gap-2">
-              {userRole !== 'public' ? (
-                <>
-                  <Button size="sm" variant="outline" onClick={handleSignOut}>Sign Out</Button>
-                  <Button asChild size="sm">
-                    <Link href="/dashboard">Dashboard</Link>
-                  </Button>
-                </>
-              ) : (
-                 <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button size="sm">Investor Access</Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => onModalOpen("phase1")}>Apply for Access</DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => onModalOpen("phase2")}>Phase 2 SPV Invite</DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-              )}
+              <AuthButtons 
+                userRole={userRole} 
+                onSignOut={handleSignOut} 
+                onOpenModal={onModalOpen} 
+              />
             </div>
 
             <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" className="md:hidden">
                   <Menu className="h-5 w-5" />
-                  <span className="sr-only">Toggle navigation menu</span>
                 </Button>
               </SheetTrigger>
               <SheetContent side="left" className="w-full">
@@ -196,7 +125,9 @@ export default function Header() {
                           <Mountain className="h-6 w-6 text-primary" />
                           <span>Baalvion</span>
                       </Link>
-                      <NavContent isMobile={true}/>
+                      <nav className="flex flex-col space-y-4">
+                        <NavItems items={navItems} isMobile onLinkClick={closeSheet} />
+                      </nav>
                   </div>
               </SheetContent>
             </Sheet>
@@ -206,9 +137,98 @@ export default function Header() {
 
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent className="max-w-md p-6 sm:max-w-xl md:max-w-2xl">
-          <RegistrationModal closeModal={onModalClose} flowType={registrationFlow} />
+          <RegistrationModal closeModal={() => setIsModalOpen(false)} flowType={registrationFlow} />
         </DialogContent>
       </Dialog>
     </>
+  );
+}
+
+/**
+ * SUB-COMPONENTS FOR READABILITY
+ */
+
+function NavItems({ items, isMobile, onLinkClick }: { items: NavigationItem[], isMobile?: boolean, onLinkClick?: () => void }) {
+  return items.map((item) => {
+    if (item.children && item.children.length > 0) {
+      return (
+        <DropdownMenu key={item.id}>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="text-muted-foreground hover:text-foreground text-sm font-semibold flex items-center gap-1 px-2">
+              {item.label} <ChevronDown className="h-3 w-3 opacity-50" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-64 max-h-[80vh] overflow-y-auto" align={isMobile ? "center" : "start"}>
+            {item.children.map((child) => (
+              <NavChild key={child.id} child={child} onLinkClick={onLinkClick} />
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    }
+    return (
+      <Link
+        key={item.id}
+        href={item.href || '#'}
+        onClick={onLinkClick}
+        className="text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground px-2"
+      >
+        {item.label}
+      </Link>
+    );
+  });
+}
+
+function NavChild({ child, onLinkClick }: { child: NavigationItem, onLinkClick?: () => void }) {
+  if (child.isHeader) {
+    return <DropdownMenuLabel className="text-[10px] uppercase tracking-widest text-muted-foreground pt-4 pb-1">{child.label}</DropdownMenuLabel>;
+  }
+  if (child.label === '---') {
+    return <DropdownMenuSeparator />;
+  }
+  return (
+    <DropdownMenuItem asChild>
+      <Link href={child.href || '#'} onClick={onLinkClick}>{child.label}</Link>
+    </DropdownMenuItem>
+  );
+}
+
+function LanguageToggle() {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" size="icon">
+          <Globe className="h-5 w-5" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuItem>English (US)</DropdownMenuItem>
+        <DropdownMenuItem disabled>Español (Inviting)</DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+function AuthButtons({ userRole, onSignOut, onOpenModal }: any) {
+  if (userRole !== 'public') {
+    return (
+      <>
+        <Button size="sm" variant="outline" onClick={onSignOut}>Sign Out</Button>
+        <Button asChild size="sm">
+          <Link href="/dashboard">Portal</Link>
+        </Button>
+      </>
+    );
+  }
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button size="sm">Investor Access</Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuItem onClick={() => onOpenModal("phase1")}>Apply for Access</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => onOpenModal("phase2")}>Phase 2 SPV Invite</DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
