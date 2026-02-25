@@ -7,12 +7,23 @@ export type NavItem = {
 
 export const publicNav: NavItem[] = [
   {
+    label: "Home",
+    href: "/",
+    children: [
+        { label: "Overview", href: "#overview" },
+        { label: "Investment Thesis", href: "#thesis" },
+        { label: "Governance Principles", href: "#governance" },
+        { label: "ESG & Risk Management", href: "#risk" },
+        { label: "Corporate Highlights", href: "#news" },
+    ]
+  },
+  {
     label: "About Us",
     children: [
       { label: "Mission & Vision", href: "#overview" },
       { label: "Leadership Team", href: "#governance" },
-      { label: "Advisors & Partners", href: "#trust" },
       { label: "Board of Directors", href: "#" },
+      { label: "Advisors & Partners", href: "#trust" },
       { label: "History & Milestones", href: "#" },
     ],
   },
@@ -31,6 +42,11 @@ export const publicNav: NavItem[] = [
   {
     label: "News & Events",
     href: "#news",
+    children: [
+      { label: "2026 Investor Day", href: "#" },
+      { label: "Events & Presentations", href: "#" },
+      { label: "Press Releases", href: "#" },
+    ],
   },
   {
     label: "Governance",
