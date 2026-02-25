@@ -21,9 +21,9 @@ export default function PressReleasesPage() {
                 <div className="container mx-auto px-4 max-w-4xl">
                     <div className="flex items-center gap-6 mb-8">
                         <div className="flex items-center gap-2">
-                            <label className="text-sm font-medium">Year:</label>
+                            <p className="text-sm">Year:</p>
                             <Select value={selectedYear} onValueChange={setSelectedYear}>
-                                <SelectTrigger className="w-[120px] bg-white text-black border-gray-300">
+                                <SelectTrigger className="w-[120px] bg-white text-black border-gray-300 font-bold [&_svg]:text-primary">
                                     <SelectValue/>
                                 </SelectTrigger>
                                 <SelectContent>
@@ -34,9 +34,9 @@ export default function PressReleasesPage() {
                             </Select>
                         </div>
                         <div className="flex items-center gap-2">
-                             <label className="text-sm font-medium">Category:</label>
+                             <p className="text-sm">Category:</p>
                             <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                                <SelectTrigger className="w-[180px] bg-white text-black border-gray-300">
+                                <SelectTrigger className="w-[180px] bg-white text-black border-gray-300 font-bold [&_svg]:text-primary">
                                     <SelectValue/>
                                 </SelectTrigger>
                                 <SelectContent>
