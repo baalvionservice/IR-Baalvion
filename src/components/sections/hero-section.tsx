@@ -61,18 +61,18 @@ export default function HeroSection() {
                         <div className="space-y-4">
                             <Button asChild variant="outline" className="w-full justify-between text-base p-7 hover:border-primary cursor-pointer">
                                 <Link href="#">
-                                    2024 Annual Report <span className="text-primary font-bold">{'>'}</span>
+                                    2026 Annual Report <span className="text-primary font-bold">{'>'}</span>
                                 </Link>
                             </Button>
                              <Button asChild variant="outline" className="w-full justify-between text-base p-7 hover:border-primary cursor-pointer">
                                 <Link href="#">
-                                    2025 Proxy <span className="text-primary font-bold">{'>'}</span>
+                                    2025 Investor Day Materials <span className="text-primary font-bold">{'>'}</span>
                                 </Link>
                             </Button>
                         </div>
                     </div>
                      <div>
-                        <h2 className="text-3xl font-bold mb-6">2025 Investor Day</h2>
+                        <h2 className="text-3xl font-bold mb-6">2026 Investor Day</h2>
                         <div className="space-y-4">
                             <Button asChild variant="outline" className="w-full justify-between text-base p-7 hover:border-primary cursor-pointer">
                                 <Link href="#">
