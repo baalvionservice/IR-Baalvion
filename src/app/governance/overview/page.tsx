@@ -15,6 +15,14 @@ const governanceDocuments = [
     { title: 'Lead Independent Director Guidelines' },
 ];
 
+const committeeCharters = [
+    { title: 'Audit Committee' },
+    { title: 'Management Development & Compensation Committee' },
+    { title: 'Executive Committee' },
+    { title: 'Nominating and Governance Committee' },
+    { title: 'Risk Committee' },
+];
+
 export default function GovernanceOverviewPage() {
     return (
         <>
@@ -55,6 +63,23 @@ export default function GovernanceOverviewPage() {
                             </Link>
                         ))}
                     </div>
+
+                    <div className="mt-16">
+                        <h2 className="text-3xl font-bold mb-8 text-black">Committee Charters</h2>
+                        <div className="border-t border-gray-200">
+                            {committeeCharters.map((charter, index) => (
+                                <Link
+                                    key={index}
+                                    href="#"
+                                    className="flex justify-between items-center bg-gray-50 p-6 w-full hover:bg-gray-100 transition-colors border-b border-gray-200"
+                                >
+                                    <span className="font-bold text-black">{charter.title}</span>
+                                    <FileText className="h-6 w-6 text-primary" />
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+
                 </div>
             </section>
         </>
