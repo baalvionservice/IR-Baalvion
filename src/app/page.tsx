@@ -3,6 +3,7 @@ import GovernanceSection from '@/components/sections/governance-section';
 import HeroSection from '@/components/sections/hero-section';
 import NewsSection from '@/components/sections/news-section';
 import OverviewSection from '@/components/sections/overview-section';
+import PressReleasesSection from '@/components/sections/press-releases-section';
 import RiskSection from '@/components/sections/risk-section';
 import ThesisSection from '@/components/sections/thesis-section';
 import TrustSignals from '@/components/global/TrustSignals';
@@ -18,6 +19,7 @@ export default function Home() {
         <GovernanceSection id="governance" />
         <RiskSection id="risk" />
         <NewsSection id="news" />
+        <PressReleasesSection id="press-releases" />
         <ContactSection id="contact" />
       </div>
     </main>

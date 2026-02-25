@@ -46,6 +46,24 @@ export const leadershipTeam = [
     }
   ];
 
+export const pressReleases = [
+  {
+    title: "Baalvion's CFO Isabella Rossi to Speak at the Global Finance Leadership Conference on March 5th",
+    date: "Feb 15, 2024",
+    link: "#",
+  },
+  {
+    title: "Baalvion Appoints Tech Veteran Kenji Tanaka to Board of Directors",
+    date: "Jan 30, 2024",
+    link: "#",
+  },
+  {
+    title: "Baalvion Reports Record Growth in Q4 2023, Exceeding All Projections",
+    date: "Jan 18, 2024",
+    link: "#",
+  },
+];
+
 export const documents = [
   { id: 1, name: "Baalvion Corporate Bylaws.pdf", type: "PDF", category: "Legal", uploadDate: "2024-01-05", size: "1.2 MB" },
   { id: 2, name: "Series A - Pitch Deck.pptx", type: "PPTX", category: "Presentations", uploadDate: "2024-07-22", size: "15.2 MB" },
