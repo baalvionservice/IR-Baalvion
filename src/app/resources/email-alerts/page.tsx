@@ -75,6 +75,26 @@ export default function EmailAlertsPage() {
                             For further information on how we protect your information, please refer to our <Link href="#" className="underline">Privacy Policy</Link>.
                         </p>
                     </div>
+
+                     {/* Unsubscribe Section */}
+                    <div className="border-t border-gray-200 mt-16 pt-16">
+                        <div className="space-y-6 text-sm text-gray-700">
+                             <h2 className="text-3xl font-bold text-black">Unsubscribe from Email Alerts</h2>
+                             <p>
+                                To opt-out of investor email alerts, please enter your email address in the field below and you will be removed for ALL investor email alerts that you are subscribed to. After submitting your email, you will receive a confirmation email to the requested email address. You must click the confirmation link in order to complete your unsubscription. You can re-sign up for investor alerts at any time you would like.
+                             </p>
+                         </div>
+                         <form className="space-y-8 mt-12">
+                             <p className="text-xs text-gray-600">* Required</p>
+                             <div className="space-y-2">
+                                 <Label htmlFor="unsubscribe-email" className="font-bold">Email Address *</Label>
+                                 <Input id="unsubscribe-email" type="email" placeholder="Your Email" className="w-full bg-transparent border-0 border-b border-gray-400 rounded-none px-0 py-2 text-black ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-primary placeholder:text-gray-600" />
+                             </div>
+                             <Button type="submit" className="bg-black text-white hover:bg-gray-800 rounded-sm px-6 py-3">
+                                 Unsubscribe <span className="ml-1">&gt;</span>
+                             </Button>
+                         </form>
+                    </div>
                 </div>
             </section>
         </>
