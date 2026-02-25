@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, memo } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Mountain, ChevronDown, Globe, Loader2, ShieldCheck, LogOut, LayoutDashboard, Bell } from "lucide-react";
+import { Menu, Mountain, ChevronDown, Loader2, ShieldCheck, LogOut, LayoutDashboard, Bell } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
@@ -18,6 +18,7 @@ import { navigationService } from "@/core/services/navigation.service";
 import { authService } from "@/core/services/auth.service";
 import { NavigationItem, UserRole } from "@/core/content/schemas";
 import { AlertsSidebar } from "@/components/notifications/AlertsSidebar";
+import { LanguageSelector } from "./LanguageSelector";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -101,7 +102,7 @@ export default function Header() {
               </Button>
             )}
             
-            <LanguageToggle />
+            <LanguageSelector />
 
             <div className="hidden sm:flex items-center gap-2">
               <AuthButtons userRole={userRole} />
@@ -203,23 +204,6 @@ function NavChild({ child, onLinkClick, isMobile }: { child: NavigationItem, onL
     <DropdownMenuItem asChild className="cursor-pointer">
       <Link href={child.href || '#'} onClick={onLinkClick}>{child.label}</Link>
     </DropdownMenuItem>
-  );
-}
-
-function LanguageToggle() {
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" aria-label="Change language">
-          <Globe className="h-5 w-5" aria-hidden="true" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem className="font-bold">English (Institutional)</DropdownMenuItem>
-        <DropdownMenuItem disabled>Español</DropdownMenuItem>
-        <DropdownMenuItem disabled>Deutsch</DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
   );
 }
 

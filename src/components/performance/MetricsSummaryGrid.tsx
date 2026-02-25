@@ -1,9 +1,10 @@
-
 "use client";
 
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { IrrMetrics } from "@/types/performance";
 import { TrendingUp, ArrowUpRight, Wallet, Percent, ShieldCheck } from "lucide-react";
+import { Locale, t, formatCurrency, formatPercent, formatDecimal } from "@/utils/i18n";
 
 interface Props {
   metrics: IrrMetrics;
@@ -11,16 +12,42 @@ interface Props {
 }
 
 export function MetricsSummaryGrid({ metrics, currentNav }: Props) {
-  const formatCurrency = (val: number) => 
-    new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(val);
+  const [locale, setLocale] = useState<Locale>('en');
 
-  const formatPercent = (val: number) => (val * 100).toFixed(1) + "%";
+  useEffect(() => {
+    const saved = localStorage.getItem('baalvion_locale') as Locale;
+    if (saved) setLocale(saved);
+  }, []);
 
   const cards = [
-    { title: "Net IRR", value: formatPercent(metrics.netIRR), icon: TrendingUp, color: "text-green-500", desc: "After Management Fees" },
-    { title: "TVPI", value: metrics.TVPI.toFixed(2) + "x", icon: ArrowUpRight, color: "text-blue-500", desc: "Total Value to Paid-In" },
-    { title: "DPI", value: metrics.DPI.toFixed(2) + "x", icon: Wallet, color: "text-primary", desc: "Distributed to Paid-In" },
-    { title: "Current NAV", value: formatCurrency(currentNav), icon: ShieldCheck, color: "text-amber-500", desc: "Market Valuation" },
+    { 
+      title: t("dashboard.metrics.net_irr", locale), 
+      value: formatPercent(metrics.netIRR, locale), 
+      icon: TrendingUp, 
+      color: "text-green-500", 
+      desc: "After Management Fees" 
+    },
+    { 
+      title: t("dashboard.metrics.tvpi", locale), 
+      value: formatDecimal(metrics.TVPI, locale) + "x", 
+      icon: ArrowUpRight, 
+      color: "text-blue-500", 
+      desc: "Total Value to Paid-In" 
+    },
+    { 
+      title: t("dashboard.metrics.dpi", locale), 
+      value: formatDecimal(metrics.DPI, locale) + "x", 
+      icon: Wallet, 
+      color: "text-primary", 
+      desc: "Distributed to Paid-In" 
+    },
+    { 
+      title: t("dashboard.metrics.nav", locale), 
+      value: formatCurrency(currentNav, locale), 
+      icon: ShieldCheck, 
+      color: "text-amber-500", 
+      desc: "Market Valuation" 
+    },
   ];
 
   return (

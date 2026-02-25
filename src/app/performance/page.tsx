@@ -1,7 +1,6 @@
-
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { UserRole } from "@/core/content/schemas";
 import { authService } from "@/core/services/auth.service";
 import { MetricsSummaryGrid } from "@/components/performance/MetricsSummaryGrid";
@@ -32,10 +31,11 @@ import { TrendingUp, ShieldCheck, Download, Activity, RefreshCw, Layers, Wallet,
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
+import { Locale, t } from "@/utils/i18n";
 
 export default function PerformanceDashboardPage() {
   const [activeRole, setActiveRole] = useState<UserRole>('admin');
+  const [locale, setLocale] = useState<Locale>('en');
   const [investors, setInvestors] = useState(INITIAL_INVESTORS);
   const [spvs, setSpvs] = useState(SPV_PERFORMANCE);
   const [logs, setLogs] = useState<any[]>([]);
@@ -45,6 +45,11 @@ export default function PerformanceDashboardPage() {
   const [periodFilter, setPeriodFilter] = useState("all");
   
   const { toast } = useToast();
+
+  useEffect(() => {
+    const savedLocale = localStorage.getItem('baalvion_locale') as Locale;
+    if (savedLocale) setLocale(savedLocale);
+  }, []);
 
   const handleRoleChange = (role: UserRole) => {
     setActiveRole(role);
@@ -124,8 +129,8 @@ export default function PerformanceDashboardPage() {
                   <ShieldCheck className="h-5 w-5 text-primary" />
                   <span className="text-[10px] font-bold text-primary uppercase tracking-[0.2em]">Institutional Hub</span>
                 </div>
-                <h1 className="text-3xl font-bold tracking-tighter">Unified Portfolio Command</h1>
-                <p className="text-sm text-muted-foreground mt-1">Consolidated capital lifecycle management and performance analytics.</p>
+                <h1 className="text-3xl font-bold tracking-tighter">{t("dashboard.title", locale)}</h1>
+                <p className="text-sm text-muted-foreground mt-1">{t("dashboard.subtitle", locale)}</p>
               </div>
 
               <div className="flex items-center gap-3">
@@ -136,10 +141,10 @@ export default function PerformanceDashboardPage() {
                       <SelectValue placeholder="Select Role" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="admin">Super Admin (GP)</SelectItem>
-                      <SelectItem value="p1_institutional">Lead Investor (LP)</SelectItem>
-                      <SelectItem value="compliance">Compliance Officer</SelectItem>
-                      <SelectItem value="public">Guest Viewer</SelectItem>
+                      <SelectItem value="admin">{t("roles.admin", locale)}</SelectItem>
+                      <SelectItem value="p1_institutional">{t("roles.investor", locale)}</SelectItem>
+                      <SelectItem value="compliance">{t("roles.compliance", locale)}</SelectItem>
+                      <SelectItem value="public">{t("roles.public", locale)}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
