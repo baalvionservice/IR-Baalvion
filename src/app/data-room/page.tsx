@@ -1,6 +1,5 @@
 "use client";
 
-import type { Metadata } from 'next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
@@ -9,11 +8,6 @@ import { Badge } from "@/components/ui/badge";
 import { documents } from "@/lib/data";
 import { useToast } from "@/hooks/use-toast";
 import { addMockEvent } from "@/lib/events";
-
-export const metadata: Metadata = {
-  title: 'Secure Data Room | Baalvion',
-  description: 'Access confidential documents for due diligence. All activities are logged for security and compliance.',
-};
 
 const getFileIcon = (type: string) => {
   switch (type) {
