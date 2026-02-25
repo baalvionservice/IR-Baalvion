@@ -183,7 +183,7 @@ export default function Header() {
                         <DropdownMenuItem onClick={() => onModalOpen("phase2")}>Phase 2 SPV Invite</DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem asChild><Link href="#">Qualification Criteria</Link></DropdownMenuItem>
-                        <DropdownMenuItem asChild><Link href="#contact">Contact IR Team</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild><Link href="/resources/contact-ir">Contact IR Team</Link></DropdownMenuItem>
                         <DropdownMenuItem asChild><Link href="#">FAQs</Link></DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
@@ -220,7 +220,7 @@ export default function Header() {
                                     <DropdownMenuItem onClick={() => onModalOpen("phase2")}>Phase 2 SPV Invite</DropdownMenuItem>
                                     <DropdownMenuSeparator />
                                     <DropdownMenuItem asChild><Link href="#">Qualification Criteria</Link></DropdownMenuItem>
-                                    <DropdownMenuItem asChild><Link href="#contact">Contact IR Team</Link></DropdownMenuItem>
+                                    <DropdownMenuItem asChild><Link href="/resources/contact-ir">Contact IR Team</Link></DropdownMenuItem>
                                     <DropdownMenuItem asChild><Link href="#">FAQs</Link></DropdownMenuItem>
                                 </DropdownMenuContent>
                             </DropdownMenu>

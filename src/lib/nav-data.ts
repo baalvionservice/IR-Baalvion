@@ -66,8 +66,11 @@ export const publicNav: NavItem[] = [
     ],
   },
   {
-    label: "Contact",
-    href: "#contact",
+    label: "Resources",
+    children: [
+      { label: "Investor Email Alerts", href: "/resources/email-alerts" },
+      { label: "Contact IR", href: "/resources/contact-ir" },
+    ],
   },
 ];
 
@@ -113,8 +116,13 @@ export const loggedInNav: NavItem[] = [
       { label: "Events & Presentations", href: "/news-and-events/events" },
       { label: "Investor Day", href: "/news-and-events/investor-day" },
       { label: "Webcast", href: "/news-and-events/webcast" },
-      { label: "---" as any },
-      { label: "Contact IR", href: "/#contact" },
     ],
+  },
+  {
+    label: "Resources",
+    children: [
+        { label: "Investor Email Alerts", href: "/resources/email-alerts" },
+        { label: "Contact IR", href: "/resources/contact-ir" },
+    ]
   },
 ];

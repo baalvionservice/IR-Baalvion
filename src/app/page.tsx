@@ -1,4 +1,3 @@
-import ContactSection from '@/components/sections/contact-section';
 import GovernanceSection from '@/components/sections/governance-section';
 import HeroSection from '@/components/sections/hero-section';
 import NewsSection from '@/components/sections/news-section';
@@ -23,7 +22,6 @@ export default function Home() {
         <GovernanceSection id="governance" />
         <NewsSection id="news" />
         <PressReleasesSection id="press-releases" />
-        <ContactSection id="contact" />
         <RiskSection id="risk" />
       </div>
     </main>
