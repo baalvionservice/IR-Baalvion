@@ -1,67 +1,86 @@
 import { Mountain, Linkedin, Twitter, Youtube } from "lucide-react";
 import Link from "next/link";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
 
 export default function Footer() {
-  const year = new Date().getFullYear();
   return (
-    <footer className="bg-card text-card-foreground border-t border-border">
-      <div className="container mx-auto px-4 py-12 md:py-16">
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-5">
-          <div className="flex flex-col items-start gap-4 lg:col-span-2">
+    <footer className="bg-white text-black border-t border-gray-200">
+      <div className="container mx-auto px-4 py-8">
+        <div className="mb-8">
             <Link href="/" className="flex items-center gap-2" aria-label="Baalvion Home">
-              <Mountain className="h-6 w-6 text-primary" />
-              <span className="text-lg font-semibold">Baalvion</span>
+              <span className="text-2xl font-bold">Baalvion</span>
             </Link>
-            <p className="text-sm text-muted-foreground max-w-sm">
-              Engineering the institutional-grade operating system for global B2B trade.
-            </p>
-             <form className="w-full max-w-sm space-y-2">
-              <p className="text-sm font-semibold">Stay up to date</p>
-              <div className="flex space-x-2">
-                <Input type="email" placeholder="Enter your email" className="max-w-lg flex-1" />
-                <Button type="submit">Subscribe</Button>
-              </div>
-            </form>
+        </div>
+
+        {/* Top section with addresses and links */}
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4 text-xs">
+          
+          {/* Column 1: Headquarters */}
+          <div className="space-y-2">
+            <h4 className="font-bold tracking-wider mb-2">BAALVION, INC.</h4>
+            <p className="font-bold">Headquarters:</p>
+            <address className="not-italic">
+                Yeshwant Avenue Building, NX, NX Road, Y K Nagar, Virar West, Virar, Maharashtra 401303
+                <br />
+                Phone: +91 8951284770
+            </address>
           </div>
-          <div>
-            <h4 className="font-semibold mb-4">Investments</h4>
-            <ul className="space-y-2">
-              <li><Link href="#thesis" className="text-sm text-muted-foreground hover:text-primary">Investment Thesis</Link></li>
-              <li><Link href="#" className="text-sm text-muted-foreground hover:text-primary">Phase 1: Institutional</Link></li>
-              <li><Link href="#" className="text-sm text-muted-foreground hover:text-primary">Phase 2: Private SPVs</Link></li>
-              <li><Link href="#" className="text-sm text-muted-foreground hover:text-primary">Phase 3: Operators</Link></li>
-            </ul>
+
+          {/* Column 2: Contact Info & Registered Address */}
+          <div className="space-y-4">
+            <div className="space-y-2">
+                <h4 className="font-bold tracking-wider mb-2">CONTACT INFORMATION</h4>
+                <p>Baalvion Investor Relations</p>
+                <p>Email: invrel@baalvion.com</p>
+            </div>
+            <div className="space-y-2">
+                <h4 className="font-bold tracking-wider mb-2">REGISTERED ADDRESS</h4>
+                <p className="text-gray-500 text-[10px]">(for Corporate/Legal Purposes)</p>
+                <address className="not-italic">
+                    CIN: U43121OD2025PTC048479
+                    <br />
+                    C/o Dilip Kumar Kuldeep, Upper Mania, Po- Pakjhola, Semiliguda, Koraput, Koraput, Orissa, India, 764036
+                </address>
+            </div>
           </div>
-           <div>
-            <h4 className="font-semibold mb-4">About Us</h4>
-            <ul className="space-y-2">
-              <li><Link href="#overview" className="text-sm text-muted-foreground hover:text-primary">Our Mission</Link></li>
-              <li><Link href="#governance" className="text-sm text-muted-foreground hover:text-primary">Leadership</Link></li>
-               <li><Link href="#trust" className="text-sm text-muted-foreground hover:text-primary">Partners</Link></li>
-              <li><Link href="#" className="text-sm text-muted-foreground hover:text-primary">Careers</Link></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-semibold mb-4">Legal</h4>
-            <ul className="space-y-2">
-              <li><Link href="#" className="text-sm text-muted-foreground hover:text-primary">Privacy Policy</Link></li>
-              <li><Link href="#" className="text-sm text-muted-foreground hover:text-primary">Terms of Service</Link></li>
-               <li><Link href="#risk" className="text-sm text-muted-foreground hover:text-primary">Risk Disclosure</Link></li>
-              <li><Link href="#" className="text-sm text-muted-foreground hover:text-primary">Cookie Policy</Link></li>
+
+          {/* Column 3: Investor Services */}
+          <div className="space-y-2">
+            <h4 className="font-bold tracking-wider mb-2">INVESTOR SERVICES & RESOURCES</h4>
+            <ul className="space-y-1 font-bold">
+              <li><Link href="#" className="hover:underline">IR HOME</Link></li>
+              <li><Link href="#" className="hover:underline">FINANCIALS</Link></li>
+              <li><Link href="#news" className="hover:underline">NEWS & EVENTS</Link></li>
+              <li><Link href="#" className="hover:underline">STOCK INFORMATION</Link></li>
+              <li><Link href="#governance" className="hover:underline">GOVERNANCE</Link></li>
+              <li><Link href="#" className="hover:underline">RESOURCES</Link></li>
             </ul>
           </div>
         </div>
-        <Separator className="my-8" />
-        <div className="flex flex-col sm:flex-row justify-between items-center text-sm text-muted-foreground">
-          <p>&copy; {year} Baalvion Corporation. All rights reserved.</p>
-          <div className="flex items-center gap-4 mt-4 sm:mt-0">
-             <Link href="#" aria-label="LinkedIn"><Linkedin className="h-5 w-5 hover:text-primary"/></Link>
-             <Link href="#" aria-label="Twitter"><Twitter className="h-5 w-5 hover:text-primary"/></Link>
-             <Link href="#" aria-label="YouTube"><Youtube className="h-5 w-5 hover:text-primary"/></Link>
-          </div>
+
+        <Separator className="my-6 bg-gray-300" />
+
+        {/* Bottom legal links */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-x-6 gap-y-3 text-xs text-gray-700">
+            <Link href="#" className="hover:underline whitespace-nowrap">Terms & Conditions</Link>
+            <Link href="#" className="hover:underline whitespace-nowrap">Privacy Policy</Link>
+            <Link href="#" className="hover:underline whitespace-nowrap">Business Continuity</Link>
+            <Link href="#" className="hover:underline whitespace-nowrap">Baalvion Corporate Tax Strategy</Link>
+            <Link href="#" className="hover:underline whitespace-nowrap">Baalvion Gender/Compliance Reports</Link>
+            <Link href="#" className="hover:underline whitespace-nowrap">Baalvion Investor Policy</Link>
+            <Link href="#" className="hover:underline whitespace-nowrap">Manage Cookies</Link>
+        </div>
+
+        <Separator className="my-6 bg-gray-300" />
+
+        {/* Copyright and Social */}
+        <div className="flex flex-col sm:flex-row justify-between items-center text-xs text-gray-600">
+            <p>© 2026 Baalvion, Inc. All rights reserved. Powered by Baalvion Group</p>
+            <div className="flex items-center gap-4 mt-4 sm:mt-0">
+             <Link href="#" aria-label="LinkedIn"><Linkedin className="h-5 w-5 hover:text-black"/></Link>
+             <Link href="#" aria-label="Twitter"><Twitter className="h-5 w-5 hover:text-black"/></Link>
+             <Link href="#" aria-label="YouTube"><Youtube className="h-5 w-5 hover:text-black"/></Link>
+            </div>
         </div>
       </div>
     </footer>
