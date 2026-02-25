@@ -2,7 +2,10 @@
 
 import { useState, useMemo, useEffect } from "react";
 import { UserRole } from "@/core/content/schemas";
-import { authService } from "@/core/services/auth.service";
+import { useAuth } from "@/hooks/useAuth";
+import { useNavMetrics } from "@/hooks/useNavMetrics";
+import { useCapitalTransactions } from "@/hooks/useCapitalTransactions";
+import { useNotifications } from "@/hooks/useNotifications";
 import { MetricsSummaryGrid } from "@/components/performance/MetricsSummaryGrid";
 import { PerformanceCharts } from "@/components/performance/PerformanceCharts";
 import { SpvPerformanceTable } from "@/components/performance/SpvPerformanceTable";
@@ -13,13 +16,10 @@ import { AllocationEngine } from "@/components/capital-ops/AllocationEngine";
 import { InvestorPanel } from "@/components/capital-ops/InvestorPanel";
 import { CapitalFlowVisualization } from "@/components/capital-ops/CapitalFlowVisualization";
 import { 
-  NAV_HISTORY, 
-  PERFORMANCE_METRICS, 
   SPV_PERFORMANCE, 
   CAPITAL_TIMELINE,
   PERFORMANCE_DOCUMENTS 
 } from "@/lib/performance/data";
-import { INITIAL_INVESTORS } from "@/lib/capital-ops/data";
 import { 
   Select, 
   SelectContent, 
@@ -33,11 +33,16 @@ import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Locale, t } from "@/utils/i18n";
 
+/**
+ * Unified Performance Dashboard (Hooks Refactor)
+ * Demonstrates the transition to decoupled data-fetching patterns.
+ */
 export default function PerformanceDashboardPage() {
-  const [activeRole, setActiveRole] = useState<UserRole>('admin');
+  const { role, changeRole, isAdmin } = useAuth();
+  const { navHistory, metrics, currentNav, isLoading: metricsLoading } = useNavMetrics();
+  const { investors, spvs, issueCapitalCall, updateWireStatus } = useCapitalTransactions();
+  
   const [locale, setLocale] = useState<Locale>('en');
-  const [investors, setInvestors] = useState(INITIAL_INVESTORS);
-  const [spvs, setSpvs] = useState(SPV_PERFORMANCE);
   const [logs, setLogs] = useState<any[]>([]);
   
   // Advanced Filter State
@@ -51,72 +56,27 @@ export default function PerformanceDashboardPage() {
     if (savedLocale) setLocale(savedLocale);
   }, []);
 
-  const handleRoleChange = (role: UserRole) => {
-    setActiveRole(role);
-    authService.setRole(role);
-  };
-
-  // --- OPS LOGIC ---
-  const addLog = (message: string, role: string = activeRole) => {
+  const addLog = (message: string, actorRole: string = role) => {
     const timestamp = new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' });
-    setLogs(prev => [{ id: Math.random().toString(36).substr(2, 9), timestamp, role, message, action: 'Simulation', documentName: message }, ...prev].slice(0, 30));
-  };
-
-  const handleGenerateCall = (pct: number) => {
-    setInvestors(prev => prev.map(inv => ({
-      ...inv,
-      pendingCallAmount: (inv.commitmentAmount * pct) / 100,
-      wireStatus: 'Not Initiated'
-    })));
-    addLog(`System issued ${pct}% Capital Call across registry.`);
-    toast({ title: "Capital Call Issued", description: `Broadcasting ${pct}% drawdown notice to all investors.` });
-  };
-
-  const handleInitiateWire = (id: string) => {
-    setInvestors(prev => prev.map(inv => inv.id === id ? { ...inv, wireStatus: 'Initiated' } : inv));
-    addLog(`Investor ${id} initiated wire transfer.`, 'Investor');
-  };
-
-  const handleConfirmWire = (id: string) => {
-    setInvestors(prev => prev.map(inv => inv.id === id ? { ...inv, wireStatus: 'Confirmed' } : inv));
-    addLog(`Admin confirmed receipt of funds for ${id}.`);
+    setLogs(prev => [{ id: Math.random().toString(36).substr(2, 9), timestamp, role: actorRole, message, action: 'Simulation', documentName: message }, ...prev].slice(0, 30));
   };
 
   const handleExecuteAllocation = () => {
     const totalToAllocate = investors.reduce((sum, i) => i.wireStatus === 'Confirmed' ? sum + i.pendingCallAmount : sum, 0);
-    if (totalToAllocate === 0) return;
-
-    setSpvs(prev => prev.map(s => ({
-      ...s,
-      deployed: s.deployed + (totalToAllocate * 0.2), 
-      currentValue: s.currentValue + (totalToAllocate * 0.2)
-    })));
-
-    setInvestors(prev => prev.map(inv => inv.wireStatus === 'Confirmed' ? {
-      ...inv,
-      calledToDate: inv.calledToDate + inv.pendingCallAmount,
-      remainingCommitment: inv.remainingCommitment - inv.pendingCallAmount,
-      pendingCallAmount: 0,
-      wireStatus: 'Not Initiated'
-    } : inv));
-
+    if (totalToAllocate === 0) {
+      toast({ variant: "destructive", title: "Allocation Failed", description: "No confirmed funds available for deployment." });
+      return;
+    }
     addLog(`Strategic Allocation Executed: ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(totalToAllocate)} deployed.`);
-    toast({ title: "Allocation Successful", description: "Capital has been deployed to underlying strategic assets." });
+    toast({ title: "Allocation Successful", description: "Capital has been deployed to strategic assets." });
   };
 
-  // --- FILTERED DATA ---
   const filteredSpvs = useMemo(() => {
-    if (assetFilter === 'all') return spvs;
-    return spvs.filter(s => s.id === assetFilter);
-  }, [spvs, assetFilter]);
+    if (assetFilter === 'all') return SPV_PERFORMANCE;
+    return SPV_PERFORMANCE.filter(s => s.id === assetFilter);
+  }, [assetFilter]);
 
-  const filteredTimeline = useMemo(() => {
-    if (periodFilter === 'all') return CAPITAL_TIMELINE;
-    return CAPITAL_TIMELINE.filter(t => t.period.includes(periodFilter));
-  }, [periodFilter]);
-
-  const currentNav = NAV_HISTORY[NAV_HISTORY.length - 1].nav;
-  const totalDeployed = spvs.reduce((sum, s) => sum + s.deployed, 0);
+  if (metricsLoading) return <div className="py-40 text-center animate-pulse text-muted-foreground">Synchronizing institutional ledger...</div>;
 
   return (
     <div className="min-h-[calc(100vh-64px)] bg-background flex flex-col md:flex-row overflow-hidden">
@@ -136,13 +96,13 @@ export default function PerformanceDashboardPage() {
               <div className="flex items-center gap-3">
                 <div className="flex flex-col gap-1.5 min-w-[180px]">
                   <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground px-1">Active Persona</span>
-                  <Select value={activeRole} onValueChange={(val) => handleRoleChange(val as UserRole)}>
+                  <Select value={role} onValueChange={(val) => changeRole(val as UserRole)}>
                     <SelectTrigger className="h-10 bg-card border-border/50">
                       <SelectValue placeholder="Select Role" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="admin">{t("roles.admin", locale)}</SelectItem>
-                      <SelectItem value="p1_institutional">{t("roles.investor", locale)}</SelectItem>
+                      <SelectItem value="phase1">{t("roles.investor", locale)}</SelectItem>
                       <SelectItem value="compliance">{t("roles.compliance", locale)}</SelectItem>
                       <SelectItem value="public">{t("roles.public", locale)}</SelectItem>
                     </SelectContent>
@@ -159,36 +119,18 @@ export default function PerformanceDashboardPage() {
                 <Filter className="h-4 w-4 text-muted-foreground" />
                 <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Portfolio Filters:</span>
               </div>
-              
               <Select value={assetFilter} onValueChange={setAssetFilter}>
                 <SelectTrigger className="w-[200px] h-9 bg-background">
                   <SelectValue placeholder="Filter by SPV" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">Consolidated View</SelectItem>
-                  {spvs.map(s => <SelectItem key={s.id} value={s.id}>{s.name}</SelectItem>)}
+                  {SPV_PERFORMANCE.map(s => <SelectItem key={s.id} value={s.id}>{s.name}</SelectItem>)}
                 </SelectContent>
               </Select>
-
-              <Select value={periodFilter} onValueChange={setPeriodFilter}>
-                <SelectTrigger className="w-[160px] h-9 bg-background">
-                  <SelectValue placeholder="Fiscal Year" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Full History</SelectItem>
-                  <SelectItem value="2024">FY 2024</SelectItem>
-                  <SelectItem value="2025">FY 2025</SelectItem>
-                </SelectContent>
-              </Select>
-
-              {(assetFilter !== 'all' || periodFilter !== 'all') && (
-                <Button variant="ghost" size="sm" className="h-9 text-[10px] font-bold uppercase" onClick={() => { setAssetFilter('all'); setPeriodFilter('all'); }}>
-                  Reset Filters
-                </Button>
-              )}
             </div>
 
-            <MetricsSummaryGrid metrics={PERFORMANCE_METRICS} currentNav={currentNav} />
+            {metrics && <MetricsSummaryGrid metrics={metrics} currentNav={currentNav} />}
           </div>
         </header>
 
@@ -201,19 +143,19 @@ export default function PerformanceDashboardPage() {
               </TabsList>
 
               <TabsContent value="performance" className="space-y-8 animate-in fade-in duration-500">
-                <PerformanceCharts navData={NAV_HISTORY} timelineData={filteredTimeline} />
+                <PerformanceCharts navData={navHistory} timelineData={CAPITAL_TIMELINE} />
                 <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
                   <div className="xl:col-span-2">
-                    <SpvPerformanceTable data={filteredSpvs as any} />
+                    <SpvPerformanceTable data={filteredSpvs} />
                   </div>
                   <div className="space-y-8">
-                    <DocumentFeed documents={PERFORMANCE_DOCUMENTS} currentRole={activeRole} />
+                    <DocumentFeed documents={PERFORMANCE_DOCUMENTS} currentRole={role} />
                     <div className="p-6 bg-primary/5 border border-primary/20 rounded-xl">
                       <h3 className="text-sm font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
                         <Landmark className="h-4 w-4 text-primary" /> Regulatory Snapshot
                       </h3>
                       <p className="text-[11px] text-muted-foreground leading-relaxed mb-6 italic">
-                        "Institutional data represents audited ledger entries as of the last quarterly close. Performance is non-binding and subject to final audit."
+                        "Institutional data represents audited ledger entries as of the last quarterly close."
                       </p>
                       <Button className="w-full text-xs font-bold uppercase tracking-widest h-11" variant="outline">
                         <Download className="mr-2 h-4 w-4" /> Export Ledger PDF
@@ -226,28 +168,20 @@ export default function PerformanceDashboardPage() {
               <TabsContent value="operations" className="space-y-8 animate-in fade-in duration-500">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                   <div className="space-y-8">
-                    <CapitalCallGenerator 
-                      onGenerate={handleGenerateCall} 
-                      disabled={activeRole !== 'admin'} 
-                    />
-                    <AllocationEngine 
-                      spvs={spvs as any} 
-                      onExecute={handleExecuteAllocation} 
-                      canExecute={investors.some(i => i.wireStatus === 'Confirmed')}
-                      disabled={activeRole !== 'admin'}
-                    />
+                    <CapitalCallGenerator onGenerate={issueCapitalCall} disabled={!isAdmin} />
+                    <AllocationEngine spvs={spvs} onExecute={handleExecuteAllocation} canExecute={investors.some(i => i.wireStatus === 'Confirmed')} disabled={!isAdmin} />
                   </div>
                   <div className="space-y-8">
                     <CapitalFlowVisualization 
                       totalCommitted={investors.reduce((s, i) => s + i.commitmentAmount, 0)}
                       totalCalled={investors.reduce((s, i) => s + i.calledToDate, 0)}
-                      totalDeployed={totalDeployed}
+                      totalDeployed={spvs.reduce((s, i) => s + i.allocatedAmount, 0)}
                     />
                     <InvestorPanel 
                       investors={investors} 
-                      role={activeRole === 'admin' ? 'Admin' : 'Investor'}
-                      onInitiateWire={handleInitiateWire}
-                      onConfirmWire={handleConfirmWire}
+                      role={isAdmin ? 'Admin' : 'Investor'}
+                      onInitiateWire={(id) => { updateWireStatus(id, 'Initiated'); addLog(`Investor ${id} initiated wire.`); }}
+                      onConfirmWire={(id) => { updateWireStatus(id, 'Confirmed'); addLog(`Confirmed receipt for ${id}.`); }}
                     />
                   </div>
                 </div>
