@@ -55,7 +55,7 @@ export const publicNav: NavItem[] = [
       { label: "ESG & Risk Management", href: "#risk" },
       { label: "Policies & Framework", href: "#" },
       { label: "Legal & Regulatory Filings", href: "#" },
-      { label: "Compliance Dashboard", href: "/admin" },
+      { label: "Compliance Dashboard", href: "/admin/dashboard" },
       { label: "Audit Reports", href: "#" },
     ],
   },
@@ -73,7 +73,7 @@ export const loggedInNav: NavItem[] = [
       { label: "P2: SPV Dashboard", href: "/phase2/dashboard" },
       { label: "P3: Operator Dashboard", href: "/phase3/dashboard" },
       { label: "---" as any },
-      { label: "Admin Panel", href: "/admin" },
+      { label: "Admin Panel", href: "/admin/dashboard" },
     ],
   },
   {
@@ -82,7 +82,7 @@ export const loggedInNav: NavItem[] = [
       { label: "P1: Institutional Data Room", href: "/data-room" },
       { label: "P2: SPV Data Room", href: "/phase2/data-room" },
       { label: "Download Center", href: "#" },
-      { label: "Audit & Version History", href: "/admin" },
+      { label: "Audit & Version History", href: "/admin/dashboard" },
     ],
   },
   {
