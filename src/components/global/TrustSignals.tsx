@@ -1,3 +1,5 @@
+"use client";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Banknote, Scale, ShieldCheck } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -11,13 +13,13 @@ export default function TrustSignals() {
   ];
 
   return (
-    <section id="trust" className="w-full bg-card/50 border-y">
+    <section id="trust" className="w-full bg-white border-y">
       <div className="container mx-auto px-4 py-16 md:py-20">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold">
+          <h2 className="text-3xl md:text-4xl font-bold text-black">
             Institutional-Grade Partners
           </h2>
-          <p className="mt-4 max-w-2xl mx-auto text-muted-foreground">
+          <p className="mt-4 max-w-2xl mx-auto text-gray-600">
             Our operations are supported by a network of world-class financial, legal, and strategic partners, ensuring the highest standards of governance and execution.
           </p>
         </div>
@@ -26,12 +28,12 @@ export default function TrustSignals() {
             {signals.map((signal) => (
                  <Tooltip key={signal.name}>
                     <TooltipTrigger asChild>
-                        <Card className="bg-background/50 text-center hover:bg-accent transition-colors cursor-pointer">
+                        <Card className="bg-white text-black text-center hover:bg-gray-50 transition-colors cursor-pointer">
                         <CardContent className="p-6 flex flex-col items-center justify-center gap-4">
                             {signal.icon}
                             <div className="flex-grow">
                             <p className="text-lg font-bold">{signal.name}</p>
-                            <p className="text-sm text-muted-foreground">{signal.category}</p>
+                            <p className="text-sm text-gray-600">{signal.category}</p>
                             </div>
                         </CardContent>
                         </Card>
