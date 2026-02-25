@@ -8,13 +8,13 @@ export default function ThesisSection({ id }: { id: string }) {
   const chart2 = PlaceHolderImages.find((p) => p.id === "thesis-chart-2");
 
   return (
-    <section id={id} className="w-full">
+    <section id={id} className="w-full bg-white py-16 md:py-24">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold">
+          <h2 className="text-3xl md:text-4xl font-bold text-black">
             Investment Thesis
           </h2>
-          <p className="mt-4 max-w-2xl mx-auto text-muted-foreground">
+          <p className="mt-4 max-w-2xl mx-auto text-gray-600">
             Our strategy is centered on creating a durable competitive moat by integrating critical infrastructure for global B2B trade.
           </p>
         </div>
@@ -23,37 +23,37 @@ export default function ThesisSection({ id }: { id: string }) {
             <Card className="bg-transparent border-0 shadow-none">
                 <CardHeader className="items-center">
                     <TrendingUp className="h-10 w-10 text-primary mb-2" />
-                    <CardTitle>Capture High-Growth Corridors</CardTitle>
+                    <CardTitle className="text-black">Capture High-Growth Corridors</CardTitle>
                 </CardHeader>
                 <CardContent className="text-center">
-                    <p className="text-muted-foreground">We target trade routes and digital ecosystems experiencing exponential growth, focusing on emerging markets and technology-driven supply chains where our integrated system can provide maximum value.</p>
+                    <p className="text-gray-600">We target trade routes and digital ecosystems experiencing exponential growth, focusing on emerging markets and technology-driven supply chains where our integrated system can provide maximum value.</p>
                 </CardContent>
             </Card>
             <Card className="bg-transparent border-0 shadow-none">
                 <CardHeader className="items-center">
                     <Target className="h-10 w-10 text-primary mb-2" />
-                    <CardTitle>Acquire Strategic Technology</CardTitle>
+                    <CardTitle className="text-black">Acquire Strategic Technology</CardTitle>
                 </CardHeader>
                 <CardContent className="text-center">
-                    <p className="text-muted-foreground">Our M&A strategy focuses on acquiring key technologies in trade finance, compliance automation (AML/KYC), and logistics management to accelerate our platform's capabilities and market penetration.</p>
+                    <p className="text-gray-600">Our M&A strategy focuses on acquiring key technologies in trade finance, compliance automation (AML/KYC), and logistics management to accelerate our platform's capabilities and market penetration.</p>
                 </CardContent>
             </Card>
             <Card className="bg-transparent border-0 shadow-none">
                 <CardHeader className="items-center">
                     <Zap className="h-10 w-10 text-primary mb-2" />
-                    <CardTitle>Build a Network Effect</CardTitle>
+                    <CardTitle className="text-black">Build a Network Effect</CardTitle>
                 </CardHeader>
                 <CardContent className="text-center">
-                    <p className="text-muted-foreground">By integrating essential services, we create a powerful network effect. Each new partner, customer, and transaction on our platform increases its value for all other participants, creating a self-reinforcing cycle of growth.</p>
+                    <p className="text-gray-600">By integrating essential services, we create a powerful network effect. Each new partner, customer, and transaction on our platform increases its value for all other participants, creating a self-reinforcing cycle of growth.</p>
                 </CardContent>
             </Card>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <Card>
+          <Card className="bg-gray-50 border">
             <CardHeader>
-              <CardTitle>Market Opportunity Analysis</CardTitle>
-              <CardDescription>Projected growth in our target addressable markets (TAM).</CardDescription>
+              <CardTitle className="text-black">Market Opportunity Analysis</CardTitle>
+              <CardDescription className="text-gray-500">Projected growth in our target addressable markets (TAM).</CardDescription>
             </CardHeader>
             <CardContent>
               {chart1 && (
@@ -68,10 +68,10 @@ export default function ThesisSection({ id }: { id: string }) {
               )}
             </CardContent>
           </Card>
-          <Card>
+          <Card className="bg-gray-50 border">
             <CardHeader>
-              <CardTitle>Capital Allocation Strategy</CardTitle>
-              <CardDescription>Our disciplined approach to deploying capital for maximum ROI.</CardDescription>
+              <CardTitle className="text-black">Capital Allocation Strategy</CardTitle>
+              <CardDescription className="text-gray-500">Our disciplined approach to deploying capital for maximum ROI.</CardDescription>
             </CardHeader>
             <CardContent>
               {chart2 && (
