@@ -28,16 +28,22 @@ import {
   SelectTrigger, 
   SelectValue 
 } from "@/components/ui/select";
-import { TrendingUp, ShieldCheck, Download, Activity, RefreshCw, Layers, Wallet, Landmark } from "lucide-react";
+import { TrendingUp, ShieldCheck, Download, Activity, RefreshCw, Layers, Wallet, Landmark, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 
 export default function PerformanceDashboardPage() {
   const [activeRole, setActiveRole] = useState<UserRole>('admin');
   const [investors, setInvestors] = useState(INITIAL_INVESTORS);
   const [spvs, setSpvs] = useState(SPV_PERFORMANCE);
   const [logs, setLogs] = useState<any[]>([]);
+  
+  // Advanced Filter State
+  const [assetFilter, setAssetFilter] = useState("all");
+  const [periodFilter, setPeriodFilter] = useState("all");
+  
   const { toast } = useToast();
 
   const handleRoleChange = (role: UserRole) => {
@@ -75,10 +81,9 @@ export default function PerformanceDashboardPage() {
     const totalToAllocate = investors.reduce((sum, i) => i.wireStatus === 'Confirmed' ? sum + i.pendingCallAmount : sum, 0);
     if (totalToAllocate === 0) return;
 
-    // Simulate simple SPV balance update
     setSpvs(prev => prev.map(s => ({
       ...s,
-      deployed: s.deployed + (totalToAllocate * 0.2), // Mock split
+      deployed: s.deployed + (totalToAllocate * 0.2), 
       currentValue: s.currentValue + (totalToAllocate * 0.2)
     })));
 
@@ -94,15 +99,23 @@ export default function PerformanceDashboardPage() {
     toast({ title: "Allocation Successful", description: "Capital has been deployed to underlying strategic assets." });
   };
 
-  // --- DERIVED METRICS ---
+  // --- FILTERED DATA ---
+  const filteredSpvs = useMemo(() => {
+    if (assetFilter === 'all') return spvs;
+    return spvs.filter(s => s.id === assetFilter);
+  }, [spvs, assetFilter]);
+
+  const filteredTimeline = useMemo(() => {
+    if (periodFilter === 'all') return CAPITAL_TIMELINE;
+    return CAPITAL_TIMELINE.filter(t => t.period.includes(periodFilter));
+  }, [periodFilter]);
+
   const currentNav = NAV_HISTORY[NAV_HISTORY.length - 1].nav;
   const totalDeployed = spvs.reduce((sum, s) => sum + s.deployed, 0);
 
   return (
     <div className="min-h-[calc(100vh-64px)] bg-background flex flex-col md:flex-row overflow-hidden">
       <div className="flex-1 flex flex-col h-full overflow-y-auto">
-        
-        {/* Unified Header */}
         <header className="sticky top-0 z-20 bg-background/95 backdrop-blur-md border-b border-border/50 p-4 md:p-8">
           <div className="container mx-auto max-w-7xl">
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-8">
@@ -136,14 +149,46 @@ export default function PerformanceDashboardPage() {
               </div>
             </div>
 
+            <div className="mb-8 p-4 bg-card/30 border border-border/50 rounded-xl flex flex-wrap gap-4 items-center">
+              <div className="flex items-center gap-2">
+                <Filter className="h-4 w-4 text-muted-foreground" />
+                <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Portfolio Filters:</span>
+              </div>
+              
+              <Select value={assetFilter} onValueChange={setAssetFilter}>
+                <SelectTrigger className="w-[200px] h-9 bg-background">
+                  <SelectValue placeholder="Filter by SPV" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Consolidated View</SelectItem>
+                  {spvs.map(s => <SelectItem key={s.id} value={s.id}>{s.name}</SelectItem>)}
+                </SelectContent>
+              </Select>
+
+              <Select value={periodFilter} onValueChange={setPeriodFilter}>
+                <SelectTrigger className="w-[160px] h-9 bg-background">
+                  <SelectValue placeholder="Fiscal Year" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Full History</SelectItem>
+                  <SelectItem value="2024">FY 2024</SelectItem>
+                  <SelectItem value="2025">FY 2025</SelectItem>
+                </SelectContent>
+              </Select>
+
+              {(assetFilter !== 'all' || periodFilter !== 'all') && (
+                <Button variant="ghost" size="sm" className="h-9 text-[10px] font-bold uppercase" onClick={() => { setAssetFilter('all'); setPeriodFilter('all'); }}>
+                  Reset Filters
+                </Button>
+              )}
+            </div>
+
             <MetricsSummaryGrid metrics={PERFORMANCE_METRICS} currentNav={currentNav} />
           </div>
         </header>
 
-        {/* Content Body */}
         <main className="flex-1 p-4 md:p-8 overflow-y-auto pb-20">
           <div className="container mx-auto max-w-7xl space-y-12">
-            
             <Tabs defaultValue="performance" className="w-full">
               <TabsList className="bg-card border border-border/50 mb-8">
                 <TabsTrigger value="performance" className="px-8 font-bold text-xs uppercase tracking-widest">Performance Analytics</TabsTrigger>
@@ -151,10 +196,10 @@ export default function PerformanceDashboardPage() {
               </TabsList>
 
               <TabsContent value="performance" className="space-y-8 animate-in fade-in duration-500">
-                <PerformanceCharts navData={NAV_HISTORY} timelineData={CAPITAL_TIMELINE} />
+                <PerformanceCharts navData={NAV_HISTORY} timelineData={filteredTimeline} />
                 <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
                   <div className="xl:col-span-2">
-                    <SpvPerformanceTable data={spvs as any} />
+                    <SpvPerformanceTable data={filteredSpvs as any} />
                   </div>
                   <div className="space-y-8">
                     <DocumentFeed documents={PERFORMANCE_DOCUMENTS} currentRole={activeRole} />
@@ -203,12 +248,10 @@ export default function PerformanceDashboardPage() {
                 </div>
               </TabsContent>
             </Tabs>
-
           </div>
         </main>
       </div>
 
-      {/* Shared Compliance Ledger */}
       <aside className="hidden lg:block w-80 shrink-0 border-l border-border/50">
         <ActivityLogPanel logs={logs} />
       </aside>

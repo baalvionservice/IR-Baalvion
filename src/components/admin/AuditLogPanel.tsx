@@ -1,17 +1,27 @@
+
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { AuditLogEntry } from "@/core/content/schemas";
+import { AuditLogEntry, UserRole, ModuleName } from "@/core/content/schemas";
 import { auditService } from "@/core/services/audit.service";
-import { Search, Shield, Clock } from "lucide-react";
+import { Search, Shield, Clock, Filter, Calendar } from "lucide-react";
+import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from "@/components/ui/select";
 
 export function AuditLogPanel() {
   const [logs, setLogs] = useState<AuditLogEntry[]>([]);
   const [search, setSearch] = useState("");
+  const [roleFilter, setRoleFilter] = useState("all");
+  const [moduleFilter, setModuleFilter] = useState("all");
 
   const loadLogs = async () => {
     const data = await auditService.getLogs();
@@ -24,32 +34,71 @@ export function AuditLogPanel() {
     return () => window.removeEventListener('audit-updated', loadLogs);
   }, []);
 
-  const filteredLogs = logs.filter(l => 
-    l.action.toLowerCase().includes(search.toLowerCase()) ||
-    l.module.toLowerCase().includes(search.toLowerCase()) ||
-    l.userRole.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredLogs = useMemo(() => {
+    return logs.filter(l => {
+      const matchesSearch = l.action.toLowerCase().includes(search.toLowerCase()) ||
+                           l.module.toLowerCase().includes(search.toLowerCase()) ||
+                           l.userRole.toLowerCase().includes(search.toLowerCase());
+      const matchesRole = roleFilter === 'all' || l.userRole === roleFilter;
+      const matchesModule = moduleFilter === 'all' || l.module === moduleFilter;
+      
+      return matchesSearch && matchesRole && matchesModule;
+    });
+  }, [logs, search, roleFilter, moduleFilter]);
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-4">
-        <div className="relative flex-1">
+      <div className="flex flex-col md:flex-row items-center gap-4 bg-card/30 p-4 border border-border/50 rounded-xl">
+        <div className="relative flex-1 w-full">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input 
-            placeholder="Filter by action, module, or role..." 
-            className="pl-10 bg-card border-border/50 h-11"
+            placeholder="Search ledger actions..." 
+            className="pl-10 bg-background border-border/50 h-10"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
+        </div>
+        
+        <div className="flex gap-2 w-full md:w-auto">
+          <Select value={roleFilter} onValueChange={setRoleFilter}>
+            <SelectTrigger className="w-full md:w-[140px] h-10 bg-background">
+              <Filter className="h-3 w-3 mr-2 opacity-50" />
+              <SelectValue placeholder="Role" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Roles</SelectItem>
+              <SelectItem value="admin">GP Admin</SelectItem>
+              <SelectItem value="compliance">Compliance</SelectItem>
+              <SelectItem value="phase1">Investor</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <Select value={moduleFilter} onValueChange={setModuleFilter}>
+            <SelectTrigger className="w-full md:w-[140px] h-10 bg-background">
+              <SelectValue placeholder="Module" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Modules</SelectItem>
+              <SelectItem value="Reporting">Reporting</SelectItem>
+              <SelectItem value="Workflow">Workflow</SelectItem>
+              <SelectItem value="Notifications">Alerts</SelectItem>
+              <SelectItem value="Voting">Voting</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
 
       <Card className="bg-card/30 border-border/50">
         <CardHeader className="border-b border-border/50 bg-background/50">
-          <CardTitle className="text-lg font-bold flex items-center gap-2">
-            <Shield className="h-5 w-5 text-primary" /> Immutable System Ledger
-          </CardTitle>
-          <CardDescription>Comprehensive record of all administrative and governance tranches.</CardDescription>
+          <div className="flex justify-between items-center">
+            <div className="space-y-1">
+              <CardTitle className="text-lg font-bold flex items-center gap-2">
+                <Shield className="h-5 w-5 text-primary" /> Immutable System Ledger
+              </CardTitle>
+              <CardDescription>Comprehensive record of all administrative and governance tranches.</CardDescription>
+            </div>
+            <Badge variant="secondary" className="font-mono text-[10px]">{filteredLogs.length} Entries</Badge>
+          </div>
         </CardHeader>
         <CardContent className="p-0">
           <Table>

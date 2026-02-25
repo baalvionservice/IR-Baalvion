@@ -30,8 +30,28 @@ export function sortDocuments(docs: DocumentItem[], sortBy: string): DocumentIte
     case 'alphabetical':
       return sorted.sort((a, b) => a.title.localeCompare(b.title));
     case 'size':
-      return sorted.sort((a, b) => parseFloat(b.fileSize) - parseFloat(a.fileSize));
+      return sorted.sort((a, b) => {
+        const sizeA = parseFloat(a.fileSize);
+        const sizeB = parseFloat(b.fileSize);
+        return sizeB - sizeA;
+      });
     default:
       return sorted;
   }
+}
+
+export function filterDocuments(
+  docs: DocumentItem[], 
+  query: string, 
+  category: string, 
+  accessLevel: string
+): DocumentItem[] {
+  return docs.filter(doc => {
+    const matchesSearch = doc.title.toLowerCase().includes(query.toLowerCase()) || 
+                         doc.description.toLowerCase().includes(query.toLowerCase());
+    const matchesCategory = category === 'All' || doc.category === category;
+    const matchesAccess = accessLevel === 'all' || doc.accessLevelLabel === accessLevel;
+    
+    return matchesSearch && matchesCategory && matchesAccess;
+  });
 }

@@ -5,7 +5,7 @@ import { useState, useMemo } from "react";
 import { UserRole } from "@/core/content/schemas";
 import { INSTITUTIONAL_DOCUMENTS } from "@/lib/dataroom/data";
 import { DataRoomCategory, ActivityLogEntry, DocumentItem } from "@/lib/dataroom/types";
-import { canAccess, createLogEntry, sortDocuments } from "@/lib/dataroom/utils";
+import { canAccess, createLogEntry, sortDocuments, filterDocuments } from "@/lib/dataroom/utils";
 import { DocumentCard } from "@/components/dataroom/DocumentCard";
 import { ActivityLogPanel } from "@/components/dataroom/ActivityLogPanel";
 import { Input } from "@/components/ui/input";
@@ -23,11 +23,13 @@ import {
   Filter, 
   ChevronRight, 
   Menu,
-  Shield
+  Shield,
+  Calendar
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, Shield as SheetShield, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { authService } from "@/core/services/auth.service";
+import { Badge } from "@/components/ui/badge";
 
 const CATEGORIES: DataRoomCategory[] = ['All', 'Financial', 'Governance', 'Capital', 'Legal'];
 
@@ -35,13 +37,13 @@ export default function DataRoomPage() {
   const [activeRole, setActiveRole] = useState<UserRole>('public');
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<DataRoomCategory>('All');
+  const [accessFilter, setAccessFilter] = useState("all");
   const [sortBy, setSortBy] = useState("newest");
   const [logs, setLogs] = useState<ActivityLogEntry[]>([]);
 
-  // Simulation: Update Role via helper
   const handleRoleChange = (role: UserRole) => {
     setActiveRole(role);
-    authService.setRole(role); // Update global mock auth state
+    authService.setRole(role);
   };
 
   const handleAction = (doc: DocumentItem, action: 'View' | 'Download') => {
@@ -50,20 +52,13 @@ export default function DataRoomPage() {
   };
 
   const filteredDocs = useMemo(() => {
-    let result = INSTITUTIONAL_DOCUMENTS.filter(doc => {
-      const matchesSearch = doc.title.toLowerCase().includes(search.toLowerCase());
-      const matchesCategory = category === 'All' || doc.category === category;
-      return matchesSearch && matchesCategory;
-    });
-
+    const result = filterDocuments(INSTITUTIONAL_DOCUMENTS, search, category, accessFilter);
     return sortDocuments(result, sortBy);
-  }, [search, category, sortBy]);
+  }, [search, category, accessFilter, sortBy]);
 
   return (
     <div className="flex-1 flex flex-col md:flex-row h-[calc(100vh-64px)] overflow-hidden bg-background">
-      {/* Main Content Area */}
       <div className="flex-1 flex flex-col h-full overflow-y-auto">
-        {/* Header / Toolbar */}
         <header className="sticky top-0 z-20 bg-background/95 backdrop-blur-md border-b border-border/50 p-4 md:p-8">
           <div className="container mx-auto max-w-6xl">
             <div className="flex flex-col lg:flex-row justify-between gap-6 mb-8">
@@ -119,6 +114,20 @@ export default function DataRoomPage() {
               </div>
               
               <div className="flex gap-2">
+                <Select value={accessFilter} onValueChange={setAccessFilter}>
+                  <SelectTrigger className="w-[160px] h-11 bg-card border-border/50">
+                    <Filter className="h-3 w-3 mr-2 text-muted-foreground" />
+                    <SelectValue placeholder="Access Level" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Clearance</SelectItem>
+                    <SelectItem value="Public">Public</SelectItem>
+                    <SelectItem value="Accredited">Accredited</SelectItem>
+                    <SelectItem value="Board Only">Board Only</SelectItem>
+                    <SelectItem value="Internal">Internal</SelectItem>
+                  </SelectContent>
+                </Select>
+
                 <Select value={sortBy} onValueChange={setSortBy}>
                   <SelectTrigger className="w-[160px] h-11 bg-card border-border/50">
                     <SelectValue placeholder="Sort By" />
@@ -134,22 +143,26 @@ export default function DataRoomPage() {
           </div>
         </header>
 
-        {/* Content Body */}
         <main className="flex-1 p-4 md:p-8 overflow-y-auto">
           <div className="container mx-auto max-w-6xl">
-            <Tabs value={category} onValueChange={(v) => setCategory(v as DataRoomCategory)} className="mb-8">
-              <TabsList className="bg-card border border-border/50 h-11 p-1">
-                {CATEGORIES.map((cat) => (
-                  <TabsTrigger 
-                    key={cat} 
-                    value={cat} 
-                    className="px-6 text-xs font-bold uppercase tracking-wider data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                  >
-                    {cat}
-                  </TabsTrigger>
-                ))}
-              </TabsList>
-            </Tabs>
+            <div className="flex justify-between items-center mb-8">
+              <Tabs value={category} onValueChange={(v) => setCategory(v as DataRoomCategory)} className="flex-1">
+                <TabsList className="bg-card border border-border/50 h-11 p-1">
+                  {CATEGORIES.map((cat) => (
+                    <TabsTrigger 
+                      key={cat} 
+                      value={cat} 
+                      className="px-6 text-xs font-bold uppercase tracking-wider data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                    >
+                      {cat}
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
+              </Tabs>
+              <Badge variant="outline" className="h-11 px-4 ml-4 bg-card border-border/50 text-[10px] font-bold uppercase tracking-widest">
+                {filteredDocs.length} Documents Matched
+              </Badge>
+            </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredDocs.map((doc) => (
@@ -165,13 +178,15 @@ export default function DataRoomPage() {
             {filteredDocs.length === 0 && (
               <div className="py-20 text-center border-2 border-dashed border-border/50 rounded-xl">
                 <p className="text-muted-foreground text-sm font-medium">No documents matching current filters.</p>
+                <Button variant="link" className="mt-2" onClick={() => { setSearch(""); setCategory("All"); setAccessFilter("all"); }}>
+                  Clear all filters
+                </Button>
               </div>
             )}
           </div>
         </main>
       </div>
 
-      {/* Audit Log Sidebar (Desktop Only) */}
       <aside className="hidden lg:block w-80 shrink-0 border-l border-border/50">
         <ActivityLogPanel logs={logs} />
       </aside>
