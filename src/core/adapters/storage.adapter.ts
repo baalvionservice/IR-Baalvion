@@ -24,7 +24,7 @@ export class StorageAdapter {
     }
 
     if (ENV_CONFIG.enableFailureSimulation) {
-      if (Math.random() < ENV_CONFIG.failureRate) {
+      if (Math.random() < 0.05) { // 5% failure rate
         throw new Error("Simulated Network Failure");
       }
     }
@@ -46,6 +46,7 @@ export class StorageAdapter {
   async getAll<T>(): Promise<ApiResponse<T[]>> {
     try {
       await this.simulateNetwork();
+      if (typeof window === 'undefined') return this.wrapResponse([]);
       const raw = localStorage.getItem(this.key);
       const data = raw ? JSON.parse(raw) : [];
       return this.wrapResponse(data);
@@ -57,6 +58,7 @@ export class StorageAdapter {
   async saveAll<T>(data: T[]): Promise<ApiResponse<boolean>> {
     try {
       await this.simulateNetwork();
+      if (typeof window === 'undefined') return this.wrapResponse(false);
       localStorage.setItem(this.key, JSON.stringify(data));
       return this.wrapResponse(true);
     } catch (e: any) {
@@ -70,7 +72,7 @@ export class StorageAdapter {
   async initialize<T>(defaultData: T[]): Promise<void> {
     if (typeof window === 'undefined') return;
     const raw = localStorage.getItem(this.key);
-    // Only initialize if the key doesn't exist OR if it's an empty array
+    // Only initialize if the key doesn't exist OR if it's an empty array string
     if (!raw || raw === '[]') {
       localStorage.setItem(this.key, JSON.stringify(defaultData));
     }

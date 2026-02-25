@@ -10,9 +10,11 @@ export class NavigationRepository {
 
   constructor() {
     this.adapter = new StorageAdapter("navigation");
-    if (typeof window !== 'undefined') {
-      this.adapter.initialize(MOCK_NAVIGATION);
-    }
+    this.init();
+  }
+
+  private async init() {
+    await this.adapter.initialize(MOCK_NAVIGATION);
   }
 
   async findAll(): Promise<ApiResponse<NavigationItem[]>> {

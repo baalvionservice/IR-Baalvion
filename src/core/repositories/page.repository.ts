@@ -10,9 +10,11 @@ export class PageRepository {
 
   constructor() {
     this.adapter = new StorageAdapter("pages");
-    if (typeof window !== 'undefined') {
-      this.adapter.initialize(MOCK_PAGES);
-    }
+    this.init();
+  }
+
+  private async init() {
+    await this.adapter.initialize(MOCK_PAGES);
   }
 
   async findBySlug(slug: string): Promise<ApiResponse<PageDefinition | null>> {
@@ -34,7 +36,11 @@ export class PageRepository {
     const data = response.data || [];
     const index = data.findIndex(p => p.id === id);
     if (index === -1) {
-      return { ...response, success: false, error: { code: 'ENTITY_NOT_FOUND', message: 'Page not found' } } as any;
+      return { 
+        ...response, 
+        success: false, 
+        error: { code: 'ENTITY_NOT_FOUND', message: 'Page not found' } 
+      } as any;
     }
 
     const updatedPage = { ...data[index], ...updates };

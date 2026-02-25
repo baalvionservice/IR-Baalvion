@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Mountain, ChevronDown, Globe } from "lucide-react";
+import { Menu, Mountain, ChevronDown, Globe, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import RegistrationModal from "@/components/investor-registration/registration-modal";
 import {
@@ -29,14 +29,17 @@ export default function Header() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [navItems, setNavItems] = useState<NavigationItem[]>([]);
   const [userRole, setUserRole] = useState<UserRole>('public');
+  const [isLoading, setIsLoading] = useState(true);
 
   const loadNavigation = async () => {
+    setIsLoading(true);
     const { role } = await authService.getCurrentUser();
     setUserRole(role);
     const response = await navigationService.getNavigation();
     if (response.success) {
       setNavItems(response.data || []);
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -88,7 +91,7 @@ export default function Header() {
             <DropdownMenuContent className="w-64 max-h-[80vh] overflow-y-auto" align="start">
               {item.children.map((child) => {
                  if (child.isHeader) {
-                    return <DropdownMenuLabel key={child.id}>{child.label}</DropdownMenuLabel>;
+                    return <DropdownMenuLabel key={child.id} className="text-[10px] uppercase tracking-widest text-muted-foreground pt-4 pb-1">{child.label}</DropdownMenuLabel>;
                  }
                  if (child.label === '---') {
                     return <DropdownMenuSeparator key={child.id} />;
@@ -118,7 +121,13 @@ export default function Header() {
 
   const NavContent = ({ isMobile = false }: { isMobile?: boolean }) => (
     <nav className={cn("items-center gap-2", isMobile ? "flex flex-col space-y-4" : "hidden md:flex")}>
-      {renderNavItems(navItems, isMobile)}
+      {isLoading ? (
+        <div className="flex items-center gap-2 text-xs text-muted-foreground animate-pulse">
+          <Loader2 className="h-3 w-3 animate-spin" /> Synchronizing...
+        </div>
+      ) : (
+        renderNavItems(navItems, isMobile)
+      )}
     </nav>
   );
 

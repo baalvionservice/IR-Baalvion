@@ -1,3 +1,5 @@
+'use client';
+
 import { NavigationItem, UserRole } from "../content/schemas";
 import { authService } from "./auth.service";
 import { auditService } from "./audit.service";
@@ -5,6 +7,9 @@ import { navigationRepository } from "../repositories/navigation.repository";
 import { ApiResponse } from "@/types/api.types";
 
 export const navigationService = {
+  /**
+   * Fetches and filters navigation for the current user's role
+   */
   getNavigation: async (): Promise<ApiResponse<NavigationItem[]>> => {
     const { role } = await authService.getCurrentUser();
     const response = await navigationRepository.findAll();
@@ -27,6 +32,9 @@ export const navigationService = {
     };
   },
 
+  /**
+   * Returns all items (unfiltered) for admin management
+   */
   getAllItems: async (): Promise<NavigationItem[]> => {
     const response = await navigationRepository.findAll();
     return (response.data || []).sort((a, b) => a.order - b.order);

@@ -23,7 +23,7 @@ export default function Home() {
         toast({
           variant: "destructive",
           title: "Network Error",
-          description: response.error?.message || "Failed to load page content."
+          description: response.error?.message || "Failed to load page content. Please try refreshing."
         });
       }
       setIsLoading(false);
@@ -31,7 +31,7 @@ export default function Home() {
 
     loadPage();
     
-    // Refresh if role changes or content updated
+    // Refresh if role changes or content updated via admin
     window.addEventListener('storage', loadPage);
     window.addEventListener('workflow-updated', loadPage);
     
@@ -55,8 +55,9 @@ export default function Home() {
   }
 
   if (!pageData) return (
-    <div className="flex items-center justify-center min-h-[60vh] text-muted-foreground">
-      Page not found.
+    <div className="flex flex-col items-center justify-center min-h-[60vh] text-center gap-4">
+      <div className="text-muted-foreground text-lg">System Unavailable</div>
+      <p className="text-sm text-muted-foreground/60 max-w-md">The request could not be completed. This may be due to an unitialized data state or a simulated network interruption.</p>
     </div>
   );
 
