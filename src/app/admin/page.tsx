@@ -1,5 +1,6 @@
 "use client";
 
+import type { Metadata } from 'next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -29,6 +30,10 @@ import { useToast } from "@/hooks/use-toast";
 import { Separator } from "@/components/ui/separator";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
+export const metadata: Metadata = {
+  title: 'Admin Panel | Baalvion',
+  description: 'Manage investor approvals, operator equity, and monitor platform-wide audit logs.',
+};
 
 export default function AdminPage() {
   // State for Phase 3 data, including operator grants and pool statistics

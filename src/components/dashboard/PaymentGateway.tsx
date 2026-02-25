@@ -206,8 +206,8 @@ export default function PaymentGateway() {
 
 
   return (
-    <div className="space-y-4 relative">
-        <div className="absolute left-[-2rem] top-0 bottom-0 flex flex-col justify-between items-center w-8">
+    <div className="space-y-4 relative md:ml-8">
+        <div className="absolute left-[-2rem] top-0 bottom-0 hidden md:flex flex-col justify-between items-center w-8">
             <div className="h-full w-px bg-border"></div>
             <div className="flex flex-col h-full justify-around py-4 absolute">
                 {[1, 2, 3].map(s => (

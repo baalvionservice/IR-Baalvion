@@ -1,5 +1,6 @@
 "use client";
 
+import type { Metadata } from 'next';
 import {
   Card,
   CardContent,
@@ -44,6 +45,11 @@ import { type MockEvent, mockEventLog, addEventListener, removeEventListener, ad
 import PaymentGateway from '@/components/dashboard/PaymentGateway';
 import { Bar as RechartsBar, BarChart as RechartsBarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
 import { useToast } from '@/hooks/use-toast';
+
+export const metadata: Metadata = {
+  title: 'Investor Dashboard | Baalvion',
+  description: 'Access your investment overview, capital structure, financial reports, and compliance status.',
+};
 
 const chartData = [
   { name: 'Q1 23', value: 120000 },

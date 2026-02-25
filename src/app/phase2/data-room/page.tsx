@@ -1,5 +1,6 @@
 "use client";
 
+import type { Metadata } from 'next';
 import { useState, useMemo } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -13,6 +14,11 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import DocumentPreviewDialog from "@/components/shared/DocumentPreviewDialog";
+
+export const metadata: Metadata = {
+  title: 'Phase 2: SPV Data Room | Baalvion',
+  description: 'Access confidential documents for the Project Olympus SPV.',
+};
 
 export default function Phase2DataRoomPage() {
   const { toast } = useToast();

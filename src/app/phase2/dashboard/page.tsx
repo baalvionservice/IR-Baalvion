@@ -1,5 +1,6 @@
 "use client";
 
+import type { Metadata } from 'next';
 import {
     Card,
     CardContent,
@@ -36,6 +37,11 @@ import {
   import { Dialog, DialogTrigger } from '@/components/ui/dialog';
   import MeetingSchedulerModal from '@/components/dashboard/MeetingSchedulerModal';
   
+  export const metadata: Metadata = {
+    title: 'Phase 2: SPV Dashboard | Baalvion',
+    description: 'Manage your Special Purpose Vehicle investment, capital account, and view recent activity.',
+  };
+
   export default function Phase2DashboardPage() {
     const { name, spv, capitalAccount, activity } = phase2InvestorData;
     const [isMeetingModalOpen, setIsMeetingModalOpen] = useState(false);
@@ -197,4 +203,3 @@ import {
       </main>
     );
   }
-  

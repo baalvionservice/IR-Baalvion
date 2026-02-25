@@ -1,5 +1,6 @@
 "use client";
 
+import type { Metadata } from 'next';
 import {
   Card,
   CardContent,
@@ -36,6 +37,11 @@ import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { addMockEvent } from '@/lib/events';
 import DocumentPreviewDialog from '@/components/shared/DocumentPreviewDialog';
+
+export const metadata: Metadata = {
+  title: 'Operator Dashboard | Baalvion',
+  description: 'Track your strategic equity grant, vesting schedule, and performance KPIs.',
+};
 
 type Document = {
     id: number;
