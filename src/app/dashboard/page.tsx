@@ -46,29 +46,37 @@ export default async function DashboardPage() {
   const data = await getDashboardData();
 
   return (
-    <div className="container mx-auto p-6 space-y-8 animate-in fade-in duration-700">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
-        <div className="flex flex-col gap-1">
-          <h1 className="text-3xl font-bold tracking-tight">Investor Dashboard</h1>
-          <p className="text-muted-foreground">
-            Institutional Capital Overview for {session.email}
+    <div className="container mx-auto p-4 sm:p-6 lg:p-8 space-y-8 animate-in fade-in duration-700">
+      <div className="flex flex-col xl:flex-row justify-between items-start gap-6">
+        <div className="flex flex-col gap-1 max-w-2xl">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">Investor Dashboard</h1>
+          <p className="text-sm sm:text-base text-muted-foreground">
+            Institutional Capital Overview for <span className="text-foreground font-semibold">{session.email}</span>
           </p>
         </div>
-        <EventPackageDownload />
+        <div className="w-full xl:w-auto">
+          <EventPackageDownload />
+        </div>
       </div>
 
       <CapitalOverview summary={data.summary} />
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 space-y-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        {/* Main Content Area */}
+        <div className="lg:col-span-8 space-y-8">
           <NavChart data={data.navHistory} />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <CapitalCalls calls={data.calls} />
-            <DistributionLedger distributions={data.distributions} />
+            <div className="overflow-x-auto">
+              <CapitalCalls calls={data.calls} />
+            </div>
+            <div className="overflow-x-auto">
+              <DistributionLedger distributions={data.distributions} />
+            </div>
           </div>
         </div>
         
-        <div className="space-y-8">
+        {/* Sidebar Info Area */}
+        <div className="lg:col-span-4 space-y-8">
           <ActiveVoting votes={data.votes} />
           <DocumentPreview documents={data.documents} role={session.role} />
         </div>

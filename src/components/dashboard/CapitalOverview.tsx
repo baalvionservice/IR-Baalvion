@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -62,17 +63,17 @@ export default function CapitalOverview({ summary }: { summary: CapitalSummary }
   ];
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
       {metrics.map((metric) => (
-        <Card key={metric.title}>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+        <Card key={metric.title} className="shadow-sm hover:shadow-md transition-shadow">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 pt-4 px-4">
+            <CardTitle className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-muted-foreground">
               {metric.title}
             </CardTitle>
             <metric.icon className={`h-4 w-4 ${metric.color}`} />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{metric.value}</div>
+          <CardContent className="px-4 pb-4">
+            <div className="text-lg sm:text-xl md:text-2xl font-bold tracking-tighter">{metric.value}</div>
           </CardContent>
         </Card>
       ))}
