@@ -76,7 +76,7 @@ export default function Header() {
               <span className="hidden sm:inline-block tracking-tighter text-xl">Baalvion</span>
             </Link>
             
-            <nav className="hidden md:flex items-center gap-1" aria-label="Main Navigation">
+            <nav className="hidden lg:flex items-center gap-1" aria-label="Main Navigation">
               {isLoading ? (
                 <div className="flex items-center gap-2 text-xs text-muted-foreground px-4">
                   <Loader2 className="h-3 w-3 animate-spin" aria-hidden="true" />
@@ -110,7 +110,7 @@ export default function Header() {
 
             <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="md:hidden" aria-label="Open Mobile Menu">
+                <Button variant="ghost" size="icon" className="lg:hidden" aria-label="Open Mobile Menu">
                   <Menu className="h-5 w-5" aria-hidden="true" />
                 </Button>
               </SheetTrigger>

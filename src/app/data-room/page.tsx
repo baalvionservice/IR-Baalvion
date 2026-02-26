@@ -56,7 +56,7 @@ export default function DataRoomPage() {
   }, [search, category, accessFilter, sortBy]);
 
   return (
-    <div className="flex-1 flex flex-col md:flex-row h-[calc(100vh-64px)] overflow-hidden bg-background">
+    <div className="flex-1 flex flex-col md:flex-row min-h-[calc(100vh-64px)] overflow-hidden bg-background">
       <div className="flex-1 flex flex-col h-full overflow-y-auto">
         <header className="sticky top-0 z-20 bg-background/95 backdrop-blur-md border-b border-border/50 p-4 md:p-8">
           <div className="container mx-auto max-w-6xl">
@@ -66,12 +66,12 @@ export default function DataRoomPage() {
                   <ShieldCheck className="h-5 w-5 text-primary" />
                   <span className="text-[10px] font-bold text-primary uppercase tracking-[0.2em]">Institutional Vault</span>
                 </div>
-                <h1 className="text-3xl font-bold tracking-tighter">Secure Data Room</h1>
+                <h1 className="text-2xl md:text-3xl font-bold tracking-tighter">Secure Data Room</h1>
                 <p className="text-sm text-muted-foreground mt-1">Audit-grade documentation for Baalvion shareholders and board members.</p>
               </div>
 
-              <div className="flex flex-wrap items-center gap-3">
-                <div className="flex flex-col gap-1.5 min-w-[180px]">
+              <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto justify-between lg:justify-start">
+                <div className="flex flex-col gap-1.5 flex-1 lg:min-w-[180px]">
                   <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground px-1">Simulate Identity</span>
                   <Select value={activeRole} onValueChange={(val) => handleRoleChange(val as UserRole)}>
                     <SelectTrigger className="h-10 bg-card border-border/50">
@@ -117,7 +117,7 @@ export default function DataRoomPage() {
               
               <div className="flex gap-2">
                 <Select value={accessFilter} onValueChange={setAccessFilter}>
-                  <SelectTrigger className="w-[160px] h-11 bg-card border-border/50">
+                  <SelectTrigger className="flex-1 md:w-[160px] h-11 bg-card border-border/50">
                     <Filter className="h-3 w-3 mr-2 text-muted-foreground" />
                     <SelectValue placeholder="Access Level" />
                   </SelectTrigger>
@@ -131,7 +131,7 @@ export default function DataRoomPage() {
                 </Select>
 
                 <Select value={sortBy} onValueChange={setSortBy}>
-                  <SelectTrigger className="w-[160px] h-11 bg-card border-border/50">
+                  <SelectTrigger className="flex-1 md:w-[160px] h-11 bg-card border-border/50">
                     <SelectValue placeholder="Sort By" />
                   </SelectTrigger>
                   <SelectContent>
@@ -147,21 +147,21 @@ export default function DataRoomPage() {
 
         <main className="flex-1 p-4 md:p-8 overflow-y-auto">
           <div className="container mx-auto max-w-6xl">
-            <div className="flex justify-between items-center mb-8">
-              <Tabs value={category} onValueChange={(v) => setCategory(v as DataRoomCategory)} className="flex-1">
-                <TabsList className="bg-card border border-border/50 h-11 p-1">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+              <Tabs value={category} onValueChange={(v) => setCategory(v as DataRoomCategory)} className="w-full sm:flex-1">
+                <TabsList className="bg-card border border-border/50 h-11 p-1 w-full sm:w-auto overflow-x-auto justify-start">
                   {CATEGORIES.map((cat) => (
                     <TabsTrigger 
                       key={cat} 
                       value={cat} 
-                      className="px-6 text-xs font-bold uppercase tracking-wider data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                      className="flex-1 sm:flex-none px-6 text-xs font-bold uppercase tracking-wider data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
                     >
                       {cat}
                     </TabsTrigger>
                   ))}
                 </TabsList>
               </Tabs>
-              <Badge variant="outline" className="h-11 px-4 ml-4 bg-card border-border/50 text-[10px] font-bold uppercase tracking-widest">
+              <Badge variant="outline" className="h-11 px-4 bg-card border-border/50 text-[10px] font-bold uppercase tracking-widest hidden sm:flex">
                 {filteredDocs.length} Documents Matched
               </Badge>
             </div>

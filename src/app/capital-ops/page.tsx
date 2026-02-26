@@ -102,7 +102,7 @@ export default function CapitalOperationsPage() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row h-[calc(100vh-64px)] overflow-hidden bg-background">
+    <div className="flex flex-col md:flex-row min-h-[calc(100vh-64px)] overflow-hidden bg-background">
       {/* Main Console Area */}
       <div className="flex-1 flex flex-col h-full overflow-y-auto">
         
@@ -115,11 +115,11 @@ export default function CapitalOperationsPage() {
                   <Landmark className="h-5 w-5 text-primary" />
                   <span className="text-[10px] font-bold text-primary uppercase tracking-[0.2em]">Institutional Console</span>
                 </div>
-                <h1 className="text-3xl font-bold tracking-tighter">Capital Operations</h1>
+                <h1 className="text-2xl md:text-3xl font-bold tracking-tighter">Capital Operations</h1>
                 <p className="text-sm text-muted-foreground mt-1 tracking-tight">Lifecycle management simulation for Baalvion General Partners.</p>
               </div>
 
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 w-full lg:w-auto justify-between lg:justify-start">
                 <RoleSwitcher currentRole={role} onRoleChange={setRole} />
                 <div className="lg:hidden">
                   <Sheet>

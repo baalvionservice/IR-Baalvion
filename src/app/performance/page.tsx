@@ -27,11 +27,12 @@ import {
   SelectTrigger, 
   SelectValue 
 } from "@/components/ui/select";
-import { TrendingUp, ShieldCheck, Download, Activity, RefreshCw, Layers, Wallet, Landmark, Filter } from "lucide-react";
+import { TrendingUp, ShieldCheck, Download, Activity, RefreshCw, Layers, Wallet, Landmark, Filter, Shield, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Locale, t } from "@/utils/i18n";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 
 /**
  * Unified Performance Dashboard (Hooks Refactor)
@@ -84,17 +85,35 @@ export default function PerformanceDashboardPage() {
         <header className="sticky top-0 z-20 bg-background/95 backdrop-blur-md border-b border-border/50 p-4 md:p-8">
           <div className="container mx-auto max-w-7xl">
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-8">
-              <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <ShieldCheck className="h-5 w-5 text-primary" />
-                  <span className="text-[10px] font-bold text-primary uppercase tracking-[0.2em]">Institutional Hub</span>
+              <div className="w-full lg:w-auto">
+                <div className="flex items-center justify-between lg:justify-start gap-2 mb-1">
+                  <div className="flex items-center gap-2">
+                    <ShieldCheck className="h-5 w-5 text-primary" />
+                    <span className="text-[10px] font-bold text-primary uppercase tracking-[0.2em]">Institutional Hub</span>
+                  </div>
+                  {/* Activity Log Trigger for Mobile/Tablet */}
+                  <div className="lg:hidden">
+                    <Sheet>
+                      <SheetTrigger asChild>
+                        <Button variant="outline" size="icon" className="h-8 w-8">
+                          <Activity className="h-4 w-4" />
+                        </Button>
+                      </SheetTrigger>
+                      <SheetContent side="right" className="p-0 w-80">
+                        <SheetHeader className="sr-only">
+                          <SheetTitle>Audit Trail</SheetTitle>
+                        </SheetHeader>
+                        <ActivityLogPanel logs={logs} />
+                      </SheetContent>
+                    </Sheet>
+                  </div>
                 </div>
-                <h1 className="text-3xl font-bold tracking-tighter">{t("dashboard.title", locale)}</h1>
+                <h1 className="text-2xl md:text-3xl font-bold tracking-tighter">{t("dashboard.title", locale)}</h1>
                 <p className="text-sm text-muted-foreground mt-1">{t("dashboard.subtitle", locale)}</p>
               </div>
 
-              <div className="flex items-center gap-3">
-                <div className="flex flex-col gap-1.5 min-w-[180px]">
+              <div className="flex items-center gap-3 w-full lg:w-auto">
+                <div className="flex flex-col gap-1.5 flex-1 lg:min-w-[180px]">
                   <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground px-1">Active Persona</span>
                   <Select value={role} onValueChange={(val) => changeRole(val as UserRole)}>
                     <SelectTrigger className="h-10 bg-card border-border/50">
@@ -108,7 +127,7 @@ export default function PerformanceDashboardPage() {
                     </SelectContent>
                   </Select>
                 </div>
-                <Button size="icon" variant="outline" className="h-10 w-10 mt-5">
+                <Button size="icon" variant="outline" className="h-10 w-10 mt-5 hidden sm:flex">
                   <RefreshCw className="h-4 w-4" />
                 </Button>
               </div>
@@ -120,7 +139,7 @@ export default function PerformanceDashboardPage() {
                 <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Portfolio Filters:</span>
               </div>
               <Select value={assetFilter} onValueChange={setAssetFilter}>
-                <SelectTrigger className="w-[200px] h-9 bg-background">
+                <SelectTrigger className="w-full sm:w-[200px] h-9 bg-background">
                   <SelectValue placeholder="Filter by SPV" />
                 </SelectTrigger>
                 <SelectContent>
@@ -137,9 +156,9 @@ export default function PerformanceDashboardPage() {
         <main className="flex-1 p-4 md:p-8 overflow-y-auto pb-20">
           <div className="container mx-auto max-w-7xl space-y-12">
             <Tabs defaultValue="performance" className="w-full">
-              <TabsList className="bg-card border border-border/50 mb-8">
-                <TabsTrigger value="performance" className="px-8 font-bold text-xs uppercase tracking-widest">Performance Analytics</TabsTrigger>
-                <TabsTrigger value="operations" className="px-8 font-bold text-xs uppercase tracking-widest">Capital Operations</TabsTrigger>
+              <TabsList className="bg-card border border-border/50 mb-8 w-full sm:w-auto overflow-x-auto justify-start">
+                <TabsTrigger value="performance" className="flex-1 sm:flex-none px-8 font-bold text-xs uppercase tracking-widest">Performance Analytics</TabsTrigger>
+                <TabsTrigger value="operations" className="flex-1 sm:flex-none px-8 font-bold text-xs uppercase tracking-widest">Capital Operations</TabsTrigger>
               </TabsList>
 
               <TabsContent value="performance" className="space-y-8 animate-in fade-in duration-500">
