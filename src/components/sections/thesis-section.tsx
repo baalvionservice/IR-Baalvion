@@ -50,9 +50,9 @@ export default function ThesisSection({ id }: { id: string }) {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <Card className="bg-gray-50 border">
+          <Card className="bg-gray-50 border-neutral-200">
             <CardHeader>
-              <CardTitle className="text-black">Market Opportunity Analysis</CardTitle>
+              <CardTitle className="text-black mb-2">Market Opportunity Analysis</CardTitle>
               <CardDescription className="text-gray-500">Projected growth in our target addressable markets (TAM).</CardDescription>
             </CardHeader>
             <CardContent>
@@ -68,9 +68,9 @@ export default function ThesisSection({ id }: { id: string }) {
               )}
             </CardContent>
           </Card>
-          <Card className="bg-gray-50 border">
+          <Card className="bg-gray-50 border-neutral-200">
             <CardHeader>
-              <CardTitle className="text-black">Capital Allocation Strategy</CardTitle>
+              <CardTitle className="text-black mb-2">Capital Allocation Strategy</CardTitle>
               <CardDescription className="text-gray-500">Our disciplined approach to deploying capital for maximum ROI.</CardDescription>
             </CardHeader>
             <CardContent>

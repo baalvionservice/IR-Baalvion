@@ -25,7 +25,7 @@ export default function Home() {
       if (mounted) setUserRole(role);
 
       const response = await pageService.getPageBySlug('/');
-      
+
       if (!mounted) return;
 
       if (response.success && response.data) {
@@ -42,7 +42,7 @@ export default function Home() {
 
     loadPage();
     window.addEventListener('storage', loadPage);
-    
+
     return () => {
       mounted = false;
       window.removeEventListener('storage', loadPage);
@@ -71,7 +71,7 @@ export default function Home() {
           </div>
           <h1 className="text-3xl font-bold tracking-tight">Access Restricted</h1>
           <p className="text-muted-foreground max-w-md">
-            Your current institutional classification does not permit viewing the primary index. 
+            Your current institutional classification does not permit viewing the primary index.
             Please complete onboarding or contact your relationship manager.
           </p>
           <div className="flex gap-4">
@@ -99,7 +99,7 @@ export default function Home() {
   }, [isLoading, pageData, userRole]);
 
   return (
-    <main className="flex-grow">
+    <main className="w-full max-w-6xl mx-auto px-1 sm:px-6 lg:px-8">
       {renderedContent}
     </main>
   );

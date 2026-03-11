@@ -6,7 +6,7 @@ export default function OverviewSection({ id }: { id: string }) {
   const roadmapImage = PlaceHolderImages.find((p) => p.id === "roadmap-infographic");
 
   return (
-    <section id={id} className="w-full">
+    <section id={id} className="w-full py-16 md:py-24">
       <div className="container mx-auto px-4">
         <div className="grid gap-12 md:grid-cols-2 md:items-center">
           <div className="space-y-6">

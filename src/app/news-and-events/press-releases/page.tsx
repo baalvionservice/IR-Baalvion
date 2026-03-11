@@ -27,7 +27,7 @@ export default function PressReleasesPage() {
             <div className="flex gap-4 items-center">
               <span className="text-xs font-bold uppercase text-gray-400">Filter By Year:</span>
               <Select defaultValue="2026">
-                <SelectTrigger className="w-[120px] rounded-none border-gray-300">
+                <SelectTrigger className="w-[120px] rounded-none border-gray-300 text-white">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -40,7 +40,7 @@ export default function PressReleasesPage() {
             
             <div className="relative w-full md:w-64">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <Input placeholder="Search releases..." className="pl-10 rounded-none border-gray-300" />
+              <Input placeholder="Search releases..." className="pl-10 text-white rounded-none border-gray-300" />
             </div>
           </div>
 
@@ -68,7 +68,7 @@ export default function PressReleasesPage() {
                           <FileText className="h-4 w-4" /> Webcast Summary
                         </Link>
                       )}
-                      <button className="ml-auto p-2 text-gray-300 hover:text-black transition-colors">
+                      <button className="ml-auto p-2 text-gray-300  hover:text-black transition-colors">
                         <Share2 className="h-4 w-4" />
                       </button>
                     </div>
@@ -79,7 +79,7 @@ export default function PressReleasesPage() {
           </div>
 
           <div className="mt-20 flex justify-center">
-            <Button variant="outline" className="rounded-none border-2 border-black px-12 h-14 font-bold text-sm hover:bg-black hover:text-white transition-all">
+            <Button variant="outline" className="rounded-none border-2 text-white border-black px-12 h-14 font-bold text-sm hover:bg-black hover:text-white transition-all">
               Load Previous Releases
             </Button>
           </div>

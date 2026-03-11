@@ -14,10 +14,10 @@ export default function Footer() {
         </div>
 
         {/* Top section with addresses and links */}
-        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4 text-xs sm:text-sm">
+        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-3 text-xs sm:text-md">
           
           {/* Column 1: Headquarters */}
-          <div className="space-y-4">
+          <div className="space-y-4 text-xs sm:text-sm">
             <h4 className="font-bold tracking-widest border-b border-gray-100 pb-2 uppercase text-[10px]">BAALVION, INC.</h4>
             <div className="space-y-2">
                 <p className="font-bold text-gray-500 uppercase text-[9px]">Headquarters:</p>
@@ -30,7 +30,7 @@ export default function Footer() {
           </div>
 
           {/* Column 2: Contact Info & Registered Address */}
-          <div className="space-y-8">
+          <div className="space-y-8 text-xs sm:text-sm">
             <div className="space-y-4">
                 <h4 className="font-bold tracking-widest border-b border-gray-100 pb-2 uppercase text-[10px]">CONTACT INFORMATION</h4>
                 <div className="space-y-1">
@@ -52,7 +52,7 @@ export default function Footer() {
           </div>
 
           {/* Column 3: Investor Services */}
-          <div className="space-y-4 sm:col-span-2 lg:col-span-1">
+          <div className="space-y-4 sm:col-span-2 lg:col-span-1 text-xs sm:text-sm">
             <h4 className="font-bold tracking-widest border-b border-gray-100 pb-2 uppercase text-[10px]">INVESTOR SERVICES</h4>
             <ul className="grid grid-cols-2 lg:grid-cols-1 gap-y-3 font-bold text-gray-800">
               <li><Link href="#" className="hover:text-primary transition-colors uppercase tracking-tight">IR HOME</Link></li>
@@ -68,7 +68,7 @@ export default function Footer() {
         <Separator className="my-12 bg-gray-200" />
 
         {/* Bottom legal links */}
-        <div className="flex flex-wrap gap-x-8 gap-y-4 text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-widest">
+        <div className="flex justify-center flex-wrap gap-x-8 gap-y-4 text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-widest">
             <Link href="#" className="hover:text-black transition-colors">Terms & Conditions</Link>
             <Link href="#" className="hover:text-black transition-colors">Privacy Policy</Link>
             <Link href="#" className="hover:text-black transition-colors">Business Continuity</Link>
