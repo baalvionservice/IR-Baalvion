@@ -13,7 +13,7 @@ export default function TrustSignals() {
   ];
 
   return (
-    <section id="trust" className="w-full bg-white border-y">
+    <section id="trust" className="w-full bg-white border-y-neutral-500">
       <div className="container mx-auto px-4 py-16 md:py-20">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-black">
@@ -28,7 +28,7 @@ export default function TrustSignals() {
             {signals.map((signal) => (
                  <Tooltip key={signal.name}>
                     <TooltipTrigger asChild>
-                        <Card className="bg-white text-black text-center hover:bg-gray-50 transition-colors cursor-pointer">
+                        <Card className="bg-white border-neutral-200 text-black text-center hover:bg-gray-50 transition-colors cursor-pointer">
                         <CardContent className="p-6 flex flex-col items-center justify-center gap-4">
                             {signal.icon}
                             <div className="flex-grow">

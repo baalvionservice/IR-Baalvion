@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { leadershipTeam, globalLeaders } from '@/lib/data';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import Image from 'next/image';
 
 export const metadata: Metadata = {
   title: 'Global Leadership | Executive Committee',
@@ -33,9 +34,12 @@ export default function LeadershipPage() {
                 <div key={member.name} className="group">
                   <div className="aspect-square bg-gray-100 mb-8 overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-500">
                     {img && (
-                      <img 
+                      <Image 
                         src={img.imageUrl} 
-                        alt={member.name} 
+                        alt={`Photo of ${member.name}`} 
+                        data-ai-hint={img.imageHint}
+                        width={600}
+                        height={600}
                         className="w-full h-full object-cover scale-100 group-hover:scale-105 transition-transform duration-700"
                       />
                     )}

@@ -5,7 +5,7 @@ import { PlaceHolderImages } from "@/lib/placeholder-images";
 
 export default function GovernanceSection({ id }: { id: string }) {
   return (
-    <section id={id} className="w-full">
+    <section id={id} className="w-full py-16 md:py-24">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold">
@@ -28,7 +28,7 @@ export default function GovernanceSection({ id }: { id: string }) {
                       data-ai-hint={memberImage.imageHint}
                       width={120}
                       height={120}
-                      className="rounded-full mb-4"
+                      className="size-32 rounded-full object-cover mb-4"
                     />
                   )}
                   <CardTitle>{member.name}</CardTitle>

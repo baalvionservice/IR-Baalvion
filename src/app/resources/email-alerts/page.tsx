@@ -102,7 +102,7 @@ export default function EmailAlertsPage() {
                                 <p className="text-xs text-gray-600">* Required for public access</p>
                                 <div className="space-y-2">
                                     <Label htmlFor="email" className="font-bold">Email Address *</Label>
-                                    <Input id="email" type="email" placeholder="Your Email" className="bg-white border-gray-300" />
+                                    <Input id="email" type="email" placeholder="Your Email" className="bg-white focus-visible:ring-offset-0 border-gray-300" />
                                 </div>
                                 <div className="space-y-4">
                                     <Label className="font-bold">Public Mailing Lists *</Label>
