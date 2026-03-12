@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { leadershipTeam, globalLeaders } from '@/lib/data';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Image from 'next/image';
+import { slugify } from '@/utils/slug-generator';
 
 export const metadata: Metadata = {
   title: 'Global Leadership | Executive Committee',
@@ -27,27 +27,26 @@ export default function LeadershipPage() {
 
       <section className="py-20 bg-white text-black">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-16 mb-24">
+          <div className="grid md:grid-cols-3 gap-16 mb-12 ">
             {leadershipTeam.map((member) => {
               const img = PlaceHolderImages.find(p => p.id === member.imageId);
               return (
                 <div key={member.name} className="group">
-                  <div className="aspect-square bg-gray-100 mb-8 overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-500">
+                  <div className="aspect-square size-[200px] bg-gray-100 mb-8 overflow-hidden transition-all duration-500">
                     {img && (
-                      <Image 
-                        src={img.imageUrl} 
-                        alt={`Photo of ${member.name}`} 
+                      <Image
+                        src={img.imageUrl}
+                        alt={`Photo of ${member.name}`}
                         data-ai-hint={img.imageHint}
-                        width={600}
-                        height={600}
-                        className="w-full h-full object-top scale-100 group-hover:scale-105 transition-transform duration-700"
+                        width={100}
+                        height={100}
+                        className="h-full w-full object-top scale-100 group-hover:scale-105 transition-transform duration-700"
                       />
                     )}
                   </div>
                   <h3 className="text-3xl font-bold tracking-tight mb-1">{member.name}</h3>
                   <p className="text-primary font-bold uppercase tracking-widest text-xs mb-4">{member.title}</p>
-                  <p className="text-gray-600 leading-relaxed mb-6 line-clamp-3">{member.bio}</p>
-                  <Link href="#" className="inline-flex items-center text-sm font-bold text-black border-b-2 border-primary pb-1 hover:border-black transition-colors">
+                  <Link href={`/governance/leadership/${slugify(member.name)}` || ''} className="inline-flex items-center text-sm font-bold text-black border-b-2 border-primary pb-1 hover:border-black transition-colors">
                     Read Biography &gt;
                   </Link>
                 </div>
@@ -63,7 +62,7 @@ export default function LeadershipPage() {
                   <div className="h-1 bg-primary w-8 mb-4 opacity-50" />
                   <h4 className="font-bold text-lg leading-tight">{member.name}</h4>
                   <p className="text-xs text-gray-500 uppercase font-bold tracking-tighter">{member.title}</p>
-                  <Link href="#" className="block text-[10px] font-bold hover:text-primary transition-colors">Bio &gt;</Link>
+                  <Link href={`/governance/leadership/${slugify(member.name)}` || ''} className="block text-[10px] font-bold hover:text-primary transition-colors">Bio &gt;</Link>
                 </div>
               ))}
             </div>
@@ -78,3 +77,6 @@ export default function LeadershipPage() {
     </div>
   );
 }
+
+
+
