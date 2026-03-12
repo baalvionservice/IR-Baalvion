@@ -27,11 +27,11 @@ export default function LeadershipPage() {
 
       <section className="py-20 bg-white text-black">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-3 gap-16 mb-12 ">
+          <div className="grid md:grid-cols-2 gap-16 mb-12 ">
             {leadershipTeam.map((member) => {
               const img = PlaceHolderImages.find(p => p.id === member.imageId);
               return (
-                <div key={member.name} className="group">
+                <div key={member.name} className="group flex flex-col items-center">
                   <div className="aspect-square size-[200px] bg-gray-100 mb-8 overflow-hidden transition-all duration-500">
                     {img && (
                       <Image
@@ -57,14 +57,29 @@ export default function LeadershipPage() {
           <div className="border-t border-gray-200 pt-20">
             <h2 className="text-2xl font-bold mb-12 uppercase tracking-widest text-gray-400 text-center">Global Functional Leadership</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-12">
-              {globalLeaders.map((member) => (
-                <div key={member.name} className="space-y-2">
-                  <div className="h-1 bg-primary w-8 mb-4 opacity-50" />
-                  <h4 className="font-bold text-lg leading-tight">{member.name}</h4>
-                  <p className="text-xs text-gray-500 uppercase font-bold tracking-tighter">{member.title}</p>
-                  <Link href={`/governance/leadership/${slugify(member.name)}` || ''} className="block text-[10px] font-bold hover:text-primary transition-colors">Bio &gt;</Link>
-                </div>
-              ))}
+              {globalLeaders.map((member) => {
+
+                const img = PlaceHolderImages.find(p => p.id === member.imageId);
+                return (
+                  <div key={member.name} className="space-y-2">
+                    <div className="aspect-square size-[150px] bg-gray-100 mb-8 overflow-hidden transition-all duration-500">
+                      {img && (
+                        <Image
+                          src={img.imageUrl}
+                          alt={`Photo of ${member.name}`}
+                          data-ai-hint={img.imageHint}
+                          width={100}
+                          height={100}
+                          className="h-full w-full object-top scale-100 group-hover:scale-105 transition-transform duration-700"
+                        />
+                      )}
+                    </div>
+                    <h4 className="font-bold text-2xl leading-tight">{member.name}</h4>
+                    <p className="text-xs italic text-gray-500 uppercase font-bold tracking-tighter">{member.title}</p>
+                    <Link href={`/governance/leadership/${slugify(member.name)}` || ''} className="block text-[15px] font-bold hover:text-primary transition-colors">Bio &gt;</Link>
+                  </div>
+                )
+              })}
             </div>
           </div>
 

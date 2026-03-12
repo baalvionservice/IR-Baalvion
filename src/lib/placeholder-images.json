@@ -19,16 +19,28 @@
       "imageHint": "pie chart"
     },
     {
-      "id": "founder-photo",
+      "id": "dilip-photo",
       "description": "Portrait of the company founder.",
-      "imageUrl": "https://images.unsplash.com/photo-1621273929349-678e4bdad4ad?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxwb3J0cmFpdCUyMG1hbGV8ZW58MHx8fHwxNzcxOTQ5NzI2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/photos/DilipKuldeepYadav.jpeg",
       "imageHint": "portrait male"
     },
     {
       "id": "executive-1-photo",
       "description": "Portrait of a female executive.",
-      "imageUrl": "https://images.unsplash.com/photo-1578432133819-d2ef4bb97cf5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxwb3J0cmFpdCUyMGZlbWFsZXxlbnwwfHx8fDE3NzE5NDk3MjZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/photos/aadarshPatra.jpeg",
       "imageHint": "portrait female"
+    },
+    {
+      "id": "tamanna-photo",
+      "description": "Portrait of tamanna.",
+      "imageUrl": "/photos/tamannaShaaikh.jpeg",
+      "imageHint": "portrait tamanna"
+    },
+    {
+      "id": "sasmita-photo",
+      "description": "Portrait of sasmita.",
+      "imageUrl": "/photos/sasmitagamel.jpeg",
+      "imageHint": "portrait sasmita"
     },
     {
       "id": "prathamesh-photo",
