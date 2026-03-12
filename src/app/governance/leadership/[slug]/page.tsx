@@ -3,15 +3,16 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
-import { leadershipTeam, globalLeaders } from '@/lib/data';
+import { leadershipTeam, globalLeaders, VicePersidents } from '@/lib/data';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { slugify } from '@/utils/slug-generator';
 
-type LeaderSource = 'executive' | 'global';
+type LeaderSource = 'executive' | 'global' | 'president';
 
 type Leader =
   | (typeof leadershipTeam)[number] & { source: LeaderSource }
-  | ((typeof globalLeaders)[number] & { source: LeaderSource; imageId?: string; bio?: string });
+  | ((typeof globalLeaders)[number] & { source: LeaderSource; imageId?: string; bio?: string })
+  | ((typeof VicePersidents)[number] & { source: LeaderSource; imageId?: string; bio?: string });
 
 function findLeaderBySlug(slug: string): Leader | null {
   const executive = leadershipTeam.find((member) => slugify(member.name) === slug);
@@ -25,6 +26,15 @@ function findLeaderBySlug(slug: string): Leader | null {
       ...global,
       source: 'global',
       bio: global.title,
+    };
+  }
+
+  const president = VicePersidents.find((member) => slugify(member.name) === slug);
+  if (president) {
+    return {
+      ...president,
+      source: 'president',
+      bio: president.title,
     };
   }
 

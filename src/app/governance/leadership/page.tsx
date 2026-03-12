@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { leadershipTeam, globalLeaders } from '@/lib/data';
+import { leadershipTeam, globalLeaders, VicePersidents } from '@/lib/data';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Image from 'next/image';
 import { slugify } from '@/utils/slug-generator';
+import { Separator } from '@/components/ui/separator';
 
 export const metadata: Metadata = {
   title: 'Global Leadership | Executive Committee',
@@ -54,9 +55,9 @@ export default function LeadershipPage() {
             })}
           </div>
 
-          <div className="border-t border-gray-200 pt-20">
+          <div className="border-t border-gray-200 max-w-6xl mx-auto pt-20 mb-12">
             <h2 className="text-2xl font-bold mb-12 uppercase tracking-widest text-gray-400 text-center">Global Functional Leadership</h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-12">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-12">
               {globalLeaders.map((member) => {
 
                 const img = PlaceHolderImages.find(p => p.id === member.imageId);
@@ -74,8 +75,8 @@ export default function LeadershipPage() {
                         />
                       )}
                     </div>
-                    <h4 className="font-bold text-2xl leading-tight">{member.name}</h4>
-                    <p className="text-xs italic text-gray-500 uppercase font-bold tracking-tighter">{member.title}</p>
+                    <h4 className="font-bold text-xl leading-tight">{member.name}</h4>
+                    {/* <p className="text-xs italic text-gray-500 uppercase font-bold tracking-tighter">{member.title}</p> */}
                     <Link href={`/governance/leadership/${slugify(member.name)}` || ''} className="block text-[15px] font-bold hover:text-primary transition-colors">Bio &gt;</Link>
                   </div>
                 )
@@ -83,13 +84,42 @@ export default function LeadershipPage() {
             </div>
           </div>
 
-          <div className="mt-24 p-12 bg-gray-50 text-center">
-            <h3 className="text-xl font-bold mb-4 italic">"Leadership is the capacity to translate vision into reality."</h3>
-            <p className="text-gray-500 text-sm">— Baalvion Operational Excellence Charter</p>
-          </div>
+          <div className="border-t border-gray-200 max-w-6xl mx-auto pt-20">
+            <h2 className="text-2xl font-bold mb-12 uppercase tracking-widest text-gray-400 text-center">Our VicePresidents</h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-12">
+              {VicePersidents.map((member) => {
+
+                const img = PlaceHolderImages.find(p => p.id === member.imageId);
+                return (
+                  <div key={member.name} className="space-y-2">
+                    <div className="aspect-square size-[150px] bg-gray-100 mb-8 overflow-hidden transition-all duration-500">
+                      {img && (
+                        <Image
+                          src={img.imageUrl}
+                          alt={`Photo of ${member.name}`}
+                          data-ai-hint={img.imageHint}
+                          width={100}
+                          height={100}
+                          className="h-full w-full object-top scale-100 group-hover:scale-105 transition-transform duration-700"
+                        />
+                      )}
+                    </div>
+                    <h4 className="font-bold text-xl leading-tight">{member.name}</h4>
+                    <p className="text-xs italic text-gray-500 uppercase font-bold tracking-tighter">{member.title}</p>
+                    <Link href={`/governance/leadership/${slugify(member.name)}` || ''} className="block text-[15px] font-bold hover:text-primary transition-colors">Bio &gt;</Link>
+                  </div>
+                )
+              })}
+            </div>
         </div>
-      </section>
+
+        <div className="mt-24 p-12 bg-gray-50 text-center">
+          <h3 className="text-xl font-bold mb-4 italic">"Leadership is the capacity to translate vision into reality."</h3>
+          <p className="text-gray-500 text-sm">— Baalvion Operational Excellence Charter</p>
+        </div>
     </div>
+      </section >
+    </div >
   );
 }
 

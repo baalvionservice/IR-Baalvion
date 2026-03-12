@@ -43,6 +43,39 @@
       "imageHint": "portrait sasmita"
     },
     {
+      "id": "biswajeet-photo",
+      "description": "Portrait of biswajeet.",
+      "imageUrl": "/photos/Biswajeet patra.jpeg",
+      "imageHint": "portrait biswajeet"
+    },
+    {
+      "id": "laxman-photo",
+      "description": "Portrait of laxman.",
+      "imageUrl": "/photos/Laxman Singh Champia.jpeg",
+      "imageHint": "portrait laxman"
+    },
+    {
+      "id": "bishal-photo",
+      "description": "Portrait of bishal.",
+      "imageUrl": "/photos/bishalkumarpingua.jpeg",
+      "imageHint": "portrait bishal"
+    },
+    {
+      "id": "rashmika-photo",
+      "description": "Portrait of rashmika.",
+      "imageUrl": "/photos/Rashmika Singh.jpeg",
+      "imageHint": "portrait rashmika"
+    },
+    {
+      "id": "jaid-photo",
+      "description": "Portrait of jaid.",
+      "imageUrl": "/photos/Jaid Alam.jpeg",
+      "imageHint": "portrait jaid"
+    },
+    
+
+
+    {
       "id": "prathamesh-photo",
       "description": "Portrait of Prathamesh Pawer.",
       "imageUrl": "/photos/Prathamesh Pawer.jpeg",
