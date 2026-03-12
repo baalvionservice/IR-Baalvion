@@ -18,35 +18,35 @@ export default function ThesisSection({ id }: { id: string }) {
             Our strategy is centered on creating a durable competitive moat by integrating critical infrastructure for global B2B trade.
           </p>
         </div>
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-            <Card className="bg-transparent border-0 shadow-none">
-                <CardHeader className="items-center">
-                    <TrendingUp className="h-10 w-10 text-primary mb-2" />
-                    <CardTitle className="text-black">Capture High-Growth Corridors</CardTitle>
-                </CardHeader>
-                <CardContent className="text-center">
-                    <p className="text-gray-600">We target trade routes and digital ecosystems experiencing exponential growth, focusing on emerging markets and technology-driven supply chains where our integrated system can provide maximum value.</p>
-                </CardContent>
-            </Card>
-            <Card className="bg-transparent border-0 shadow-none">
-                <CardHeader className="items-center">
-                    <Target className="h-10 w-10 text-primary mb-2" />
-                    <CardTitle className="text-black">Acquire Strategic Technology</CardTitle>
-                </CardHeader>
-                <CardContent className="text-center">
-                    <p className="text-gray-600">Our M&A strategy focuses on acquiring key technologies in trade finance, compliance automation (AML/KYC), and logistics management to accelerate our platform's capabilities and market penetration.</p>
-                </CardContent>
-            </Card>
-            <Card className="bg-transparent border-0 shadow-none">
-                <CardHeader className="items-center">
-                    <Zap className="h-10 w-10 text-primary mb-2" />
-                    <CardTitle className="text-black">Build a Network Effect</CardTitle>
-                </CardHeader>
-                <CardContent className="text-center">
-                    <p className="text-gray-600">By integrating essential services, we create a powerful network effect. Each new partner, customer, and transaction on our platform increases its value for all other participants, creating a self-reinforcing cycle of growth.</p>
-                </CardContent>
-            </Card>
+          <Card className="bg-transparent border-0 shadow-none">
+            <CardHeader className="items-start">
+              <TrendingUp className="h-10 w-10 text-primary mb-2" />
+              <CardTitle className="text-black">Capture High-Growth Corridors</CardTitle>
+            </CardHeader>
+            <CardContent className="text-start">
+              <p className="text-gray-600 text-left">We target trade routes and digital ecosystems experiencing exponential growth, focusing on emerging markets and technology-driven supply chains where our integrated system can provide maximum value.</p>
+            </CardContent>
+          </Card>
+          <Card className="bg-transparent border-0 shadow-none">
+            <CardHeader className="items-start">
+              <Target className="h-10 w-10 text-primary mb-2" />
+              <CardTitle className="text-black">Acquire Strategic Technology</CardTitle>
+            </CardHeader>
+            <CardContent className="text-start">
+              <p className="text-gray-600  text-left">Our M&A strategy focuses on acquiring key technologies in trade finance, compliance automation (AML/KYC), and logistics management to accelerate our platform's capabilities and market penetration.</p>
+            </CardContent>
+          </Card>
+          <Card className="bg-transparent border-0 shadow-none">
+            <CardHeader className="items-start">
+              <Zap className="h-10 w-10 text-primary mb-2" />
+              <CardTitle className="text-black">Build a Network Effect</CardTitle>
+            </CardHeader>
+            <CardContent className="text-start">
+              <p className="text-gray-600  text-left">By integrating essential services, we create a powerful network effect. Each new partner, customer, and transaction on our platform increases its value for all other participants, creating a self-reinforcing cycle of growth.</p>
+            </CardContent>
+          </Card>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

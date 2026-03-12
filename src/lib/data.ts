@@ -12,10 +12,10 @@ export const leadershipTeam = [
       imageId: "executive-1-photo",
     },
     {
-      name: "Adarsh Patra",
+      name: "Prathamesh Pawer",
       title: "Chief Executive Officer",
-      bio: "Adarsh leads Baalvion's strategic execution and day-to-day operations. With a background in corporate strategy and finance, he is focused on scaling the company and delivering value to our stakeholders.",
-      imageId: "executive-1-photo",
+      bio: "Prathamesh Pawer leads Baalvion's strategic execution and day-to-day operations. With a background in corporate strategy and finance, he is focused on scaling the company and delivering value to our stakeholders.",
+      imageId: "prathamesh-photo",
     },
   ];
 

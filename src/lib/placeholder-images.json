@@ -31,6 +31,12 @@
       "imageHint": "portrait female"
     },
     {
+      "id": "prathamesh-photo",
+      "description": "Portrait of Prathamesh Pawer.",
+      "imageUrl": "/photos/Prathamesh Pawer.jpeg",
+      "imageHint": "portrait male"
+    },
+    {
       "id": "executive-2-photo",
       "description": "Portrait of a male executive.",
       "imageUrl": "https://images.unsplash.com/photo-1556474835-b0f3ac40d4d1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxwb3J0cmFpdCUyMG1hbGV8ZW58MHx8fHwxNzcxOTQ5NzI2fDA&ixlib=rb-4.1.0&q=80&w=1080",
