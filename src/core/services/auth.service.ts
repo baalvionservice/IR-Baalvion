@@ -36,8 +36,17 @@ export const authService = {
   },
 
   hasAccess: (resourceRoles: UserRole[], userRole: UserRole): boolean => {
+    // No explicit role requirement → open to all
     if (!resourceRoles || resourceRoles.length === 0) return true;
+
+    // Admin and SuperAdmin override
     if (userRole === 'admin' || userRole === 'SuperAdmin') return true;
+
+    // Sections marked as public should be visible to every role,
+    // including authenticated institutional profiles.
+    if (resourceRoles.includes('public')) return true;
+
+    // Otherwise require a direct role match
     return resourceRoles.includes(userRole);
   },
 

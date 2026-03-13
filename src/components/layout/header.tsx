@@ -43,18 +43,18 @@ export default function Header() {
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll, { passive: true });
-    
+
     loadNavigation();
     window.addEventListener('storage', loadNavigation);
     window.addEventListener('auth-updated', loadNavigation);
-    
+
     return () => {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener('storage', loadNavigation);
       window.removeEventListener('auth-updated', loadNavigation);
     }
   }, [loadNavigation]);
-  
+
   const closeSheet = () => setIsSheetOpen(false);
 
   return (
@@ -68,15 +68,15 @@ export default function Header() {
       >
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
           <div className="flex items-center gap-4 sm:gap-6">
-            <Link 
-              href="/" 
+            <Link
+              href="/"
               className="flex items-center gap-2 font-bold hover:opacity-80 transition-opacity"
               aria-label="Baalvion Home"
             >
               <Mountain className="h-6 w-6 text-primary" aria-hidden="true" />
               <span className="hidden sm:inline-block tracking-tighter text-xl">Baalvion</span>
             </Link>
-            
+
             <nav className="hidden lg:flex items-center gap-1" aria-label="Main Navigation">
               {isLoading ? (
                 <div className="flex items-center gap-2 text-xs text-muted-foreground px-4">
@@ -91,10 +91,10 @@ export default function Header() {
 
           <div className="flex items-center gap-1.5 sm:gap-4">
             {userRole !== 'public' && (
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                className="relative h-9 w-9 sm:h-10 sm:w-10" 
+              <Button
+                variant="ghost"
+                size="icon"
+                className="relative h-9 w-9 sm:h-10 sm:w-10"
                 onClick={() => setIsAlertsOpen(true)}
                 aria-label="View institutional alerts"
               >
@@ -102,7 +102,7 @@ export default function Header() {
                 <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-primary ring-2 ring-background" />
               </Button>
             )}
-            
+
             <LanguageSelector />
 
             <div className="hidden md:flex items-center gap-2">
@@ -116,22 +116,22 @@ export default function Header() {
                 </Button>
               </SheetTrigger>
               <SheetContent side="left" className="w-[85vw] sm:max-w-xs p-0 border-r-0">
-                  <SheetHeader className="p-6 border-b bg-muted/20">
-                    <SheetTitle className="text-left flex items-center gap-2 font-bold">
-                      <Mountain className="h-6 w-6 text-primary" aria-hidden="true" />
-                      <span className="tracking-tighter">Baalvion Portal</span>
-                    </SheetTitle>
-                  </SheetHeader>
-                  <div className="flex flex-col h-[calc(100vh-73px)]">
-                      <nav className="flex-1 overflow-y-auto py-6" aria-label="Mobile Navigation">
-                        <div className="px-4 space-y-6">
-                          <NavItems items={navItems} isMobile onLinkClick={closeSheet} />
-                        </div>
-                      </nav>
-                      <div className="p-6 border-t bg-muted/5">
-                        <AuthButtons userRole={userRole} isMobile onAction={closeSheet} />
-                      </div>
+                <SheetHeader className="p-6 border-b bg-muted/20">
+                  <SheetTitle className="text-left flex items-center gap-2 font-bold">
+                    <Mountain className="h-6 w-6 text-primary" aria-hidden="true" />
+                    <span className="tracking-tighter">Baalvion Portal</span>
+                  </SheetTitle>
+                </SheetHeader>
+                <div className="flex flex-col h-[calc(100vh-73px)]">
+                  <nav className="flex-1 overflow-y-auto py-6" aria-label="Mobile Navigation">
+                    <div className="px-4 space-y-6">
+                      <NavItems items={navItems} isMobile onLinkClick={closeSheet} />
+                    </div>
+                  </nav>
+                  <div className="p-6 border-t bg-muted/5">
+                    <AuthButtons userRole={userRole} isMobile onAction={closeSheet} />
                   </div>
+                </div>
               </SheetContent>
             </Sheet>
           </div>
@@ -196,12 +196,12 @@ function NavChild({ child, onLinkClick, isMobile }: { child: NavigationItem, onL
     return <DropdownMenuLabel className="text-[9px] uppercase tracking-widest text-muted-foreground pt-4 pb-1 font-bold px-2">{child.label}</DropdownMenuLabel>;
   }
   if (child.label === '---') return <DropdownMenuSeparator className="my-2" aria-hidden="true" />;
-  
+
   if (isMobile) {
     return (
-      <Link 
-        href={child.href || '#'} 
-        onClick={onLinkClick} 
+      <Link
+        href={child.href || '#'}
+        onClick={onLinkClick}
         className="flex items-center justify-between text-sm font-medium text-foreground/80 hover:text-primary py-2 px-2 rounded-md hover:bg-primary/5 transition-colors"
       >
         {child.label}
@@ -218,6 +218,7 @@ function NavChild({ child, onLinkClick, isMobile }: { child: NavigationItem, onL
 }
 
 function AuthButtons({ userRole, isMobile, onAction }: any) {
+  console.log('userRole is ', userRole)
   if (userRole !== 'public') {
     return (
       <div className={cn("flex items-center gap-2", isMobile && "flex-col w-full")}>
@@ -242,19 +243,19 @@ function AuthButtons({ userRole, isMobile, onAction }: any) {
         <DropdownMenuContent align="end" className="w-64">
           <DropdownMenuLabel className="text-[10px] uppercase font-bold text-muted-foreground pb-2 border-b">Select Simulation Profile</DropdownMenuLabel>
           <div className="pt-2">
-            <DropdownMenuItem onClick={() => { authService.setRole('phase1'); window.location.href='/performance'; }} className="py-3 px-4">
+            <DropdownMenuItem onClick={() => { authService.setRole('phase1'); window.location.href = '/performance'; }} className="py-3 px-4">
               <div className="flex flex-col gap-0.5">
                 <span className="font-bold">Institutional LP</span>
                 <span className="text-[10px] text-muted-foreground">Full portfolio & capital ops access</span>
               </div>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => { authService.setRole('admin'); window.location.href='/admin/dashboard'; }} className="py-3 px-4">
+            <DropdownMenuItem onClick={() => { authService.setRole('admin'); window.location.href = '/admin/dashboard'; }} className="py-3 px-4">
               <div className="flex flex-col gap-0.5">
                 <span className="font-bold">General Partner (GP)</span>
                 <span className="text-[10px] text-muted-foreground">Command center & compliance management</span>
               </div>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => { authService.setRole('compliance'); window.location.href='/admin/intelligence'; }} className="py-3 px-4">
+            <DropdownMenuItem onClick={() => { authService.setRole('compliance'); window.location.href = '/admin/intelligence'; }} className="py-3 px-4">
               <div className="flex flex-col gap-0.5">
                 <span className="font-bold">Compliance Auditor</span>
                 <span className="text-[10px] text-muted-foreground">ESG & audit trail focus</span>
