@@ -16,46 +16,24 @@ type Leader =
 
 function findLeaderBySlug(slug: string): Leader | null {
   const executive = leadershipTeam.find((member) => slugify(member.name) === slug);
-  if (executive) {
-    return { ...executive, source: 'executive' };
-  }
+  if (executive) return { ...executive, source: 'executive' };
 
   const global = globalLeaders.find((member) => slugify(member.name) === slug);
-  if (global) {
-    return {
-      ...global,
-      source: 'global',
-      bio: global.title,
-    };
-  }
+  if (global) return { ...global, source: 'global', bio: global.title };
 
   const president = VicePersidents.find((member) => slugify(member.name) === slug);
-  if (president) {
-    return {
-      ...president,
-      source: 'president',
-      bio: president.title,
-    };
-  }
+  if (president) return { ...president, source: 'president', bio: president.title };
 
   return null;
 }
 
 export interface SingleLeaderPageParams {
-  params: {
-    slug: string;
-  };
+  params: { slug: string };
 }
 
 export function generateMetadata({ params }: SingleLeaderPageParams): Metadata {
   const leader = findLeaderBySlug(params.slug);
-
-  if (!leader) {
-    return {
-      title: 'Leader not found | Baalvion',
-    };
-  }
-
+  if (!leader) return { title: 'Leader not found | Baalvion' };
   return {
     title: `${leader.name} | Leadership`,
     description: leader.bio || leader.title,
@@ -64,10 +42,7 @@ export function generateMetadata({ params }: SingleLeaderPageParams): Metadata {
 
 export default function SingleLeaderPage({ params }: SingleLeaderPageParams) {
   const leader = findLeaderBySlug(params.slug);
-
-  if (!leader) {
-    return notFound();
-  }
+  if (!leader) return notFound();
 
   const imageId = 'imageId' in leader ? leader.imageId : undefined;
   const image =
@@ -75,73 +50,92 @@ export default function SingleLeaderPage({ params }: SingleLeaderPageParams) {
       ? PlaceHolderImages.find((p) => p.id === imageId)
       : PlaceHolderImages.find((p) => p.id === 'executive-2-photo');
 
+  const firstName = leader.name.split(' ')[0];
+
   return (
-    <div className="min-h-screen bg-white text-black animate-in fade-in duration-700">
-      <section className="bg-black text-white py-12 md:py-16">
-        <div className="container mx-auto px-4 max-w-5xl">
-          <nav className="text-xs md:text-sm text-gray-400 mb-4 space-x-2">
-            <Link href="/governance/leadership" className="hover:text-white underline-offset-4 hover:underline">
-              Leadership
-            </Link>
-            <span>/</span>
-            <span className="text-gray-300">{leader.name}</span>
-          </nav>
+    <div
+      className="min-h-screen  bg-white text-[#333333]"
+      style={{ fontFamily: '"SF Pro Display","SF Pro Text",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,sans-serif' }}
+    >
 
-          <p className="text-[0.7rem] md:text-xs font-semibold tracking-[0.25em] uppercase text-primary mb-3">
-            Leadership Profile
-          </p>
-          <h1 className="text-3xl md:text-5xl font-bold tracking-tight mb-3">{leader.name}</h1>
-          <p className="text-sm md:text-lg text-gray-300 max-w-2xl">{leader.title}</p>
+      {/* ── Breadcrumb ──────────────────────────────────────── */}
+      <nav className="bg-white ">
+        <div className="max-w-[980px] mx-auto px-5 py-[10px] flex items-center gap-1.5 text-[12px] text-[#6e6e73]">
+          <Link href="/governance/leadership" className="text-[#0066cc] hover:underline">
+            Leadership
+          </Link>
+          <svg width="5" height="9" viewBox="0 0 5 9" fill="none" aria-hidden="true">
+            <path d="M1 1l3 3.5L1 8" stroke="#6e6e73" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          <span>{leader.name}</span>
         </div>
-      </section>
+      </nav>
 
-      <section className="py-12 md:py-16">
-        <div className="container mx-auto px-4 max-w-5xl grid md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-10 md:gap-16 items-start">
-          <div className="space-y-6">
-            {image && (
-              <div className="bg-gray-100 overflow-hidden">
-                <Image
-                  src={image.imageUrl}
-                  alt={leader.name}
-                  data-ai-hint={image.imageHint}
-                  width={500}
-                  height={600}
-                  className="w-full h-full object-cover"
-                  priority
-                />
-              </div>
-            )}
+      {/* ── Hero — grey background, name left + photo right ── */}
+      <section className="bg-white max-w-4xl mx-auto overflow-hidden">
+        <div className="max-w-[980px] mx-auto h-fit px-5 pt-12 flex flex-col-reverse items-center gap-6 sm:flex-col sm:items-end sm:justify-between  sm:pt-14">
 
-            <div className="border border-gray-200 p-4 md:p-5 space-y-2 text-sm text-gray-600">
-              <p className="font-semibold text-xs tracking-[0.18em] uppercase text-gray-500">
-                Role
-              </p>
-              <p>{leader.title}</p>
-              <p className="font-semibold text-xs tracking-[0.18em] uppercase text-gray-500 mt-4">
-                Category
-              </p>
-              <p>{leader.source === 'executive' ? 'Executive Leadership' : 'Global Functional Leadership'}</p>
+          {/* Left — name + title */}
+          <div className="w-full pb-4 text-center sm:text-left sm:pb-6 sm:flex-1 sm:min-w-0">
+            <h1 className="text-[clamp(26px,4.2vw,44px)] font-semibold tracking-[-0.01em] leading-[1.07] text-black mb-2.5">
+              {leader.name}
+            </h1>
+            <p className="text-[clamp(14px,2vw,20px)] font-normal leading-snug text-[#555555]">
+              {leader.title}
+            </p>
+          </div>
+
+          {/* Right — portrait, bottom-flush so it sits on the divider */}
+          {image && (
+            <div className="flex-shrink-0 max-h-[300px] aspect-square self-center w-full sm:self-end sm:w-[clamp(170px,30vw,330px)] sm:max-w-none leading-[0]">
+              <Image
+                src={image.imageUrl}
+                alt={leader.name}
+                data-ai-hint={image.imageHint}
+                width={230}
+                height={210}
+                className="block w-full  h-full object-cover object-top"
+                priority
+              />
             </div>
-          </div>
+          )}
 
-          <div className="space-y-6 text-gray-700 leading-relaxed">
-            {leader.bio && (
-              <p className="text-base md:text-lg">{leader.bio}</p>
-            )}
-
-            <p className="text-sm md:text-base">
-              As part of Baalvion&apos;s leadership, {leader.name.split(' ')[0]} helps guide the firm&apos;s strategy
-              across technology, capital markets, and global trade infrastructure. Their work supports our mission to
-              build a unified operating system for institutional B2B commerce.
-            </p>
-
-            <p className="text-sm md:text-base">
-              This role collaborates closely with cross-functional teams spanning product, risk, operations, and
-              investor partnerships to ensure disciplined execution and long-term value creation for all stakeholders.
-            </p>
-          </div>
         </div>
       </section>
+
+      {/* ── Bio — white, two-column text ─────────────────────── */}
+      <section className="bg-white">
+        <div className="max-w-[980px] mx-auto px-5 py-11 grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-x-12">
+
+          {/* Left column */}
+          <div className="flex flex-col gap-5">
+            {leader.bio && leader.bio !== leader.title ? (
+              <p className="text-[15px] leading-[1.78] text-[#333333]">{leader.bio}</p>
+            ) : (
+              <p className="text-[15px] leading-[1.78] text-[#333333]">
+                {firstName} is a senior member of Baalvion&apos;s leadership team, driving strategy across technology,
+                capital markets, and global trade infrastructure. Their work underpins the firm&apos;s mission to build
+                a unified operating system for institutional B2B commerce at global scale.
+              </p>
+            )}
+          </div>
+
+          {/* Right column */}
+          <div className="flex flex-col gap-5">
+            <p className="text-[15px] leading-[1.78] text-[#333333]">
+              Working across product, risk, operations, and investor partnerships, {firstName} ensures disciplined
+              execution and consistent value creation for all stakeholders. Their collaborative approach brings together
+              cross-functional expertise to deliver transformative outcomes in every market Baalvion serves.
+            </p>
+            <p className="text-[15px] leading-[1.78] text-[#333333]">
+              {firstName}&apos;s leadership reflects Baalvion&apos;s commitment to building institutional-grade
+              infrastructure that sets new standards for transparency, efficiency, and trust in global commerce.
+            </p>
+          </div>
+
+        </div>
+      </section>
+
     </div>
   );
 }

@@ -14,6 +14,7 @@ export const pageService = {
 
     if (response.success && response.data) {
       const page = response.data;
+      console.log(page)
       
       // Strict role-based section filtration logic
       const filteredSections = page.sections

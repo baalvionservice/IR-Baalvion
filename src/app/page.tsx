@@ -25,7 +25,6 @@ export default function Home() {
       if (mounted) setUserRole(role);
 
       const response = await pageService.getPageBySlug('/');
-
       if (!mounted) return;
 
       if (response.success && response.data) {

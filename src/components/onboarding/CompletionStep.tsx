@@ -42,7 +42,7 @@ export function CompletionStep({ data }: { data: any }) {
           {status === 'success' && "Portal Access Granted"}
         </CardTitle>
         <CardDescription>
-          {status === 'analycing' && "Running cross-registry compliance checks."}
+          {status === 'analyzing' && "Running cross-registry compliance checks."}
           {status === 'finalizing' && "Configuring institutional security keys."}
           {status === 'success' && "Welcome to the Baalvion General Partner ecosystem."}
         </CardDescription>
