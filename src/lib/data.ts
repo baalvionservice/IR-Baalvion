@@ -47,7 +47,7 @@ export const globalLeaders = [
   },
   { name: "Laxman Singh Champia", title: "Head of the Americas Client Business",imageId: "laxman-photo", },
   { name: "Rashmika Singh", title: "Co-Head of Aladdin Product Engineering", imageId: "rashmika-photo" },
-  { name: "Ben Archibald", title: "Deputy General Counsel" },
+  { name: "Preeti snigdha Mallick", title: "Deputy General Counsel", imageId : "preeti-photo" },
   { name: "Susan Chan", title: "Head of Asia Pacific" },
   { name: "Tarek Chouman", title: "Global Head of Aladdin Client Business" },
   { name: "Alex Claringbull", title: "Global Head of Index Investments" },

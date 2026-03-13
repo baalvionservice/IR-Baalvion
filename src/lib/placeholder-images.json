@@ -72,6 +72,12 @@
       "imageUrl": "/photos/Jaid Alam.jpeg",
       "imageHint": "portrait jaid"
     },
+    {
+      "id": "preeti-photo",
+      "description": "Portrait of preeti.",
+      "imageUrl": "/photos/Preeti snigdha Mallick.jpeg",
+      "imageHint": "portrait preeti"
+    },
     
 
 
