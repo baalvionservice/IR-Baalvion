@@ -1,13 +1,10 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Mountain, ArrowLeft } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 
 export default function NotFound() {
   return (
     <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 text-center">
-      <div className="p-4 bg-primary/10 rounded-full mb-6">
-        <Mountain className="h-12 w-12 text-primary" />
-      </div>
       <h1 className="text-4xl font-bold tracking-tight sm:text-6xl mb-4">404</h1>
       <h2 className="text-xl font-semibold mb-6">Resource Not Found</h2>
       <p className="text-muted-foreground max-w-md mb-10">
