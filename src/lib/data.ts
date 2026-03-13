@@ -24,34 +24,77 @@ export const leadershipTeam = [
     imageId: "executive-1-photo",
   },
 ];
-export const VicePersidents = [
-  {
-    name: "Sasmita Gemel",
-    title: "Vice President",
-    imageId: "sasmita-photo",
-  },
-  { name: "Vishal Kumar Pingua", title: "Corporate Development",imageId: "bishal-photo", },
-  { name: "Biswajeet Patra", title: "Corporate Counsel",imageId: "biswajeet-photo", },
-  { name: "Jaid Alam", title: "Worldwide Sales",imageId: "jaid-photo", },
-  { name: "Joe DeVico", title: "Head of the Americas Client Business",imageId: "sasmita-photo", },
-  { name: "Joe DeVico", title: "Head of the Americas Client Business",imageId: "sasmita-photo", },
-  { name: "Joe DeVico", title: "Head of the Americas Client Business",imageId: "sasmita-photo", },
-  { name: "Joe DeVico", title: "Head of the Americas Client Business",imageId: "sasmita-photo", },
-
-];
 export const globalLeaders = [
   {
     name: "Parthamesh Pawer",
     title: "Co-Head of the Global Partners Office",
     imageId: "prathamesh-photo",
   },
-  { name: "Laxman Singh Champia", title: "Head of the Americas Client Business",imageId: "laxman-photo", },
-  { name: "Rashmika Singh", title: "Co-Head of Aladdin Product Engineering", imageId: "rashmika-photo" },
-  { name: "Preeti snigdha Mallick", title: "Deputy General Counsel", imageId : "preeti-photo" },
+  {
+    name: "Laxman Singh Champia",
+    title: "Co-Head of Aladdin Product Engineering",
+    imageId: "laxman-photo",
+  },
+  {
+    name: "Rashmika Singh",
+    title: "Co-Head of Aladdin Product Engineering",
+    imageId: "rashmika-photo",
+  },
+  {
+    name: "Preeti snigdha Mallick",
+    title: "Deputy General Counsel",
+    imageId: "preeti-photo",
+  },
   { name: "Susan Chan", title: "Head of Asia Pacific" },
   { name: "Tarek Chouman", title: "Global Head of Aladdin Client Business" },
   { name: "Alex Claringbull", title: "Global Head of Index Investments" },
   { name: "Samara Cohen", title: "Global Head of Market Development" },
+];
+export const VicePersidents = [
+  {
+    name: "Sasmita Gemel",
+    title: "Vice President",
+    position: "Marketing Communications",
+    imageId: "sasmita-photo",
+  },
+  {
+    name: "Vishal Kumar Pingua",
+    title: "Vice President",
+    imageId: "bishal-photo",
+    position: "Corporate Development",
+  },
+  {
+    name: "Biswajeet Patra",
+    title: "Vice President",
+    imageId: "biswajeet-photo",
+    position: "Corporate Counsel",
+  },
+  {
+    name: "Jaid Alam",
+    title: "Vice President",
+    imageId: "jaid-photo",
+    position: "Worldwide Sales",
+  },
+  {
+    name: "Joe DeVico",
+    title: "Vice President",
+    position: "Marketing Communications",
+  },
+  {
+    name: "Joe DeVico",
+    title: "Vice President",
+    position: "Marketing Communications",
+  },
+  {
+    name: "Joe DeVico",
+    title: "Vice President",
+    position: "Marketing Communications",
+  },
+  {
+    name: "Joe DeVico",
+    title: "Vice President",
+    position: "Marketing Communications",
+  },
 ];
 
 export const boardOfDirectors = [

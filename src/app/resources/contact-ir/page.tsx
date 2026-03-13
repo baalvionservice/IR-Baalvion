@@ -38,15 +38,15 @@ export default function ContactIrPage() {
                     <div>
                       <p className="font-bold">Baalvion Global Headquarters</p>
                       <address className="not-italic text-gray-600 mt-1">
-                        50 Hudson Yards<br />
-                        New York, NY 10001<br />
-                        United States
+                        Semiliguda, Koraput<br />
+                        Koraput, Orissa<br />
+                        India, 764036
                       </address>
                     </div>
                   </div>
                   <div className="flex gap-4 items-center">
                     <Phone className="h-5 w-5 text-primary" />
-                    <p className="font-bold">+1 (212) 555-0198</p>
+                    <p className="font-bold">+91 8951284770</p>
                   </div>
                   <div className="flex gap-4 items-center">
                     <Mail className="h-5 w-5 text-primary" />

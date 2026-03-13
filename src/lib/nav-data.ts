@@ -10,12 +10,12 @@ export const publicNav: NavItem[] = [
     label: "Home",
     href: "/",
     children: [
-        { label: "Overview", href: "#overview" },
-        { label: "Investment Thesis", href: "#thesis" },
-        { label: "Governance Principles", href: "#governance" },
-        { label: "ESG & Risk Management", href: "#risk" },
-        { label: "Corporate Highlights", href: "#news" },
-    ]
+      { label: "Overview", href: "#overview" },
+      { label: "Investment Thesis", href: "#thesis" },
+      { label: "Governance Principles", href: "#governance" },
+      { label: "ESG & Risk Management", href: "#risk" },
+      { label: "Corporate Highlights", href: "#news" },
+    ],
   },
   {
     label: "About Us",
@@ -31,9 +31,9 @@ export const publicNav: NavItem[] = [
     label: "Investments",
     children: [
       { label: "Active Opportunities", isHeader: true },
-      { label: "Phase 1: Institutional", href: "#" },
-      { label: "Phase 2: Private SPVs", href: "#" },
-      { label: "Phase 3: Strategic Operators", href: "#" },
+      { label: "Institutional investor", href: "#" },
+      { label: "Private SPVs", href: "#" },
+      { label: "Strategic Operator", href: "#" },
       { label: "---" as any }, // Separator
       { label: "Past Investments / Case Studies", href: "#" },
       { label: "Investment Approach & Strategy", href: "#thesis" },
@@ -56,7 +56,10 @@ export const publicNav: NavItem[] = [
       { label: "Governance Overview", href: "/governance/overview" },
       { label: "Leadership", href: "/governance/leadership" },
       { label: "Board of Directors", href: "/governance/board-of-directors" },
-      { label: "Committee Composition", href: "/governance/committee-composition" },
+      {
+        label: "Committee Composition",
+        href: "/governance/committee-composition",
+      },
       { label: "---" as any },
       { label: "ESG & Risk Management", href: "#risk" },
       { label: "Policies & Framework", href: "#" },
@@ -100,7 +103,10 @@ export const loggedInNav: NavItem[] = [
       { label: "Governance Overview", href: "/governance/overview" },
       { label: "Leadership", href: "/governance/leadership" },
       { label: "Board of Directors", href: "/governance/board-of-directors" },
-      { label: "Committee Composition", href: "/governance/committee-composition" },
+      {
+        label: "Committee Composition",
+        href: "/governance/committee-composition",
+      },
       { label: "---" as any },
       { label: "My Voting", href: "#" },
       { label: "Board Materials", href: "#" },
@@ -121,8 +127,8 @@ export const loggedInNav: NavItem[] = [
   {
     label: "Resources",
     children: [
-        { label: "Investor Email Alerts", href: "/resources/email-alerts" },
-        { label: "Contact IR", href: "/resources/contact-ir" },
-    ]
+      { label: "Investor Email Alerts", href: "/resources/email-alerts" },
+      { label: "Contact IR", href: "/resources/contact-ir" },
+    ],
   },
 ];

@@ -38,10 +38,10 @@ export default function ProfileStep({ onNext, onBack }: ProfileStepProps) {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <div className="text-center">
-            <h3 className="text-lg font-semibold">Your Profile</h3>
-            <p className="text-sm text-muted-foreground">
+          <h3 className="text-lg font-semibold">Your Profile</h3>
+          <p className="text-sm text-muted-foreground">
             Please provide your basic information.
-            </p>
+          </p>
         </div>
         <div className="space-y-4">
           <FormField
@@ -77,7 +77,7 @@ export default function ProfileStep({ onNext, onBack }: ProfileStepProps) {
               <FormItem>
                 <FormLabel>Country of Residence</FormLabel>
                 <FormControl>
-                  <Input placeholder="United States" {...field} />
+                  <Input placeholder="India, 764036" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

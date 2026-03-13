@@ -9,24 +9,30 @@ export const metadata: Metadata = {
 };
 
 const documents = [
-  { group: "Policies & Standards", items: [
-    { title: 'Categorical Standards of Director Independence', icon: UserCheck },
-    { title: 'Code of Business Conduct and Ethics', icon: ShieldCheck },
-    { title: 'Code of Ethics for Chief Executive and Senior Financial Officers', icon: ShieldCheck },
-    { title: 'Corporate Governance Guidelines', icon: Scale },
-    { title: 'Lead Independent Director Guidelines', icon: Gavel },
-  ]},
-  { group: "Committee Charters", items: [
-    { title: 'Audit Committee Charter', icon: FileText },
-    { title: 'Management Development & Compensation Committee Charter', icon: FileText },
-    { title: 'Executive Committee Charter', icon: FileText },
-    { title: 'Nominating and Governance Committee Charter', icon: FileText },
-    { title: 'Risk Committee Charter', icon: FileText },
-  ]},
-  { group: "Organizational Documents", items: [
-    { title: 'Amended and Restated Bylaws', icon: Scale },
-    { title: 'Restated Certificate of Incorporation', icon: Scale },
-  ]}
+  {
+    group: "Policies & Standards", items: [
+      { title: 'Categorical Standards of Director Independence', icon: UserCheck },
+      { title: 'Code of Business Conduct and Ethics', icon: ShieldCheck },
+      { title: 'Code of Ethics for Chief Executive and Senior Financial Officers', icon: ShieldCheck },
+      { title: 'Corporate Governance Guidelines', icon: Scale },
+      { title: 'Lead Independent Director Guidelines', icon: Gavel },
+    ]
+  },
+  {
+    group: "Committee Charters", items: [
+      { title: 'Audit Committee Charter', icon: FileText },
+      { title: 'Management Development & Compensation Committee Charter', icon: FileText },
+      { title: 'Executive Committee Charter', icon: FileText },
+      { title: 'Nominating and Governance Committee Charter', icon: FileText },
+      { title: 'Risk Committee Charter', icon: FileText },
+    ]
+  },
+  {
+    group: "Organizational Documents", items: [
+      { title: 'Amended and Restated Bylaws', icon: Scale },
+      { title: 'Restated Certificate of Incorporation', icon: Scale },
+    ]
+  }
 ];
 
 export default function GovernanceOverviewPage() {
@@ -64,9 +70,9 @@ export default function GovernanceOverviewPage() {
                     <h3 className="text-xl font-bold mb-6 border-b border-gray-200 pb-4">{group.group}</h3>
                     <div className="grid gap-4">
                       {group.items.map((doc) => (
-                        <Link 
-                          key={doc.title} 
-                          href="#" 
+                        <Link
+                          key={doc.title}
+                          href="#"
                           className="flex items-center justify-between p-6 bg-gray-50 border border-transparent hover:border-primary/20 hover:bg-gray-100 transition-all group"
                         >
                           <div className="flex items-center gap-4">
@@ -91,8 +97,8 @@ export default function GovernanceOverviewPage() {
                   <p className="text-gray-600">Correspondence may be sent to the Board of Directors c/o Corporate Communications:</p>
                   <div className="font-bold">
                     Baalvion, Inc.<br />
-                    50 Hudson Yards<br />
-                    New York, NY 10001
+                    Semiliguda, Koraput<br />
+                    Koraput, Orissa
                   </div>
                   <p className="text-primary font-bold hover:underline cursor-pointer">Email: board@baalvion.com</p>
                 </CardContent>
