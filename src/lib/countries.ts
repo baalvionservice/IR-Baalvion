@@ -186,7 +186,7 @@ export const countries = [
   "Ukraine",
   "United Arab Emirates",
   "United Kingdom",
-  "United States",
+  "India, 764036",
   "Uruguay",
   "Uzbekistan",
   "Vanuatu",
@@ -196,5 +196,5 @@ export const countries = [
   "Yemen",
   "Zambia",
   "Zimbabwe",
-  "Other"
+  "Other",
 ];

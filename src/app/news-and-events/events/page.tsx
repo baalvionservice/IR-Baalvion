@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import { Card } from '@/components/ui/card';
 import { Calendar } from '@/components/ui/calendar';
 import Link from 'next/link';
@@ -9,9 +10,66 @@ import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
+type EventItem = {
+    id: string;
+    date: Date;
+    title: string;
+    time?: string;
+    type: "Webcast" | "Earnings Call" | "Conference" | "Other";
+};
+
+const events: EventItem[] = [
+    {
+        id: "event-2026-02-10",
+        date: new Date("2026-02-10T12:00:00Z"),
+        title: "Baalvion's Martin S. Small to Present at the 2026 Bank of America Securities Financial Services Conference",
+        time: "11:20 AM ET",
+        type: "Conference",
+    },
+    {
+        id: "event-2026-01-15",
+        date: new Date("2026-01-15T07:30:00Z"),
+        title: "Q4 2025 Baalvion, Inc. Earnings Conference Call",
+        time: "7:30 AM ET",
+        type: "Earnings Call",
+    },
+];
+
+function isSameDay(a: Date, b: Date) {
+    return (
+        a.getFullYear() === b.getFullYear() &&
+        a.getMonth() === b.getMonth() &&
+        a.getDate() === b.getDate()
+    );
+}
+
+function formatFullDate(date: Date | undefined) {
+    if (!date) return "";
+    return date.toLocaleDateString("en-US", {
+        weekday: "long",
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+    });
+}
+
 export default function EventsPage() {
-    const scheduledEvent = new Date('2026-02-10T12:00:00Z');
-    const currentDay = new Date('2026-02-25T12:00:00Z');
+    const today = React.useMemo(() => new Date(), []);
+    const [selectedDate, setSelectedDate] = React.useState<Date | undefined>(today);
+
+    const eventDates = React.useMemo(
+        () => events.map((event) => event.date),
+        []
+    );
+
+    const eventsForSelectedDay = React.useMemo(
+        () =>
+            selectedDate
+                ? events.filter((event) => isSameDay(event.date, selectedDate))
+                : [],
+        [selectedDate]
+    );
+
     const presentationImage = PlaceHolderImages.find(p => p.id === 'news-3-image');
 
     return (
@@ -27,36 +85,82 @@ export default function EventsPage() {
                     <div className="grid lg:grid-cols-2 gap-16 items-start">
                         {/* Events Calendar */}
                         <div>
-                            <h2 className="text-2xl font-bold mb-6">Events Calendar</h2>
-                            <Card className="p-0 overflow-hidden border">
+                            <div className="flex items-center justify-between mb-4 gap-4">
+                                <h2 className="text-2xl font-bold">Events Calendar</h2>
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="text-xs md:text-sm text-white"
+                                    onClick={() => setSelectedDate(today)}
+                                >
+                                    Today
+                                </Button>
+                            </div>
+                            <Card className="p-4 border border-gray-200 shadow-sm bg-black">
                                 <Calendar
-                                    month={new Date('2026-02-01')}
+                                    mode="single"
+                                    defaultMonth={today}
+                                    selected={selectedDate}
+                                    onSelect={setSelectedDate}
+
+                                    className="w-full"
                                     modifiers={{
-                                        scheduled: scheduledEvent,
-                                        current: currentDay,
+                                        event: eventDates,
                                     }}
                                     modifiersClassNames={{
-                                        scheduled: 'bg-gray-200 rounded-full',
-                                        current: 'bg-yellow-400 text-black rounded-full',
-                                    }}
-                                    classNames={{
-                                        caption: 'bg-black text-white flex justify-between px-4 py-2 items-center',
-                                        caption_label: 'text-lg font-bold',
-                                        nav_button: 'text-white hover:text-gray-300',
-                                        head_cell: 'font-semibold text-sm text-gray-700 w-12',
-                                        cell: 'w-12 h-12',
-                                        day: 'h-10 w-10',
+                                        event: 'relative after:content-[""] after:absolute after:bottom-1 after:left-1/2 after:-translate-x-1/2 after:w-1.5 after:h-1.5 after:rounded-full after:bg-yellow-400',
                                     }}
                                 />
                             </Card>
-                            <div className="flex items-center gap-6 mt-4 text-sm text-gray-600">
-                                <div className="flex items-center gap-2">
-                                    <div className="w-4 h-4 rounded-full bg-yellow-400 border border-gray-300"></div>
-                                    <span>Current Day</span>
+                            <div className="mt-4 flex flex-wrap items-center gap-4 text-xs md:text-sm text-gray-600">
+                                <div className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-3 py-1 bg-gray-50">
+                                    <span className="inline-block h-2 w-2 rounded-full bg-yellow-400" />
+                                    <span>Dates with scheduled events</span>
                                 </div>
-                                <div className="flex items-center gap-2">
-                                    <div className="w-4 h-4 rounded-full bg-gray-200 border border-gray-300"></div>
-                                    <span>Scheduled Event</span>
+                                <div className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-3 py-1 bg-gray-50">
+                                    <span className="inline-block h-3 w-3 rounded-full border border-gray-400" />
+                                    <span>Selected date</span>
+                                </div>
+                            </div>
+                            <div className="mt-6 space-y-3">
+                                <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
+                                    {selectedDate ? "Events on" : "Select a date"}
+                                </p>
+                                {selectedDate && (
+                                    <p className="text-sm md:text-base font-semibold text-gray-900">
+                                        {formatFullDate(selectedDate)}
+                                    </p>
+                                )}
+                                <div className="mt-2 space-y-3">
+                                    {selectedDate && eventsForSelectedDay.length === 0 && (
+                                        <p className="text-sm text-gray-500">
+                                            No events scheduled for this day.
+                                        </p>
+                                    )}
+                                    {eventsForSelectedDay.map((event) => (
+                                        <Card
+                                            key={event.id}
+                                            className="border border-gray-200 bg-gray-50 px-4 py-3 hover:bg-gray-100 transition-colors"
+                                        >
+                                            <div className="flex items-start justify-between gap-3">
+                                                <div>
+                                                    <p className="text-xs font-medium text-primary mb-1">
+                                                        {event.type}
+                                                        {event.time ? ` · ${event.time}` : ""}
+                                                    </p>
+                                                    <p className="text-sm font-semibold text-gray-900">
+                                                        {event.title}
+                                                    </p>
+                                                </div>
+                                                <Link
+                                                    href="#"
+                                                    className="text-xs font-semibold text-primary hover:underline whitespace-nowrap mt-1"
+                                                >
+                                                    View details
+                                                </Link>
+                                            </div>
+                                        </Card>
+                                    ))}
                                 </div>
                             </div>
                         </div>

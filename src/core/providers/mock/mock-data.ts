@@ -124,7 +124,7 @@ export const MOCK_NAVIGATION: NavigationItem[] = [
       },
       {
         id: "inv-p1",
-        label: "Phase 1: Institutional",
+        label: "Institutional investor",
         href: "#",
         roles: ["public", "phase1", "phase2", "phase3", "admin", "compliance"],
         isActive: true,
@@ -132,7 +132,7 @@ export const MOCK_NAVIGATION: NavigationItem[] = [
       },
       {
         id: "inv-p2",
-        label: "Phase 2: Private SPVs",
+        label: "Private SPVs",
         href: "#",
         roles: ["public", "phase1", "phase2", "phase3", "admin", "compliance"],
         isActive: true,
@@ -140,7 +140,7 @@ export const MOCK_NAVIGATION: NavigationItem[] = [
       },
       {
         id: "inv-p3",
-        label: "Phase 3: Strategic Operators",
+        label: "Strategic Operator",
         href: "#",
         roles: ["public", "phase1", "phase2", "phase3", "admin", "compliance"],
         isActive: true,

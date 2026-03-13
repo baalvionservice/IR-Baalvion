@@ -45,7 +45,7 @@ export default function LeadershipPage() {
                     )}
                   </div>
                   <h4 className="text-[17px] font-medium group-hover:underline  leading-tight text-blue-500">{member.name}</h4>
-                  <p className="text-[12px] text-gray-600 uppercase font-medium tracking-wide">{member.title}</p>
+                  <p className="text-[12px] text-black uppercase font-medium tracking-wide">{member.title}</p>
 
                 </Link>
               );
@@ -75,7 +75,7 @@ export default function LeadershipPage() {
                       )}
                     </div>
                     <h4 className="text-[17px] font-medium group-hover:underline  leading-snug text-blue-500">{member.name}</h4>
-                    <p className="text-[12px] text-gray-600 uppercase font-medium tracking-wide">{member.title}</p>
+                    <p className="text-[12px] text-black uppercase font-medium tracking-wide">{member.title}</p>
 
                   </Link>
                 )
@@ -108,7 +108,8 @@ export default function LeadershipPage() {
                       )}
                     </div>
                     <h4 className="text-[17px] font-medium group-hover:underline  leading-snug text-blue-500">{member.name}</h4>
-                    <p className="text-[12px] text-gray-600 uppercase font-medium tracking-wide">{member.title}</p>
+                    <p className="text-[12px] text-black uppercase font-medium tracking-wide">{member.title}</p>
+                    {member.position && <p className="text-[12px] text-black uppercase font-medium tracking-wide">{member.position}</p>}
 
                   </Link>
                 )
