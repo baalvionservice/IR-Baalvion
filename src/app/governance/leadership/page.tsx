@@ -26,31 +26,28 @@ export default function LeadershipPage() {
       </section>
 
       <section className="py-20 bg-white text-black">
-        <div className="container max-w-5xl mx-auto px-4">
-
-
-
+        <div className="container max-w-6xl mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-16 mb-12 ">
             {leadershipTeam.map((member) => {
               const img = PlaceHolderImages.find(p => p.id === member.imageId);
               return (
                 <Link href={`/governance/leadership/${slugify(member.name)}` || ''} key={member.name} className="group space-y-2">
-                    <div className="aspect-square w-full rounded-xl bg-gray-100 mb-4 overflow-hidden transition-all duration-500">
-                      {img && (
-                        <Image
-                          src={img.imageUrl}
-                          alt={`Photo of ${member.name}`}
-                          data-ai-hint={img.imageHint}
-                          width={320}
-                          height={320}
-                          className="h-full w-full object-top scale-100 group-hover:scale-105 transition-transform duration-700"
-                        />
-                      )}
-                    </div>
-                    <h4 className="text-sm font-medium group-hover:underline  leading-snug text-blue-500">{member.name}</h4>
-                    <p className="text-[12px] text-gray-600 uppercase font-medium tracking-wide">{member.title}</p>
+                  <div className="aspect-square w-full rounded-xl bg-gray-100 mb-4 overflow-hidden transition-all duration-500">
+                    {img && (
+                      <Image
+                        src={img.imageUrl}
+                        alt={`Photo of ${member.name}`}
+                        data-ai-hint={img.imageHint}
+                        width={320}
+                        height={320}
+                        className="h-full w-full object-cover object-top scale-100  transition-transform duration-700"
+                      />
+                    )}
+                  </div>
+                  <h4 className="text-[17px] font-medium group-hover:underline  leading-tight text-blue-500">{member.name}</h4>
+                  <p className="text-[12px] text-gray-600 uppercase font-medium tracking-wide">{member.title}</p>
 
-                  </Link>
+                </Link>
               );
             })}
           </div>
@@ -73,11 +70,11 @@ export default function LeadershipPage() {
                           data-ai-hint={img.imageHint}
                           width={320}
                           height={320}
-                          className="h-full w-full object-top scale-100 group-hover:scale-105 transition-transform duration-700"
+                          className="h-full w-full object-top object-cover scale-100  transition-transform duration-700"
                         />
                       )}
                     </div>
-                    <h4 className="text-sm font-medium group-hover:underline  leading-snug text-blue-500">{member.name}</h4>
+                    <h4 className="text-[17px] font-medium group-hover:underline  leading-snug text-blue-500">{member.name}</h4>
                     <p className="text-[12px] text-gray-600 uppercase font-medium tracking-wide">{member.title}</p>
 
                   </Link>
@@ -106,11 +103,11 @@ export default function LeadershipPage() {
                           data-ai-hint={img.imageHint}
                           width={320}
                           height={320}
-                          className="h-full w-full object-top scale-100 group-hover:scale-105 transition-transform duration-700"
+                          className="h-full w-full object-top object-cover scale-100  transition-transform duration-700"
                         />
                       )}
                     </div>
-                    <h4 className="text-sm font-medium group-hover:underline  leading-snug text-blue-500">{member.name}</h4>
+                    <h4 className="text-[17px] font-medium group-hover:underline  leading-snug text-blue-500">{member.name}</h4>
                     <p className="text-[12px] text-gray-600 uppercase font-medium tracking-wide">{member.title}</p>
 
                   </Link>

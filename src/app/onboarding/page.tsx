@@ -2,7 +2,6 @@
 'use client';
 
 import { OnboardingFunnel } from '@/components/onboarding/OnboardingFunnel';
-import { Mountain } from 'lucide-react';
 import Link from 'next/link';
 
 export default function OnboardingPage() {
@@ -11,7 +10,6 @@ export default function OnboardingPage() {
       {/* Onboarding Header */}
       <header className="h-16 border-b flex items-center px-8 bg-card/50 backdrop-blur-md sticky top-0 z-50">
         <Link href="/" className="flex items-center gap-2 font-bold hover:opacity-80 transition-opacity">
-          <Mountain className="h-6 w-6 text-primary" />
           <span className="tracking-tighter text-xl">Baalvion</span>
         </Link>
         <div className="ml-auto flex items-center gap-4 text-[10px] uppercase font-bold tracking-widest text-muted-foreground">

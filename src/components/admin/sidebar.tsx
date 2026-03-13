@@ -14,7 +14,6 @@ import {
   Users, 
   History, 
   Settings,
-  Mountain,
   ChevronLeft,
   ChevronRight,
   Activity,
@@ -67,7 +66,6 @@ export function Sidebar() {
     )}>
       <div className="h-16 flex items-center px-6 border-b justify-between">
         <Link href="/" className="flex items-center gap-2 font-bold shrink-0">
-          <Mountain className="h-6 w-6 text-primary shrink-0" />
           {!isCollapsed && <span className="tracking-tighter text-xl">Baalvion</span>}
         </Link>
         <Button 

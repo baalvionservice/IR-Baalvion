@@ -5,7 +5,7 @@ import { useState, useEffect, useCallback, memo } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Mountain, ChevronDown, Loader2, LogOut, LayoutDashboard, Bell, ChevronRight } from "lucide-react";
+import { Menu , Loader2, LogOut, LayoutDashboard, Bell, ChevronRight, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
@@ -73,7 +73,6 @@ export default function Header() {
               className="flex items-center gap-2 font-bold hover:opacity-80 transition-opacity"
               aria-label="Baalvion Home"
             >
-              <Mountain className="h-6 w-6 text-primary" aria-hidden="true" />
               <span className="hidden sm:inline-block tracking-tighter text-xl">Baalvion</span>
             </Link>
 
@@ -118,7 +117,6 @@ export default function Header() {
               <SheetContent side="left" className="w-[85vw] sm:max-w-xs p-0 border-r-0">
                 <SheetHeader className="p-6 border-b bg-muted/20">
                   <SheetTitle className="text-left flex items-center gap-2 font-bold">
-                    <Mountain className="h-6 w-6 text-primary" aria-hidden="true" />
                     <span className="tracking-tighter">Baalvion Portal</span>
                   </SheetTitle>
                 </SheetHeader>
@@ -245,19 +243,19 @@ function AuthButtons({ userRole, isMobile, onAction }: any) {
           <div className="pt-2">
             <DropdownMenuItem onClick={() => { authService.setRole('phase1'); window.location.href = '/performance'; }} className="py-3 px-4">
               <div className="flex flex-col gap-0.5">
-                <span className="font-bold">Institutional LP</span>
+                <span className="font-bold">Institutional Investor</span>
                 <span className="text-[10px] text-muted-foreground">Full portfolio & capital ops access</span>
               </div>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => { authService.setRole('admin'); window.location.href = '/admin/dashboard'; }} className="py-3 px-4">
               <div className="flex flex-col gap-0.5">
-                <span className="font-bold">General Partner (GP)</span>
+                <span className="font-bold">Private SPVs</span>
                 <span className="text-[10px] text-muted-foreground">Command center & compliance management</span>
               </div>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => { authService.setRole('compliance'); window.location.href = '/admin/intelligence'; }} className="py-3 px-4">
               <div className="flex flex-col gap-0.5">
-                <span className="font-bold">Compliance Auditor</span>
+                <span className="font-bold">Strategic Operators</span>
                 <span className="text-[10px] text-muted-foreground">ESG & audit trail focus</span>
               </div>
             </DropdownMenuItem>
