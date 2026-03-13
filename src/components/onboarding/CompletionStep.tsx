@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { CheckCircle, Loader2, Lock, ArrowRight, ShieldCheck } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { authService } from '@/core/services/auth.service';
 
 export function CompletionStep({ data }: { data: any }) {
   const [status, setStatus] = useState<'analyzing' | 'finalizing' | 'success'>('analyzing');
@@ -25,6 +26,7 @@ export function CompletionStep({ data }: { data: any }) {
   }, []);
 
   const handleEnterPortal = () => {
+    authService.setRole('P1Investor');
     router.push('/dashboard');
   };
 
@@ -63,8 +65,8 @@ export function CompletionStep({ data }: { data: any }) {
           </div>
         </div>
 
-        <Button 
-          disabled={status !== 'success'} 
+        <Button
+          disabled={status !== 'success'}
           onClick={handleEnterPortal}
           className="w-full h-12 font-bold uppercase tracking-widest bg-green-600 hover:bg-green-700"
         >
