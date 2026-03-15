@@ -19,10 +19,10 @@ function findLeaderBySlug(slug: string): Leader | null {
   if (executive) return { ...executive, source: 'executive' };
 
   const global = globalLeaders.find((member) => slugify(member.name) === slug);
-  if (global) return { ...global, source: 'global', bio: global.title };
+  if (global) return { ...global, source: 'global' };
 
   const president = VicePersidents.find((member) => slugify(member.name) === slug);
-  if (president) return { ...president, source: 'president', bio: president.title };
+  if (president) return { ...president, source: 'president' };
 
   return null;
 }
@@ -43,6 +43,7 @@ export function generateMetadata({ params }: SingleLeaderPageParams): Metadata {
 export default function SingleLeaderPage({ params }: SingleLeaderPageParams) {
   const leader = findLeaderBySlug(params.slug);
   if (!leader) return notFound();
+  console.log(leader)
 
   const imageId = 'imageId' in leader ? leader.imageId : undefined;
   const image =
@@ -105,33 +106,57 @@ export default function SingleLeaderPage({ params }: SingleLeaderPageParams) {
 
       {/* ── Bio — white, two-column text ─────────────────────── */}
       <section className="bg-white">
-        <div className="max-w-[980px] mx-auto px-5 py-11 grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-x-12">
+        <div className="max-w-[980px] mx-auto px-5 py-11 grid grid-cols-1  gap-5 md:gap-x-12">
 
-          {/* Left column */}
           <div className="flex flex-col gap-5">
-            {leader.bio && leader.bio !== leader.title ? (
+            {leader.bio ? (
               <p className="text-[15px] leading-[1.78] text-[#333333]">{leader.bio}</p>
             ) : (
               <p className="text-[15px] leading-[1.78] text-[#333333]">
                 {firstName} is a senior member of Baalvion&apos;s leadership team, driving strategy across technology,
                 capital markets, and global trade infrastructure. Their work underpins the firm&apos;s mission to build
                 a unified operating system for institutional B2B commerce at global scale.
+                {firstName} is a senior member of Baalvion&apos;s leadership team, driving strategy across technology,
+                capital markets, and global trade infrastructure. Their work underpins the firm&apos;s mission to build
+                a unified operating system for institutional B2B commerce at global scale.
+                {firstName} is a senior member of Baalvion&apos;s leadership team, driving strategy across technology,
+                capital markets, and global trade infrastructure. Their work underpins the firm&apos;s mission to build
+                a unified operating system for institutional B2B commerce at global scale.
+                {firstName} is a senior member of Baalvion&apos;s leadership team, driving strategy across technology,
+                capital markets, and global trade infrastructure. Their work underpins the firm&apos;s mission to build
+                a unified operating system for institutional B2B commerce at global scale.
+                {firstName} is a senior member of Baalvion&apos;s leadership team, driving strategy across technology,
+                capital markets, and global trade infrastructure. Their work underpins the firm&apos;s mission to build
+                a unified operating system for institutional B2B commerce at global scale.
+                {firstName} is a senior member of Baalvion&apos;s leadership team, driving strategy across technology,
+                capital markets, and global trade infrastructure. Their work underpins the firm&apos;s mission to build
+                a unified operating system for institutional B2B commerce at global scale.
+                {firstName} is a senior member of Baalvion&apos;s leadership team, driving strategy across technology,
+                capital markets, and global trade infrastructure. Their work underpins the firm&apos;s mission to build
+                a unified operating system for institutional B2B commerce at global scale.{firstName} is a senior member of Baalvion&apos;s leadership team, driving strategy across technology,
+                capital markets, and global trade infrastructure. Their work underpins the firm&apos;s mission to build
+                a unified operating system for institutional B2B commerce at global scale.
+                {firstName} is a senior member of Baalvion&apos;s leadership team, driving strategy across technology,
+                capital markets, and global trade infrastructure. Their work underpins the firm&apos;s mission to build
+                a unified operating system for institutional B2B commerce at global scale.
+                {firstName} is a senior member of Baalvion&apos;s leadership team, driving strategy across technology,
+                capital markets, and global trade infrastructure. Their work underpins the firm&apos;s mission to build
+                a unified operating system for institutional B2B commerce at global scale.
+                {firstName} is a senior member of Baalvion&apos;s leadership team, driving strategy across technology,
+                capital markets, and global trade infrastructure. Their work underpins the firm&apos;s mission to build
+                a unified operating system for institutional B2B commerce at global scale.
+                {firstName} is a senior member of Baalvion&apos;s leadership team, driving strategy across technology,
+                capital markets, and global trade infrastructure. Their work underpins the firm&apos;s mission to build
+                a unified operating system for institutional B2B commerce at global scale.
+                {firstName} is a senior member of Baalvion&apos;s leadership team, driving strategy across technology,
+                capital markets, and global trade infrastructure. Their work underpins the firm&apos;s mission to build
+                a unified operating system for institutional B2B commerce at global scale.
+
               </p>
             )}
           </div>
 
-          {/* Right column */}
-          <div className="flex flex-col gap-5">
-            <p className="text-[15px] leading-[1.78] text-[#333333]">
-              Working across product, risk, operations, and investor partnerships, {firstName} ensures disciplined
-              execution and consistent value creation for all stakeholders. Their collaborative approach brings together
-              cross-functional expertise to deliver transformative outcomes in every market Baalvion serves.
-            </p>
-            <p className="text-[15px] leading-[1.78] text-[#333333]">
-              {firstName}&apos;s leadership reflects Baalvion&apos;s commitment to building institutional-grade
-              infrastructure that sets new standards for transparency, efficiency, and trust in global commerce.
-            </p>
-          </div>
+
 
         </div>
       </section>

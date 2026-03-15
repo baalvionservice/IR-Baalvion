@@ -1,23 +1,6 @@
 {
   "placeholderImages": [
-    {
-      "id": "roadmap-infographic",
-      "description": "A futuristic infographic showing a 5-year roadmap.",
-      "imageUrl": "https://images.unsplash.com/photo-1642428899339-db778a4af19a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxyb2FkbWFwJTIwaW5mb2dyYXBoaXxlbnwwfHx8fDE3NzE5NDk3Mjc1fDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "roadmap infographic"
-    },
-    {
-      "id": "thesis-chart-1",
-      "description": "A line graph showing upward market growth.",
-      "imageUrl": "https://images.unsplash.com/photo-1592495989226-03f88104f8cc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxsaW5lJTIwZ3JhcGh8ZW58MHx8fHwxNzcxOTQ5NzI3fDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "line graph"
-    },
-    {
-      "id": "thesis-chart-2",
-      "description": "A pie chart showing capital allocation.",
-      "imageUrl": "https://images.unsplash.com/photo-1542744173-05336fcc7ad4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxwaWUlMjBjaGFydHxlbnwwfHx8fDE3NzE5MzQ5OTR8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "pie chart"
-    },
+  
     {
       "id": "dilip-photo",
       "description": "Portrait of the company founder.",
@@ -86,6 +69,28 @@
       "description": "Portrait of Prathamesh Pawer.",
       "imageUrl": "/photos/Prathamesh Pawer.jpeg",
       "imageHint": "portrait male"
+    },
+
+
+
+
+      {
+      "id": "roadmap-infographic",
+      "description": "A futuristic infographic showing a 5-year roadmap.",
+      "imageUrl": "https://images.unsplash.com/photo-1642428899339-db778a4af19a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxyb2FkbWFwJTIwaW5mb2dyYXBoaXxlbnwwfHx8fDE3NzE5NDk3Mjc1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "roadmap infographic"
+    },
+    {
+      "id": "thesis-chart-1",
+      "description": "A line graph showing upward market growth.",
+      "imageUrl": "https://images.unsplash.com/photo-1592495989226-03f88104f8cc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxsaW5lJTIwZ3JhcGh8ZW58MHx8fHwxNzcxOTQ5NzI3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "line graph"
+    },
+    {
+      "id": "thesis-chart-2",
+      "description": "A pie chart showing capital allocation.",
+      "imageUrl": "https://images.unsplash.com/photo-1542744173-05336fcc7ad4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxwaWUlMjBjaGFydHxlbnwwfHx8fDE3NzE5MzQ5OTR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "pie chart"
     },
     {
       "id": "executive-2-photo",

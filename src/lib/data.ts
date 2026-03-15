@@ -8,7 +8,7 @@ export const leadershipTeam = [
   {
     name: "Tamanna shaikh",
     title: "Chief Executive Officer",
-    bio: "Prathamesh Pawer leads Baalvion's strategic execution and day-to-day operations. With a background in corporate strategy and finance, he is focused on scaling the company and delivering value to our stakeholders.",
+    bio: "Tamanna leads Baalvion's strategic execution and day-to-day operations. With a background in corporate strategy and finance, he is focused on scaling the company and delivering value to our stakeholders.",
     imageId: "tamanna-photo",
   },
   {
@@ -29,26 +29,40 @@ export const globalLeaders = [
     name: "Parthamesh Pawer",
     title: "Co-Head of the Global Partners Office",
     imageId: "prathamesh-photo",
+    bio: "Prathamesh Pawer leads Baalvion's strategic execution and day-to-day operations. With a background in corporate strategy and finance, he is focused on scaling the company and delivering value to our stakeholders.",
   },
   {
     name: "Laxman Singh Champia",
     title: "Co-Head of Aladdin Product Engineering",
     imageId: "laxman-photo",
+    bio: "Laxman Singh Champia oversees the development of Baalvion's core technology platform. With extensive experience in software engineering and product management, he ensures our solutions are innovative, reliable, and scalable.",
   },
   {
+
     name: "Rashmika Singh",
     title: "Co-Head of Aladdin Product Engineering",
     imageId: "rashmika-photo",
+    bio: "Rashmika Singh oversees the development of Baalvion's core technology platform. With extensive experience in software engineering and product management, she ensures our solutions are innovative, reliable, and scalable.",
   },
   {
     name: "Preeti snigdha Mallick",
     title: "Deputy General Counsel",
     imageId: "preeti-photo",
+    bio: "Preeti Snigdha Mallick leads Baalvion's legal strategy and compliance efforts. With a strong background in corporate law and regulatory affairs, she ensures our operations adhere to the highest standards of integrity and governance.",
   },
-  { name: "Susan Chan", title: "Head of Asia Pacific" },
-  { name: "Tarek Chouman", title: "Global Head of Aladdin Client Business" },
-  { name: "Alex Claringbull", title: "Global Head of Index Investments" },
-  { name: "Samara Cohen", title: "Global Head of Market Development" },
+  { name: "Susan Chan", title: "Head of Asia Pacific",
+    bio: "Susan Chan's leadership and deep knowledge of the Asia Pacific markets are critical to our expansion and operational success in this key growth region.",
+
+   },
+  { name: "Tarek Chouman", title: "Global Head of Aladdin Client Business",
+    bio: "Tarek Chouman leads Baalvion's client engagement and business development efforts. With a focus on building strong relationships and delivering tailored solutions, he drives our global growth and market penetration strategies.",
+   },
+  { name: "Alex Claringbull", title: "Global Head of Index Investments",
+    bio: "Alex Claringbull oversees Baalvion's index investment strategies and product offerings. With deep expertise in financial markets and quantitative analysis, he ensures our clients have access to innovative and effective investment solutions.",
+   },
+  { name: "Samara Cohen", title: "Global Head of Market Development",
+    bio: "Samara Cohen leads Baalvion's market development initiatives, identifying new opportunities and fostering partnerships to expand our global footprint. Her strategic vision and industry insights are key to our continued growth and success.",
+   },
 ];
 export const VicePersidents = [
   {
@@ -56,44 +70,52 @@ export const VicePersidents = [
     title: "Vice President",
     position: "Marketing Communications",
     imageId: "sasmita-photo",
+    bio: "Sasmita Gemel leads Baalvion's marketing communications strategy, crafting compelling narratives that resonate with our global audience. With a background in brand management and digital marketing, she drives our efforts to build a strong and recognizable brand in the global trade ecosystem.",
   },
   {
     name: "Vishal Kumar Pingua",
     title: "Vice President",
     imageId: "bishal-photo",
     position: "Corporate Development",
+    bio: "Vishal Kumar Pingua heads Baalvion's corporate development initiatives, focusing on strategic partnerships, mergers and acquisitions, and growth opportunities. With extensive experience in business strategy and financial analysis, he plays a critical role in shaping our company's future trajectory.",
   },
   {
     name: "Biswajeet Patra",
     title: "Vice President",
     imageId: "biswajeet-photo",
     position: "Corporate Counsel",
+    bio: "Biswajeet Patra leads Baalvion's legal affairs, ensuring compliance with global regulations and managing legal risks. With a strong background in corporate law and international business, he provides essential guidance to support our global operations and strategic initiatives.",
   },
   {
     name: "Jaid Alam",
     title: "Vice President",
     imageId: "jaid-photo",
     position: "Worldwide Sales",
+    bio: "Jaid Alam oversees Baalvion's worldwide sales operations, driving revenue growth and client acquisition across global markets. With a proven track record in sales leadership and a deep understanding of the B2B commerce landscape, he is instrumental in expanding our customer base and strengthening our market position.",
   },
   {
     name: "Joe DeVico",
     title: "Vice President",
     position: "Marketing Communications",
+    bio: "Joe DeVico leads Baalvion's marketing communications strategy, crafting compelling narratives that resonate with our global audience. With a background in brand management and digital marketing, he drives our efforts to build a strong and recognizable brand in the global trade ecosystem.",
   },
   {
     name: "Joe DeVico",
     title: "Vice President",
     position: "Marketing Communications",
+    bio: "Joe DeVico leads Baalvion's marketing communications strategy, crafting compelling narratives that resonate with our global audience. With a background in brand management and digital marketing, he drives our efforts to build a strong and recognizable brand in the global trade ecosystem.",
   },
   {
     name: "Joe DeVico",
     title: "Vice President",
     position: "Marketing Communications",
+    bio: "Joe DeVico leads Baalvion's marketing communications strategy, crafting compelling narratives that resonate with our global audience. With a background in brand management and digital marketing, he drives our efforts to build a strong and recognizable brand in the global trade ecosystem.",
   },
   {
     name: "Joe DeVico",
     title: "Vice President",
     position: "Marketing Communications",
+    bio: "Joe DeVico leads Baalvion's marketing communications strategy, crafting compelling narratives that resonate with our global audience. With a background in brand management and digital marketing, he drives our efforts to build a strong and recognizable brand in the global trade ecosystem.",
   },
 ];
 
