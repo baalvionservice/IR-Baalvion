@@ -121,7 +121,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <Header />
-        <div id="main-content" className="flex min-h-screen flex-col" role="main">
+        <div id="main-content" className="flex min-h-screen  flex-col" role="main">
           {children}
         </div>
         <QuickLinksSection />

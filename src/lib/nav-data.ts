@@ -33,7 +33,7 @@ export const publicNav: NavItem[] = [
       { label: "Active Opportunities", isHeader: true },
       { label: "Institutional investor", href: "#" },
       { label: "Private SPVs", href: "#" },
-      { label: "Strategic Operator", href: "#" },
+      { label: "Strategic Operator", href: "/strategic-operator" },
       { label: "---" as any }, // Separator
       { label: "Past Investments / Case Studies", href: "#" },
       { label: "Investment Approach & Strategy", href: "#thesis" },

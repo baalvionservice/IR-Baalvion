@@ -141,7 +141,7 @@ export const MOCK_NAVIGATION: NavigationItem[] = [
       {
         id: "inv-p3",
         label: "Strategic Operator",
-        href: "#",
+        href: "/strategic-operator",
         roles: ["public", "phase1", "phase2", "phase3", "admin", "compliance"],
         isActive: true,
         order: 4,
