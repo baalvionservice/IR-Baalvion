@@ -8,6 +8,7 @@ import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 import QuickLinksSection from '@/components/sections/quick-links-section';
 import Script from 'next/script';
+import { AppConfig } from '@/config';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -29,7 +30,7 @@ export const metadata: Metadata = {
     template: '%s | Baalvion',
   },
   description: 'The global operating system for B2B trade infrastructure. Access performance reports, board resolutions, and strategic materials.',
-  metadataBase: new URL('https://baalvion.com'),
+  metadataBase: new URL(AppConfig.baseUrl),
   alternates: {
     canonical: '/',
   },
@@ -42,7 +43,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Baalvion Investor Relations',
     description: 'Engineering the backbone of global trade.',
-    url: 'https://baalvion.com',
+    url: AppConfig.baseUrl,
     siteName: 'Baalvion',
     locale: 'en_US',
     type: 'website',
@@ -83,7 +84,7 @@ export default function RootLayout({
     '@context': 'https://schema.org',
     '@type': 'FinancialService',
     name: 'Baalvion Investor Relations',
-    url: 'https://baalvion.com',
+    url: AppConfig.baseUrl,
     logo: 'https://baalvion.com/logo.png',
     description: 'Institutional-grade investment and infrastructure management.',
     parentOrganization: {
@@ -109,8 +110,8 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn('dark', inter.variable)} suppressHydrationWarning>
       <body className="min-h-screen bg-background font-body antialiased selection:bg-primary/30" suppressHydrationWarning>
-        <a 
-          href="#main-content" 
+        <a
+          href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md focus:shadow-xl focus:outline-none"
         >
           Skip to main content
