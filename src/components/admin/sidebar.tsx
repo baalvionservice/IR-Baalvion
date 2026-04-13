@@ -32,7 +32,7 @@ import { Button } from "@/components/ui/button";
 const menuItems = [
   { group: "Overview", items: [
     { icon: LayoutDashboard, label: "Command Center", href: "/admin/dashboard" },
-    { icon: TrendingUp, label: "Performance Hub", href: "/performance" },
+    { icon: TrendingUp, label: "Performance Hub", href: "/admin/performance" },
     { icon: Activity, label: "System Health", href: "/admin/system-dashboard" },
     { icon: Brain, label: "Intelligence", href: "/admin/intelligence" },
   ]},
@@ -45,7 +45,7 @@ const menuItems = [
   { group: "Content", items: [
     { icon: FileText, label: "Page Architecture", href: "/admin/pages" },
     { icon: Navigation, label: "Nav Structure", href: "/admin/navigation" },
-    { icon: FolderTree, label: "Vault Manager", href: "/data-room" },
+    { icon: FolderTree, label: "Vault Manager", href: "/admin/data-room" },
     { icon: Bell, label: "Investor Alerts", href: "/admin/notifications" },
   ]},
   { group: "Reporting", items: [

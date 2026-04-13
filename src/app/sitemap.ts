@@ -4,7 +4,6 @@ import { pageService } from "@/core/services/page.service";
 import { boardMaterialsService } from "@/core/services/board-materials.service";
 import { navigationService } from "@/core/services/navigation.service";
 import { contentService } from "@/core/services/content.service";
-import { sitemapUtils } from "@/utils/sitemap.utils";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = AppConfig.baseUrl;

@@ -32,7 +32,7 @@ export function middleware(request: NextRequest) {
     // Redirect unauthorized users to index with a clear signal
     const url = request.nextUrl.clone();
     url.pathname = '/';
-    url.searchParams.set('auth_error', 'unauthorized');
+    // url.searchParams.set('auth_error', 'unauthorized');
     return NextResponse.redirect(url);
   }
 
