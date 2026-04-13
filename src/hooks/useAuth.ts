@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useCallback } from 'react';
-import { authService } from '@/core/services/auth.service';
-import { UserRole } from '@/core/content/schemas';
+import { useState, useEffect, useCallback } from "react";
+import { authService } from "@/core/services/auth.service";
+import { UserRole } from "@/core/content/schemas";
 
 /**
  * Institutional Auth Hook
  * Prepared for real session management (JWT/OIDC).
  */
 export function useAuth() {
-  const [role, setRole] = useState<UserRole>('public');
+  const [role, setRole] = useState<UserRole>("public");
   const [isLoading, setIsLoading] = useState(true);
 
   const checkAuth = useCallback(async () => {
@@ -21,11 +21,11 @@ export function useAuth() {
 
   useEffect(() => {
     checkAuth();
-    window.addEventListener('storage', checkAuth);
-    window.addEventListener('auth-updated', checkAuth);
+    window.addEventListener("storage", checkAuth);
+    window.addEventListener("auth-updated", checkAuth);
     return () => {
-      window.removeEventListener('storage', checkAuth);
-      window.removeEventListener('auth-updated', checkAuth);
+      window.removeEventListener("storage", checkAuth);
+      window.removeEventListener("auth-updated", checkAuth);
     };
   }, [checkAuth]);
 
@@ -40,11 +40,11 @@ export function useAuth() {
   return {
     role,
     isLoading,
-    isAuthenticated: role !== 'public',
-    isAdmin: role === 'admin' || role === 'SuperAdmin',
-    isCompliance: role === 'compliance' || role === 'ComplianceOfficer',
+    isAuthenticated: role !== "public",
+    isAdmin: role === "admin",
+    isCompliance: role === "compliance" || role === "ComplianceOfficer",
     changeRole,
     signOut,
-    refresh: checkAuth
+    refresh: checkAuth,
   };
 }

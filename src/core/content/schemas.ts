@@ -1,39 +1,89 @@
-export type UserRole = 
-  | 'public' 
-  | 'phase1' 
-  | 'phase2' 
-  | 'phase3' 
-  | 'admin' 
-  | 'compliance'
-  | 'SuperAdmin'
-  | 'IRManager'
-  | 'ComplianceOfficer'
-  | 'p1_institutional'
-  | 'p2_spv'
-  | 'p3_operator'
-  | 'BoardMember';
+export type UserRole =
+  | "public"
+  | "phase1"
+  | "phase2"
+  | "phase3"
+  | "admin"
+  | "compliance"
+  | "admin"
+  | "IRManager"
+  | "ComplianceOfficer"
+  | "p1_institutional"
+  | "p2_spv"
+  | "p3_operator"
+  | "BoardMember";
 
-export type ModuleName = 'Navigation' | 'Pages' | 'DataRoom' | 'Dashboard' | 'Governance' | 'AuditLogs' | 'Settings' | 'Workflow' | 'Voting' | 'BoardMaterials' | 'Notifications' | 'Reporting' | 'Packets';
+export type ModuleName =
+  | "Navigation"
+  | "Pages"
+  | "DataRoom"
+  | "Dashboard"
+  | "Governance"
+  | "AuditLogs"
+  | "Settings"
+  | "Workflow"
+  | "Voting"
+  | "BoardMaterials"
+  | "Notifications"
+  | "Reporting"
+  | "Packets";
 
-export type ActionType = 'view' | 'create' | 'edit' | 'delete' | 'reorder' | 'publish' | 'upload' | 'manage' | 'configure' | 'approve' | 'reject' | 'requestReview' | 'vote' | 'send' | 'schedule' | 'generate' | 'export';
+export type ActionType =
+  | "view"
+  | "create"
+  | "edit"
+  | "delete"
+  | "reorder"
+  | "publish"
+  | "upload"
+  | "manage"
+  | "configure"
+  | "approve"
+  | "reject"
+  | "requestReview"
+  | "vote"
+  | "send"
+  | "schedule"
+  | "generate"
+  | "export";
 
-export type WorkflowStatus = 'Draft' | 'InReview' | 'Approved' | 'Published' | 'Archived' | 'Rejected';
+export type WorkflowStatus =
+  | "Draft"
+  | "InReview"
+  | "Approved"
+  | "Published"
+  | "Archived"
+  | "Rejected";
 
-export type VoteStatus = 'Draft' | 'Open' | 'Closed' | 'Archived' | 'Invalid';
+export type VoteStatus = "Draft" | "Open" | "Closed" | "Archived" | "Invalid";
 
-export type VoteChoice = 'Approve' | 'Reject' | 'Abstain';
+export type VoteChoice = "Approve" | "Reject" | "Abstain";
 
-export type BoardMaterialClassification = 'BoardOnly' | 'CommitteeOnly' | 'Confidential';
+export type BoardMaterialClassification =
+  | "BoardOnly"
+  | "CommitteeOnly"
+  | "Confidential";
 
-export type NotificationStatus = 'Draft' | 'Scheduled' | 'Sent' | 'Archived';
+export type NotificationStatus = "Draft" | "Scheduled" | "Sent" | "Archived";
 
-export type NotificationModuleSource = 'Page' | 'Vote' | 'DataRoom' | 'Governance' | 'Manual';
+export type NotificationModuleSource =
+  | "Page"
+  | "Vote"
+  | "DataRoom"
+  | "Governance"
+  | "Manual";
 
-export type ReportType = 'Governance' | 'Voting' | 'DataRoom' | 'Disclosure' | 'System' | 'Custom';
+export type ReportType =
+  | "Governance"
+  | "Voting"
+  | "DataRoom"
+  | "Disclosure"
+  | "System"
+  | "Custom";
 
-export type ReportStatus = 'Draft' | 'Generated' | 'Archived';
+export type ReportStatus = "Draft" | "Generated" | "Archived";
 
-export type ExportFormat = 'JSON' | 'CSV' | 'PDF';
+export type ExportFormat = "JSON" | "CSV" | "PDF";
 
 export interface Permission {
   module: ModuleName;
@@ -80,7 +130,7 @@ export interface PageDefinition {
   description?: string;
   sections: PageSection[];
   draftSections?: PageSection[];
-  status: 'Draft' | 'Published';
+  status: "Draft" | "Published";
   workflowStatus: WorkflowStatus;
   currentVersion: number;
   versionHistory: VersionInfo[];
@@ -170,7 +220,7 @@ export interface RegulatoryPacket {
   includedDocuments: string[];
   createdAt: string;
   createdByRole: UserRole;
-  status: 'Draft' | 'Finalized' | 'Archived';
+  status: "Draft" | "Finalized" | "Archived";
 }
 
 export interface Subscription {
@@ -214,5 +264,5 @@ export interface PlatformSettings {
     autoNotifyEnabled: boolean;
     autoSendEnabled: boolean;
   };
-  environment: 'mock' | 'production';
+  environment: "mock" | "production";
 }

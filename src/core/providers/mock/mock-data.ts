@@ -452,7 +452,7 @@ export const MOCK_PAGES: PageDefinition[] = [
     workflowStatus: "Published",
     currentVersion: 1,
     versionHistory: [
-      { version: 1, author: "SuperAdmin", timestamp: "2024-01-01T00:00:00Z" },
+      { version: 1, author: "admin", timestamp: "2024-01-01T00:00:00Z" },
     ],
     sections: [
       {
