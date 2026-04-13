@@ -8,9 +8,9 @@ export type UserRole =
   | 'SuperAdmin'
   | 'IRManager'
   | 'ComplianceOfficer'
-  | 'P1Investor'
-  | 'P2Investor'
-  | 'P3Operator'
+  | 'p1_institutional'
+  | 'p2_spv'
+  | 'p3_operator'
   | 'BoardMember';
 
 export type ModuleName = 'Navigation' | 'Pages' | 'DataRoom' | 'Dashboard' | 'Governance' | 'AuditLogs' | 'Settings' | 'Workflow' | 'Voting' | 'BoardMaterials' | 'Notifications' | 'Reporting' | 'Packets';

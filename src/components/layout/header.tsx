@@ -224,7 +224,7 @@ function AuthButtons({ userRole, isMobile, onAction }: any) {
           <LogOut className="h-4 w-4" aria-hidden="true" /> Sign Out
         </Button>
         <Button asChild size="sm" className="shadow-lg gap-2 w-full font-bold">
-          <Link href="/performance" onClick={onAction}><LayoutDashboard className="h-4 w-4" aria-hidden="true" /> Portal Hub</Link>
+          <Link href="/admin/performance" onClick={onAction}><LayoutDashboard className="h-4 w-4" aria-hidden="true" /> Portal Hub</Link>
         </Button>
       </div>
     );
@@ -241,7 +241,7 @@ function AuthButtons({ userRole, isMobile, onAction }: any) {
         <DropdownMenuContent align="end" className="w-64">
           <DropdownMenuLabel className="text-[10px] uppercase font-bold text-muted-foreground pb-2 border-b">Select Simulation Profile</DropdownMenuLabel>
           <div className="pt-2">
-            <DropdownMenuItem onClick={() => { authService.setRole('phase1'); window.location.href = '/performance'; }} className="py-3 px-4">
+            <DropdownMenuItem onClick={() => { authService.setRole('admin'); window.location.href = '/admin/dashboard'; }} className="py-3 px-4">
               <div className="flex flex-col gap-0.5">
                 <span className="font-bold">Institutional Investor</span>
                 <span className="text-[10px] text-muted-foreground">Full portfolio & capital ops access</span>
@@ -253,7 +253,7 @@ function AuthButtons({ userRole, isMobile, onAction }: any) {
                 <span className="text-[10px] text-muted-foreground">Command center & compliance management</span>
               </div>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => { authService.setRole('compliance'); window.location.href = '/admin/intelligence'; }} className="py-3 px-4">
+            <DropdownMenuItem onClick={() => { authService.setRole('compliance'); window.location.href = '/admin/dashboard'; }} className="py-3 px-4">
               <div className="flex flex-col gap-0.5">
                 <span className="font-bold">Strategic Operators</span>
                 <span className="text-[10px] text-muted-foreground">ESG & audit trail focus</span>
