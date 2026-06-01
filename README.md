@@ -1,4 +1,8 @@
 <div align="center">
+  <img src=".github/preview.png" alt="Baalvion Investor Relations" width="100%" />
+</div>
+
+<div align="center">
 
 # Baalvion Investor Relations
 
