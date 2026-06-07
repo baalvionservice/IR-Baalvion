@@ -6,9 +6,11 @@ import { Badge } from '@/components/ui/badge';
 import { FileText, Download } from 'lucide-react';
 import { AppRole } from '@/lib/rbac/roles';
 import { filterDocumentsByAccess } from '@/lib/rbac/documentAccess';
+import { UserRole } from '@/core/content/schemas';
 
 interface Document {
   id: string;
+  name: string;
   title: string;
   category: string;
   restrictedTo: AppRole[];
@@ -20,7 +22,7 @@ export default function DocumentPreview({
   role,
 }: {
   documents: Document[];
-  role: AppRole;
+  role: UserRole;
 }) {
   const filtered = filterDocumentsByAccess(documents, role).slice(0, 5);
 

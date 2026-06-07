@@ -7,6 +7,7 @@ import NavChart from "@/components/dashboard/NavChart";
 import DocumentPreview from "@/components/dashboard/DocumentPreview";
 import ActiveVoting from "@/components/dashboard/ActiveVoting";
 import { EventPackageDownload } from "@/components/dashboard/EventPackageDownload";
+import { UserRole } from "@/core/content/schemas";
 
 interface DashboardData {
   summary: any;
@@ -20,7 +21,7 @@ interface DashboardData {
 interface DashboardClientProps {
   data: DashboardData;
   userEmail: string;
-  userRole: string;
+  userRole: UserRole;
 }
 
 export default function DashboardClient({
@@ -33,12 +34,8 @@ export default function DashboardClient({
       <div className="flex flex-col xl:flex-row justify-between items-start gap-6">
         <div className="flex flex-col gap-1 max-w-2xl">
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">
-            Investor Dashboard
+            Investor Capital Dashboard
           </h1>
-          <p className="text-sm sm:text-base text-muted-foreground">
-            Institutional Capital Overview for{" "}
-            <span className="text-foreground font-semibold">{userEmail}</span>
-          </p>
         </div>
         <div className="w-full xl:w-auto">
           <EventPackageDownload />

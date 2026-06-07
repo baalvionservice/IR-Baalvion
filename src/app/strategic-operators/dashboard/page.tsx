@@ -3,7 +3,7 @@ import { operatorData } from '@/lib/phase3-data';
 import DashboardContent from './DashboardContent';
 
 export const metadata: Metadata = {
-  title: 'Operator Dashboard | Baalvion',
+  title: 'Strategic Operators Dashboard | Baalvion',
   description: 'Track your strategic equity grant, vesting schedule, and performance KPIs.',
 };
 

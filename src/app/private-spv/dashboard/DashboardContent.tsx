@@ -47,7 +47,7 @@ export default function DashboardContent({ data }: DashboardContentProps) {
         <main className="flex-grow bg-muted/20 py-12">
             <div className="container mx-auto px-4">
                 <div className="mb-8">
-                    <h1 className="text-4xl font-bold">Phase 2 Dashboard</h1>
+                    <h1 className="text-4xl font-bold">Private SPV Dashboard</h1>
                     <p className="text-muted-foreground">Welcome, {name}.</p>
                 </div>
 

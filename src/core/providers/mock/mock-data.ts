@@ -355,7 +355,7 @@ export const MOCK_NAVIGATION: NavigationItem[] = [
     children: [
       {
         id: "dash-p1",
-        label: "P1: Investor Dashboard",
+        label: "P1: Investor Capital Dashboard",
         href: "/dashboard",
         roles: ["phase1", "admin"],
         isActive: true,

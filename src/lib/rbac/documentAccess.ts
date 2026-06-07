@@ -1,9 +1,9 @@
-import { AppRole } from './roles';
+import { UserRole } from '@/core/content/schemas';
 
 export interface RestrictedDocument {
   id: string | number;
   name: string;
-  restrictedTo?: AppRole[];
+  restrictedTo?: UserRole[];
 }
 
 /**
@@ -12,7 +12,7 @@ export interface RestrictedDocument {
  */
 export function filterDocumentsByAccess<T extends RestrictedDocument>(
   documents: T[],
-  currentRole: AppRole
+  currentRole: UserRole
 ): T[] {
   // Admins see everything
   if (currentRole === 'admin') return documents;

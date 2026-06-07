@@ -356,7 +356,7 @@ function AuthButtons({ userRole, isMobile, onAction }: any) {
             <DropdownMenuItem
               onClick={() => {
                 authService.setRole("phase1");
-                window.location.href = "/dashboard";
+                window.location.href = "/investor";
               }}
               className="py-3 px-4"
             >
@@ -370,7 +370,7 @@ function AuthButtons({ userRole, isMobile, onAction }: any) {
             <DropdownMenuItem
               onClick={() => {
                 authService.setRole("phase2");
-                window.location.href = "/phase2/dashboard";
+                window.location.href = "/private-spv/dashboard";
               }}
               className="py-3 px-4"
             >
@@ -384,7 +384,7 @@ function AuthButtons({ userRole, isMobile, onAction }: any) {
             <DropdownMenuItem
               onClick={() => {
                 authService.setRole("phase3");
-                window.location.href = "/phase3/dashboard";
+                window.location.href = "/strategic-operators/dashboard";
               }}
               className="py-3 px-4"
             >
