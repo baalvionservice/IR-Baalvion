@@ -123,7 +123,17 @@ export default function RootLayout({
         />
         <Header />
         <div id="main-content" className="flex min-h-screen  flex-col" role="main">
-          {children}
+
+          <div style={{
+            font: "700 1.5rem/2rem 'Inter', sans-serif",
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+          }}>
+            Pay to your Employee
+          </div>
+
         </div>
         <QuickLinksSection />
         <Footer />

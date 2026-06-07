@@ -83,7 +83,7 @@ export default function RegistrationModal({ closeModal, flowType }: Registration
     <>
       <DialogHeader>
         <DialogTitle className="text-center text-2xl font-bold">
-          {flowType === "phase1" ? "Become an Investor" : "Phase 2 SPV Onboarding"}
+          {flowType === "phase1" ? "Become an Investor" : "Private SPV Onboarding"}
         </DialogTitle>
         <DialogDescription className="text-center">
           {flowType === "phase1"

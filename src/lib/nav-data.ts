@@ -81,7 +81,7 @@ export const loggedInNav: NavItem[] = [
   {
     label: "Dashboards",
     children: [
-      { label: "P1: Investor Dashboard", href: "/dashboard" },
+      { label: "P1: Investor Capital Dashboard", href: "/dashboard" },
       { label: "P2: SPV Dashboard", href: "/phase2/dashboard" },
       { label: "P3: Operator Dashboard", href: "/phase3/dashboard" },
       { label: "---" as any },
